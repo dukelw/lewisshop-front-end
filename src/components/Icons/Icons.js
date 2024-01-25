@@ -1,7 +1,66 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter, faHeart, faList, faMessage, faSearch, faShoppingCart, faSort } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAdd,
+  faDongSign,
+  faFilter,
+  faHeart,
+  faList,
+  faMessage,
+  faSearch,
+  faShoppingCart,
+  faSort,
+  faStar as faStartSolid,
+  faSubtract,
+} from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
+
+export const SubtractIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faSubtract}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const AddIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faAdd}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const DongIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px' }) => (
+  <FontAwesomeIcon icon={faDongSign} className={className} style={{ width, height, color: color, padding: padding }} />
+);
+
+export const StarIconRegular = ({ width = '2rem', height = '2rem', className, color, padding = '8px' }) => (
+  <FontAwesomeIcon
+    icon={faStarRegular}
+    className={className}
+    style={{ width, height, color: color, padding: padding }}
+  />
+);
+
+export const StarIconSolid = ({ width = '2rem', height = '2rem', className, color, padding = '8px' }) => (
+  <FontAwesomeIcon
+    icon={faStartSolid}
+    className={className}
+    style={{ width, height, color: color, padding: padding }}
+  />
+);
 
 export const SortIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px' }) => (
   <FontAwesomeIcon icon={faSort} className={className} style={{ width, height, color: color, padding: padding }} />

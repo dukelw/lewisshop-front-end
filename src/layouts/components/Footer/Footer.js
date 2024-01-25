@@ -122,8 +122,8 @@ function Footer() {
               </div>
             </div>
           </Col>
-          {FOOTER_ITEMS.map((item) => (
-            <Col sm={3} xl={3} lg={3} xxl={3}>
+          {FOOTER_ITEMS.map((item, index) => (
+            <Col key={index} sm={3} xl={3} lg={3} xxl={3}>
               <FooterList title={item.title} items={item.items} />
             </Col>
           ))}

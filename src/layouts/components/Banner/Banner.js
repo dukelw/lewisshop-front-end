@@ -16,7 +16,9 @@ function Banner() {
               et quidem iusto, at voluptate eos voluptas odio rerum ipsam. Neque earum ab eaque asperiores consectetur.
             </p>
           </div>
-          <Button className={cx('button')}>Learn More</Button>
+          <Button primary className={cx('button')}>
+            Learn More
+          </Button>
         </div>
       </div>
     </div>

@@ -1,0 +1,215 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product {
+  margin-top: 80px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 800px;
+  flex: 1;
+  margin-right: 30px;
+
+  .img {
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+  }
+
+  .large-img {
+    min-height: 500px;
+    min-width: 500px;
+    max-height: 666px;
+  }
+}
+
+.small-imgs {
+  --margin-to-others-img: 20px;
+  margin-top: var(--margin-to-others-img);
+  display: flex;
+  justify-content: center;
+
+  .small-img {
+    max-width: 168px;
+    min-width: 160px;
+    max-height: 168px;
+    min-height: 144px;
+    margin-right: var(--margin-to-others-img);
+  }
+
+  .small-img:last-child {
+    margin-right: 0;
+  }
+}
+
+.right {
+  flex: 1;
+  margin-left: 30px;
+
+  .name {
+    color: var(--black);
+    font-size: 4.8rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .price {
+    color: var(--black);
+    font-size: 3rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .description {
+    margin-top: 20px;
+    color: #616161;
+    font-family: 'Proxima Nova';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px; /* 140% */
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 40px;
+
+  .action {
+    border-radius: unset;
+    margin: 0;
+  }
+
+  .add {
+    margin: 0 20px;
+  }
+
+  .favourite {
+    padding: 26px;
+  }
+}
+
+.assurance {
+  font-family: Poppins;
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 24px;
+  list-style: none;
+
+  li {
+    position: relative;
+  }
+
+  li.square::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: var(--black);
+  }
+}
+
+.shop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 53.5px;
+  height: 53.5px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .shop-avt {
+    width: 80px;
+    height: 80px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50%;
+  }
+
+  .shop-name {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .invite {
+    font-size: 2rem;
+    margin: 0;
+    margin-right: 40px;
+  }
+}
+
+.shop-info {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+
+  .shop-status {
+    color: var(--grey);
+  }
+}
+
+.section {
+  margin-top: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  font-family: Poppins;
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  .detail {
+    margin-right: 20px;
+  }
+
+  .text {
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.05);
+      transition: transform 0.3s ease-in-out;
+    }
+  }
+}
+
+.recent,
+.relate {
+  margin-top: 60px;
+}
+
+.recent {
+  margin-bottom: 60px;
+}
+
+.title {
+  color: var(--black);
+  text-align: center;
+  font-family: Poppins;
+  font-size: 3rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}

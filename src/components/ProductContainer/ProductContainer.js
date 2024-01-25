@@ -1,7 +1,6 @@
 import classNames from 'classnames/bind';
 import React from 'react';
 import 'tippy.js/dist/tippy.css';
-import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -10,6 +9,7 @@ import styles from './ProductContainer.module.scss';
 import ProductCard from '../ProductCard';
 import { FilterIcon, SortIcon } from '~/components/Icons';
 import Search from '~/layouts/components/Search';
+import Button from '../Button';
 
 const cx = classNames.bind(styles);
 
@@ -48,6 +48,9 @@ function ProductContainer({ data }) {
           })}
         </Row>
       </Container>
+      <div className={cx('more')}>
+        <Button primary>Load more</Button>
+      </div>
     </div>
   );
 }

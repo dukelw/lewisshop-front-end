@@ -20,6 +20,7 @@ function Button({
   children,
   className,
   onClick,
+  square = false,
   ...passProps
 }) {
   let Component = 'button';
@@ -29,11 +30,11 @@ function Button({
   };
 
   if (disabled) {
-    Object.keys(props).forEach(key => {
+    Object.keys(props).forEach((key) => {
       if (key.startsWith('on') && typeof props[key] === 'function') {
-        delete props[key]
+        delete props[key];
       }
-    })
+    });
   }
 
   if (to) {
@@ -54,7 +55,8 @@ function Button({
     rightIcon,
     small,
     large,
-    [className]: className
+    square,
+    [className]: className,
   });
   return (
     <Component className={classes} {...props}>
@@ -80,6 +82,6 @@ Button.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
   onClick: PropTypes.func,
-}
+};
 
 export default Button;

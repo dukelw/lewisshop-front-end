@@ -3,6 +3,37 @@ import ProductContainer from '~/components/ProductContainer';
 function Product() {
   const DATA = [
     {
+      _id: '123456789',
+      img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
+      name: 'Tủ lạnh siêu xịn',
+      discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
+      rating: 2.5,
+      address: 'New York',
+      old_price: 20000000,
+      new_price: 18000000,
+    },
+    {
+      _id: '123456789',
+      img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
+      name: 'Tủ lạnh siêu xịn',
+      discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
+      rating: 2,
+      address: 'New York',
+      old_price: 20000000,
+      new_price: 18000000,
+    },
+    {
+      _id: '123456789',
+      img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
+      name: 'Tủ lạnh siêu xịn',
+      discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
+      rating: 2,
+      address: 'New York',
+      old_price: 20000000,
+      new_price: 18000000,
+    },
+    {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -12,6 +43,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -21,6 +53,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -30,6 +63,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -39,6 +73,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -48,6 +83,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -57,6 +93,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -66,6 +103,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -75,6 +113,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -84,6 +123,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -93,6 +133,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -102,6 +143,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -111,6 +153,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -120,6 +163,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -129,6 +173,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -138,6 +183,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -147,6 +193,7 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
@@ -156,6 +203,47 @@ function Product() {
       new_price: 18000000,
     },
     {
+      _id: '123456789',
+      img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
+      name: 'Tủ lạnh siêu xịn',
+      discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
+      rating: 5,
+      address: 'New York',
+      old_price: 20000000,
+      new_price: 18000000,
+    },
+    {
+      _id: '123456789',
+      img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
+      name: 'Tủ lạnh siêu xịn',
+      discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
+      rating: 5,
+      address: 'New York',
+      old_price: 20000000,
+      new_price: 18000000,
+    },
+    {
+      _id: '123456789',
+      img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
+      name: 'Tủ lạnh siêu xịn',
+      discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
+      rating: 5,
+      address: 'New York',
+      old_price: 20000000,
+      new_price: 18000000,
+    },
+    {
+      _id: '123456789',
+      img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
+      name: 'Tủ lạnh siêu xịn',
+      discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',
+      rating: 5,
+      address: 'New York',
+      old_price: 20000000,
+      new_price: 18000000,
+    },
+    {
+      _id: '123456789',
       img: 'https://i.pinimg.com/736x/41/8f/91/418f9196728261aba357a2a2f28d3403.jpg',
       name: 'Tủ lạnh siêu xịn',
       discription: 'Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut lab',

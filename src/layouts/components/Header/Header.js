@@ -24,7 +24,6 @@ import {
   ShortcutsIcon,
   LanguageIcon,
   CoinIcon,
-  InboxIcon,
   NotificationIcon,
 } from '~/components/Icons';
 import Search from '../Search';
