@@ -80,7 +80,7 @@
 
 .more-btn {
   font-size: 2rem;
-  margin-left: 28px;
+  // margin-left: 28px;
   padding: 4px 8px;
   background: transparent;
   cursor: pointer;
@@ -122,4 +122,12 @@
   border-radius: 8px;
   font-size: 1.2rem;
   padding: 0px 4px;
+}
+
+.user-name {
+  color: var(--black);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
 }

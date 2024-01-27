@@ -13,6 +13,7 @@ const DropdownSelect = ({ choices, name }) => {
     setSelected(selectedOption);
   };
 
+  // eslint-disable-next-line
   const handleAddToCart = () => {
     // Handle adding to cart logic here
     console.log(`Selected ${name}: ${selected.value}`);

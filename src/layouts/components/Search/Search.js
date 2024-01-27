@@ -6,7 +6,7 @@ import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
 import PropTypes from 'prop-types';
 
-import * as searchService from '~/services/searchService';
+import * as searchService from '~/services/search';
 import { useDebounce } from '~/hooks';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import AccountItem from '~/components/AccountItem';

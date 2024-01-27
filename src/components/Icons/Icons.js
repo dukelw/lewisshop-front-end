@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAdd,
   faDongSign,
+  faEye,
+  faEyeSlash,
   faFilter,
   faHeart,
   faList,
@@ -12,9 +14,45 @@ import {
   faSort,
   faStar as faStartSolid,
   faSubtract,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
+
+export const UserIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faUser}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const EyeSlashIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faEyeSlash}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const EyeIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faEye}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
 
 export const SubtractIcon = ({
   width = '2rem',
@@ -127,6 +165,49 @@ export const LogoIcon = ({ width = '16.2rem', height = '5.8rem', className }) =>
       d="M162 32.0194C162 33.3573 161.832 34.5654 161.496 35.6437C161.16 36.7021 160.716 37.6406 160.163 38.4593C159.61 39.258 158.968 39.9469 158.237 40.526C157.506 41.0851 156.735 41.5444 155.925 41.9038C155.135 42.2633 154.325 42.5328 153.496 42.7126C152.686 42.8723 151.915 42.9522 151.184 42.9522H137.287C136.22 42.9522 135.054 42.7625 133.79 42.3831C132.526 42.0037 131.35 41.3847 130.264 40.526C129.197 39.6474 128.298 38.5192 127.567 37.1414C126.856 35.7436 126.5 34.0363 126.5 32.0194V21.4761C126.5 19.4792 126.856 17.7919 127.567 16.4141C128.298 15.0163 129.197 13.8881 130.264 13.0294C131.35 12.1508 132.526 11.5218 133.79 11.1424C135.054 10.763 136.22 10.5733 137.287 10.5733H151.184C153.16 10.5733 154.839 10.9327 156.222 11.6516C157.605 12.3705 158.721 13.279 159.57 14.3773C160.42 15.4556 161.032 16.6337 161.407 17.9117C161.802 19.1897 162 20.3778 162 21.4761V32.0194ZM154.296 21.536C154.296 20.4577 154.029 19.659 153.496 19.1398C152.962 18.6206 152.192 18.361 151.184 18.361H137.346C136.319 18.361 135.538 18.6306 135.005 19.1697C134.472 19.6889 134.205 20.4577 134.205 21.4761V32.0194C134.205 33.0378 134.472 33.8166 135.005 34.3558C135.538 34.8949 136.319 35.1645 137.346 35.1645H151.184C152.231 35.1645 153.012 34.8949 153.525 34.3558C154.039 33.8166 154.296 33.0378 154.296 32.0194V21.536Z"
       fill="#333333"
     />
+  </svg>
+);
+
+export const CartBlankIcon = ({ width = '2rem', height = '3.2rem', className }) => (
+  <svg width={width} height={height} viewBox="0 0 64 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="vuesax/linear/bag-2">
+      <g id="bag-2">
+        <path
+          id="Vector"
+          d="M20 20.9534V18.3667C20 12.3667 24.8267 6.47336 30.8267 5.91336C37.9733 5.22002 44 10.8467 44 17.86V21.54"
+          stroke="#05422C"
+          strokeWidth="4"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          id="Vector_2"
+          d="M24 59.1663H40C50.72 59.1663 52.64 54.873 53.2 49.6463L55.2 33.6463C55.92 27.1397 54.0534 21.833 42.6667 21.833H21.3334C9.94669 21.833 8.08003 27.1397 8.80003 33.6463L10.8 49.6463C11.36 54.873 13.28 59.1663 24 59.1663Z"
+          stroke="#05422C"
+          strokeWidth="4"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          id="Vector_3"
+          d="M41.3211 32.5003H41.3451"
+          stroke="#05422C"
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          id="Vector_4"
+          d="M22.6522 32.5003H22.6761"
+          stroke="#05422C"
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+    </g>
   </svg>
 );
 

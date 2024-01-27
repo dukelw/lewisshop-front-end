@@ -7,6 +7,8 @@ const routes = {
   live: '/live',
   product: '/products',
   productDetail: '/detail/:productID',
+  shopSignin: '/shop/signin',
+  shopSignup: '/shop/signup',
 };
 
 export default routes;

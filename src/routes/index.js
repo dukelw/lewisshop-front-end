@@ -13,6 +13,8 @@ import Search from '~/pages/Search';
 import Live from '~/pages/Live';
 import Product from '~/pages/Product';
 import ProductDetailContainer from '~/pages/ProductDetailContainer';
+import ShopSignin from '~/components/ShopSignin';
+import ShopSignup from '~/components/ShopSignup';
 
 const publicRoutes = [
   { path: config.routes.home, component: Home },
@@ -23,6 +25,8 @@ const publicRoutes = [
   { path: config.routes.live, component: Live },
   { path: config.routes.product, component: Product },
   { path: config.routes.productDetail, component: ProductDetailContainer, layout: HeaderAndFooter },
+  { path: config.routes.shopSignin, component: ShopSignin, layout: null },
+  { path: config.routes.shopSignup, component: ShopSignup, layout: null },
 ];
 
 const privateRoutes = [];

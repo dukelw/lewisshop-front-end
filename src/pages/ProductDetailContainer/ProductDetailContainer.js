@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductDetail from '~/components/ProductDetail';
-
+// eslint-disable-next-line
 const RELATED_PRODUCT = [
   {
     _id: '123456789',
@@ -189,10 +189,9 @@ const PRODUCT = {
     'https://img-cdn.xemgame.com/2022/11/07/co-nang-makima-trong-chainsaw-man-lai-duoc-yeu-thich-den-vay-thumb.jpg',
   ],
 };
-
 function ProductDetailContainer() {
   const { productID } = useParams(); // Lấy giá trị của tham số từ URL
-  const [productDetail, setProductDetail] = useState(null);
+  // const [productDetail, setProductDetail] = useState(null);
 
   useEffect(() => {
     // Gọi API để lấy thông tin chi tiết sản phẩm dựa vào productID
