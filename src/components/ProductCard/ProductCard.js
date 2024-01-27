@@ -18,11 +18,11 @@ function ProductCard({ data }) {
   return (
     <Link to={`/detail/${data._id}`} className={cx('wrapper')}>
       <div className={cx('inner')}>
-        <div className={cx('image')} style={{ backgroundImage: `url(${data.img})` }}></div>
+        <div className={cx('image')} style={{ backgroundImage: `url(${data.product_thumb})` }}></div>
         <div className={cx('text')}>
           <div className={cx('detail')}>
             <div className={cx('left')}>
-              <p className={cx('name')}>{data.name}</p>
+              <p className={cx('name')}>{data.product_name}</p>
             </div>
             <div className={cx('right')}>
               <div className={cx('btn-thumb')} onClick={handleThumbClick}>
@@ -30,17 +30,19 @@ function ProductCard({ data }) {
               </div>
             </div>
           </div>
-          <p className={cx('description')}>{data.discription}</p>
+          <p className={cx('description')}>{data.product_description}</p>
           <div className={cx('other-info')}>
-            <div className={cx('rating')}>{<StarRating score={data.rating} color="ff3d47"></StarRating>}</div>
+            <div className={cx('rating')}>
+              {<StarRating score={data.product_ratingAverage} color="ff3d47"></StarRating>}
+            </div>
             <p className={cx('address')}>{data.address}</p>
           </div>
           <div className={cx('price')}>
             <p className={cx('new-price')}>
               <DongIcon padding="0" width="1.2rem" height="1.2rem"></DongIcon>
-              {data.new_price}
+              {data.product_price}
             </p>
-            <p className={cx('old-price')}>{data.old_price}</p>
+            <p className={cx('old-price')}>{data.product_price}</p>
           </div>
         </div>
       </div>

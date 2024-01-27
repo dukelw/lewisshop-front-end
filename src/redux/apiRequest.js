@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { signinStart, signinSuccess, signinFailure, signupStart, signupSuccess, signupFailure } from './authSlide';
+import { signinStart, signinSuccess, signinFailure, signupStart, signupSuccess, signupFailure } from './authSlice';
+import { getShopsFailed, getShopsStart, getShopsSuccess } from './shopSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -24,3 +25,16 @@ export const signupUser = async (user, dispatch, navigate) => {
     dispatch(signupFailure());
   }
 };
+
+export const getAllDraftsOfShop = async (accessToken, shopID, dispatch) => {
+  dispatch(getShopsStart());
+  try {
+    const res = await axios.get(`${REACT_APP_BASE_URL}product/draft/all`, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(getShopsSuccess(res.data));
+  } catch (error) {
+    dispatch(getShopsFailed());
+  }
+};
+  

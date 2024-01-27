@@ -27,7 +27,6 @@ import {
 } from '~/components/Icons';
 import Search from '../Search';
 import CartBlank from '~/components/CartBlank';
-import { getDraft } from '~/services/user';
 import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
@@ -60,10 +59,6 @@ const NAVIGATION_ITEMS = [
 ];
 
 const cartResult = [];
-
-const handleFindProduct = () => {
-  getDraft();
-};
 
 const MENU_ITEMS = [
   {
@@ -145,7 +140,7 @@ function Header() {
         <ul className={cx('navigation-list')}>
           {NAVIGATION_ITEMS.map((item, index) => {
             return (
-              <li key={index} className={cx('navigation-item')} onClick={handleFindProduct}>
+              <li key={index} className={cx('navigation-item')}>
                 <Link to={item.to} className={cx('navigation-link')}>
                   {item.title}
                 </Link>
