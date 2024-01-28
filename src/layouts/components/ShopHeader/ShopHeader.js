@@ -9,23 +9,21 @@ import { Wrapper as PopperWrapper } from '~/components/Popper';
 import config from '~/config';
 import Image from '~/components/Image';
 import Menu from '~/components/Popper/Menu';
-import styles from './Header.module.scss';
+import styles from './ShopHeader.module.scss';
 import {
   AuthenIcon,
   ShopIcon,
   LogoIcon,
   UserIcon,
   ListIcon,
-  FavouriteIcon,
   CartIcon,
-  ProfileIcon,
-  SettingsIcon,
   LogoutIcon,
   HelpIcon,
   ShortcutsIcon,
   LanguageIcon,
-  CoinIcon,
   NotificationIcon,
+  BookmarkIcon,
+  ClockIcon,
 } from '~/components/Icons';
 import Search from '../Search';
 import CartBlank from '~/components/CartBlank';
@@ -35,28 +33,24 @@ const cx = classNames.bind(styles);
 
 const NAVIGATION_ITEMS = [
   {
-    title: 'Best sellers',
-    to: '/best-seller',
+    title: 'Courses',
+    to: '/shop/courses',
   },
   {
-    title: 'New releases',
-    to: '/new-releases',
+    title: 'Events',
+    to: '/shop/events',
   },
   {
-    title: "Today's deals",
-    to: '/deals',
+    title: 'Topics',
+    to: '/shop/topics',
   },
   {
-    title: 'Products',
-    to: '/products',
+    title: 'Blogs',
+    to: '/shop/blogs',
   },
   {
-    title: 'Discount codes',
-    to: '/discount-codes',
-  },
-  {
-    title: 'Customer services',
-    to: '/customer services',
+    title: 'Products management',
+    to: '/shop/products-management',
   },
 ];
 
@@ -93,8 +87,8 @@ const MENU_ITEMS = [
   },
 ];
 
-function Header() {
-  const currentUser = useSelector((state) => state.auth.signin.currentUser);
+function ShopHeader() {
+  const currentShop = useSelector((state) => state.authShop.signin.currentShop);
 
   const handleMenuChange = (menuItem) => {
     console.log(menuItem);
@@ -102,19 +96,14 @@ function Header() {
 
   const userMenu = [
     {
-      icon: <ProfileIcon />,
-      title: 'View profile',
-      to: '/@nva',
+      icon: <BookmarkIcon padding="0" />,
+      title: 'Marked List',
+      to: '/mark',
     },
     {
-      icon: <CoinIcon />,
-      title: 'Get coins',
-      to: '/coin',
-    },
-    {
-      icon: <SettingsIcon />,
-      title: 'Setting',
-      to: '/settings',
+      icon: <ClockIcon padding="0" />,
+      title: 'Activities history',
+      to: '/history',
     },
     ...MENU_ITEMS,
     {
@@ -151,19 +140,9 @@ function Header() {
           })}
         </ul>
         <div className={cx('actions')}>
-          {currentUser ? (
+          {currentShop ? (
             <Fragment>
               <div className={cx('current-user')}>
-                <Tippy content="Cart" placement="bottom" trigger="click" delay={[0, 200]}>
-                  <button className={cx('action-btn')}>
-                    <CartIcon />
-                  </button>
-                </Tippy>
-                <Tippy content="Favourite" placement="bottom" trigger="click" delay={[0, 200]}>
-                  <button className={cx('action-btn')}>
-                    <FavouriteIcon />
-                  </button>
-                </Tippy>
                 <Tippy content="Notification" placement="bottom" trigger="click" delay={[0, 200]}>
                   <button className={cx('action-btn')}>
                     <NotificationIcon />
@@ -194,7 +173,7 @@ function Header() {
                 interactive
                 placement="bottom"
                 render={(attrs) => (
-                  <div className={cx('signin-role')}>
+                  <div className={cx('signin-role')} tabIndex={-1} {...attrs}>
                     <PopperWrapper>
                       <Link to={'/user/signin'}>
                         <button className={cx('action-btn')}>
@@ -218,13 +197,13 @@ function Header() {
               </HeadlessTippy>
             </>
           )}
-          <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
-            {currentUser ? (
+          <Menu items={currentShop ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+            {currentShop ? (
               <HeadlessTippy
                 placement="top"
                 render={(attrs) => (
                   <span className={cx('user-name')} {...attrs}>
-                    {currentUser.metadata.shop.name}
+                    {currentShop.metadata.shop.name}
                   </span>
                 )}
               >
@@ -247,4 +226,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default ShopHeader;

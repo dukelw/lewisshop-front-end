@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const authSlide = createSlice({
+const authShopSlide = createSlice({
   name: 'auth',
   initialState: {
     signin: {
-      currentUser: null,
+      currentShop: null,
       isFetching: false,
       error: false,
     },
@@ -20,7 +20,7 @@ const authSlide = createSlice({
     },
     signinSuccess: (state, action) => {
       state.signin.isFetching = false;
-      state.signin.currentUser = action.payload;
+      state.signin.currentShop = action.payload;
       state.signin.error = false;
     },
     signinFailure: (state) => {
@@ -44,5 +44,5 @@ const authSlide = createSlice({
 });
 
 export const { signinStart, signinSuccess, signinFailure, signupStart, signupSuccess, signupFailure } =
-  authSlide.actions;
-export default authSlide.reducer;
+  authShopSlide.actions;
+export default authShopSlide.reducer;

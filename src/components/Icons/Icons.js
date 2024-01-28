@@ -9,7 +9,9 @@ import {
   faHeart,
   faList,
   faMessage,
+  faRightFromBracket,
   faSearch,
+  faShop,
   faShoppingCart,
   faSort,
   faStar as faStartSolid,
@@ -17,7 +19,51 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
+import { faClockFour, faStar as faStarRegular, faBookmark } from '@fortawesome/free-regular-svg-icons';
+
+export const ClockIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faClockFour}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const BookmarkIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faBookmark}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const AuthenIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faRightFromBracket}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const ShopIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faShop}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
 
 export const UserIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
   <FontAwesomeIcon

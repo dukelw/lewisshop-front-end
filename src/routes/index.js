@@ -3,6 +3,7 @@ import config from '~/config';
 // Layouts
 import { HeaderOnly } from '~/layouts';
 import HeaderAndFooter from '~/layouts/HeaderAndFooter';
+import ShopDefaultLayout from '~/layouts/ShopDefaultLayout';
 
 // Pages
 import Home from '~/pages/Home';
@@ -15,6 +16,7 @@ import Product from '~/pages/Product';
 import ProductDetailContainer from '~/pages/ProductDetailContainer';
 import ShopSignin from '~/components/ShopSignin';
 import ShopSignup from '~/components/ShopSignup';
+import ShopHome from '~/pages/ShopHome';
 
 const publicRoutes = [
   { path: config.routes.home, component: Home },
@@ -27,6 +29,7 @@ const publicRoutes = [
   { path: config.routes.productDetail, component: ProductDetailContainer, layout: HeaderAndFooter },
   { path: config.routes.shopSignin, component: ShopSignin, layout: null },
   { path: config.routes.shopSignup, component: ShopSignup, layout: null },
+  { path: config.routes.shopHome, component: ShopHome, layout: ShopDefaultLayout },
 ];
 
 const privateRoutes = [];

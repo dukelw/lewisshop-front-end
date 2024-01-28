@@ -9,6 +9,7 @@ const routes = {
   productDetail: '/detail/:productID',
   shopSignin: '/shop/signin',
   shopSignup: '/shop/signup',
+  shopHome: '/shop/home',
 };
 
 export default routes;
