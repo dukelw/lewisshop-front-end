@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { signinStart, signinSuccess, signinFailure, signupStart, signupSuccess, signupFailure } from './authSlice';
-import { getShopsFailed, getShopsStart, getShopsSuccess } from './shopSlice';
+import { getProductsFailed, getProductsStart, getProductsSuccess } from './productSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export const signinUser = async (user, dispatch, navigate) => {
+export const signinShop = async (user, dispatch, navigate) => {
   dispatch(signinStart());
   try {
     const res = await axios.post(`${REACT_APP_BASE_URL}shop/signin`, user);
@@ -15,26 +15,25 @@ export const signinUser = async (user, dispatch, navigate) => {
   }
 };
 
-export const signupUser = async (user, dispatch, navigate) => {
+export const signupShop = async (user, dispatch, navigate) => {
   dispatch(signupStart());
   try {
     await axios.post(`${REACT_APP_BASE_URL}shop/signup`, user);
     dispatch(signupSuccess());
-    navigate('/shop/signin');
+    navigate('/product/signin');
   } catch (error) {
     dispatch(signupFailure());
   }
 };
 
-export const getAllDraftsOfShop = async (accessToken, shopID, dispatch) => {
-  dispatch(getShopsStart());
+export const getAllDraftsOfShop = async (accessToken, productID, dispatch) => {
+  dispatch(getProductsStart());
   try {
     const res = await axios.get(`${REACT_APP_BASE_URL}product/draft/all`, {
-      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+      headers: { authorization: `${accessToken}`, user: `${productID}` },
     });
-    dispatch(getShopsSuccess(res.data));
+    dispatch(getProductsSuccess(res.data));
   } catch (error) {
-    dispatch(getShopsFailed());
+    dispatch(getProductsFailed());
   }
 };
-  

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './ShopSignin.module.scss';
-import { signinUser } from '~/redux/apiRequest';
+import { signinShop } from '~/redux/apiRequest';
 import InputBox from '../InputBox';
 import { useDispatch } from 'react-redux';
 
@@ -19,7 +19,7 @@ function UserSignin() {
       email,
       password,
     };
-    signinUser(user, dispatch, navigate);
+    signinShop(user, dispatch, navigate);
   };
 
   return (

@@ -19,9 +19,8 @@ const cx = classNames.bind(styles);
 function ProductContainer() {
   const shop = useSelector((state) => state.auth.signin?.currentUser);
   const dispatch = useDispatch();
-  const product = useSelector((state) => state.shops.shops.allShops);
+  const product = useSelector((state) => state.products.products.allProducts);
   const data = product?.metadata || [];
-  console.log(data);
 
   useEffect(() => {
     getAllDraftsOfShop(shop?.metadata.tokens.accessToken, shop?.metadata.shop._id, dispatch);

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './ShopSignup.module.scss';
 import InputBox from '../InputBox';
 import { useDispatch } from 'react-redux';
-import { signupUser } from '~/redux/apiRequest';
+import { signupShop } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
@@ -22,7 +22,7 @@ function UserSignup() {
       email,
       password,
     };
-    signupUser(shop, dispatch, navigate);
+    signupShop(shop, dispatch, navigate);
   };
 
   return (
