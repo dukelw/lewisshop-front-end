@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-const ShopProductCard = ({ product }) => {
+const ShopProductCard = ({ product, axiosJWT }) => {
   const shop = useSelector((state) => state.authShop.signin?.currentShop);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,12 +17,12 @@ const ShopProductCard = ({ product }) => {
 
   const handlePublish = (e, id) => {
     e.preventDefault();
-    publishProduct(shop?.metadata.tokens.accessToken, shop?.metadata.shop._id, id, dispatch, navigate);
+    publishProduct(shop?.metadata.tokens.accessToken, shop?.metadata.shop._id, id, dispatch, navigate, axiosJWT);
   };
 
   const handleUnpublish = (e, id) => {
     e.preventDefault();
-    unpublishProduct(shop?.metadata.tokens.accessToken, shop?.metadata.shop._id, id, dispatch, navigate);
+    unpublishProduct(shop?.metadata.tokens.accessToken, shop?.metadata.shop._id, id, dispatch, navigate, axiosJWT);
   };
 
   return (

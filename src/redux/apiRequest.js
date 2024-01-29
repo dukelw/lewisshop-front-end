@@ -19,6 +19,8 @@ export const signinShop = async (shop, dispatch, navigate) => {
   dispatch(signinStart());
   try {
     const res = await axios.post(`${REACT_APP_BASE_URL}shop/signin`, shop);
+    const refreshToken = res.data.metadata.tokens.refreshToken;
+    localStorage.setItem('refreshToken', refreshToken);
     dispatch(signinSuccess(res.data));
     navigate('/shop/home');
   } catch (error) {
@@ -29,7 +31,9 @@ export const signinShop = async (shop, dispatch, navigate) => {
 export const signupShop = async (shop, dispatch, navigate) => {
   dispatch(signupStart());
   try {
-    await axios.post(`${REACT_APP_BASE_URL}shop/signup`, shop);
+    const res = await axios.post(`${REACT_APP_BASE_URL}shop/signup`, shop);
+    const refreshToken = res.data.metadata.tokens.refreshToken;
+    localStorage.setItem('refreshToken', refreshToken);
     dispatch(signupSuccess());
     navigate('/shop/signin');
   } catch (error) {
@@ -37,10 +41,10 @@ export const signupShop = async (shop, dispatch, navigate) => {
   }
 };
 
-export const getAllDraftsOfShop = async (accessToken, shopID, dispatch) => {
+export const getAllDraftsOfShop = async (accessToken, shopID, dispatch, axiosJWT) => {
   dispatch(getProductsStart());
   try {
-    const res = await axios.get(`${REACT_APP_BASE_URL}product/draft/all`, {
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/draft/all`, {
       headers: { authorization: `${accessToken}`, user: `${shopID}` },
     });
     dispatch(getProductsSuccess(res.data));
@@ -49,10 +53,10 @@ export const getAllDraftsOfShop = async (accessToken, shopID, dispatch) => {
   }
 };
 
-export const getAllPublishOfShop = async (accessToken, shopID, dispatch) => {
+export const getAllPublishOfShop = async (accessToken, shopID, dispatch, axiosJWT) => {
   dispatch(getProductsStart());
   try {
-    const res = await axios.get(`${REACT_APP_BASE_URL}product/publish/all`, {
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/publish/all`, {
       headers: { authorization: `${accessToken}`, user: `${shopID}` },
     });
     dispatch(getProductsSuccess(res.data));
@@ -61,10 +65,10 @@ export const getAllPublishOfShop = async (accessToken, shopID, dispatch) => {
   }
 };
 
-export const createNewProduct = async (accessToken, shopID, product, dispatch, navigate) => {
+export const createNewProduct = async (accessToken, shopID, product, dispatch, navigate, axiosJWT) => {
   dispatch(createProductStart());
   try {
-    const res = await axios.post(`${REACT_APP_BASE_URL}product/create`, product, {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}product/create`, product, {
       headers: { authorization: `${accessToken}`, user: `${shopID}` },
     });
     dispatch(createProductSuccess(res.data));
@@ -74,10 +78,10 @@ export const createNewProduct = async (accessToken, shopID, product, dispatch, n
   }
 };
 
-export const publishProduct = async (accessToken, shopID, productID, dispatch, navigate) => {
+export const publishProduct = async (accessToken, shopID, productID, dispatch, navigate, axiosJWT) => {
   dispatch(publishProductStart());
   try {
-    await axios.post(
+    await axiosJWT.post(
       `${REACT_APP_BASE_URL}product/publish/${productID}`,
       {}, // Dữ liệu gửi đi rỗng trong trường hợp này
       {
@@ -94,11 +98,10 @@ export const publishProduct = async (accessToken, shopID, productID, dispatch, n
   }
 };
 
-export const unpublishProduct = async (accessToken, shopID, productID, dispatch, navigate) => {
+export const unpublishProduct = async (accessToken, shopID, productID, dispatch, navigate, axiosJWT) => {
   dispatch(unpublishProductStart());
   try {
-    console.log(accessToken, shopID, productID, dispatch);
-    await axios.post(
+    await axiosJWT.post(
       `${REACT_APP_BASE_URL}product/unpublish/${productID}`,
       {}, // Dữ liệu gửi đi rỗng trong trường hợp này
       {

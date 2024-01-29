@@ -6,6 +6,8 @@ import Button from '../Button';
 import { createNewProduct } from '~/redux/apiRequest';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 const cx = classNames.bind(styles);
 
@@ -13,12 +15,50 @@ const ShopCreateProduct = () => {
   const shop = useSelector((state) => state.authShop.signin?.currentShop);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const axiosJWT = axios.create();
+  const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
+
+  const refreshToken = async () => {
+    let rToken = localStorage.getItem('refreshToken');
+    try {
+      const res = await axios.post(
+        `${REACT_APP_BASE_URL}shop/refresh-token`,
+        {},
+        {
+          headers: {
+            user: shop?.metadata.shop._id,
+            token: rToken,
+          },
+        },
+      );
+      localStorage.setItem('refreshToken', res.data.metadata.tokens.refreshToken);
+      return res.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  axiosJWT.interceptors.request.use(
+    async (config) => {
+      let date = new Date();
+      const decodedToken = jwtDecode(shop?.metadata.tokens.accessToken);
+      if (decodedToken.exp < date.getTime() / 1000) {
+        const data = await refreshToken();
+        config.headers['token'] = data.metadata.tokens.refreshToken;
+        config.headers['authorization'] = data.metadata.tokens.accessToken;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    },
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (shop) {
-      createNewProduct(shop?.metadata.tokens.accessToken, shop?.metadata.shop._id, formData, dispatch, navigate);
+      createNewProduct(shop?.metadata.tokens.accessToken, shop?.metadata.shop._id, formData, dispatch, navigate, axiosJWT);
     } else {
       navigate('/shop/signin');
     }
