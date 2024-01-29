@@ -1,0 +1,29 @@
+.button {
+  display: flex;
+  align-items: center;
+  background-color: unset;
+  font-weight: 600;
+  color: var(--black);
+  border: unset;
+  font-size: 1.6rem;
+  margin-right: 8px;
+
+  &:hover {
+    background-color: unset;
+    color: var(--pink);
+  }
+}
+
+.icon {
+  margin-right: 8px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-left: 8px;
+}
+
+.item {
+  padding: 8px;
+}

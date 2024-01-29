@@ -14,11 +14,11 @@ function ShopDefaultLayout({ children }) {
       <ShopHeader></ShopHeader>
       <div className={cx('container')}>
         <div className={cx('inner')}>
-          <Sidebar></Sidebar>
+          {/* <Sidebar></Sidebar> */}
           <div className={cx('content')}>{children}</div>
         </div>
       </div>
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </div>
   );
 }

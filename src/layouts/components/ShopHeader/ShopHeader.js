@@ -9,6 +9,7 @@ import { Wrapper as PopperWrapper } from '~/components/Popper';
 import config from '~/config';
 import Image from '~/components/Image';
 import Menu from '~/components/Popper/Menu';
+import OffCanvas from '~/components/OffCanvas';
 import styles from './ShopHeader.module.scss';
 import {
   AuthenIcon,
@@ -47,10 +48,6 @@ const NAVIGATION_ITEMS = [
   {
     title: 'Blogs',
     to: '/shop/blogs',
-  },
-  {
-    title: 'Products management',
-    to: '/shop/products-management',
   },
 ];
 
@@ -91,7 +88,7 @@ function ShopHeader() {
   const currentShop = useSelector((state) => state.authShop.signin.currentShop);
 
   const handleMenuChange = (menuItem) => {
-    console.log(menuItem);
+    // console.log(menuItem);
   };
 
   const userMenu = [
@@ -123,10 +120,9 @@ function ShopHeader() {
         </div>
       </Link>
       {/* Navigation */}
+
       <div className={cx('inner')}>
-        <button className={cx('action-btn')}>
-          <ListIcon /> <p className={cx('navigation-item')}>All</p>
-        </button>
+        <OffCanvas Icon={ListIcon} content={'All'} classNames={'navigation-item'}></OffCanvas>
         <Search />
         <ul className={cx('navigation-list')}>
           {NAVIGATION_ITEMS.map((item, index) => {

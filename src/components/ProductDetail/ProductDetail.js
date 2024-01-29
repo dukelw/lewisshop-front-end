@@ -16,7 +16,6 @@ const cx = classNames.bind(styles);
 function ProductDetail({ product, recentProducts, relatedProducts }) {
   const [largeImage, setLargeImage] = useState(product.img);
   const [display, setDisplay] = useState('detail');
-  console.log(display)
   return (
     <div className={cx('wrapper')}>
       {/* Product section */}

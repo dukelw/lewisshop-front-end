@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ShopProductContainer from '~/components/ShopProductContainer';
 import { getAllPublishOfShop } from '~/redux/apiRequest';
 
-function ShopHome() {
+function ShopDraft() {
   const shop = useSelector((state) => state.authShop.signin?.currentShop);
   const dispatch = useDispatch();
   const product = useSelector((state) => state.products.products.allProducts);
@@ -17,4 +17,4 @@ function ShopHome() {
   return <ShopProductContainer products={data}></ShopProductContainer>;
 }
 
-export default ShopHome;
+export default ShopDraft;

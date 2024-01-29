@@ -182,9 +182,16 @@ export const SearchIcon = ({ width = '2rem', height = '2rem', className, display
   <FontAwesomeIcon icon={faSearch} className={className} style={{ width, height, display: display }} />
 );
 
-export const ListIcon = ({ width = '2rem', height = '2rem', className, display = 'block' }) => (
-  <FontAwesomeIcon icon={faList} className={className} style={{ width, height, display: display }} />
-);
+export const ListIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  display = 'block',
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => <FontAwesomeIcon icon={faList} className={className} style={{ width, height, display: display }} />;
 
 export const LogoIcon = ({ width = '16.2rem', height = '5.8rem', className }) => (
   <svg

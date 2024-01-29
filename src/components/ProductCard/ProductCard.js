@@ -12,7 +12,7 @@ function ProductCard({ data }) {
     event.preventDefault();
 
     // Handle your thumb click logic here
-    console.log('Thumb clicked!');
+    // console.log('Thumb clicked!');
   };
 
   return (

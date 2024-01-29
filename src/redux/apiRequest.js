@@ -1,6 +1,17 @@
 import axios from 'axios';
 import { signinStart, signinSuccess, signinFailure, signupStart, signupSuccess, signupFailure } from './authShopSlice';
 import { getProductsFailed, getProductsStart, getProductsSuccess } from './productSlice';
+import {
+  createProductStart,
+  createProductSuccess,
+  createProductFailed,
+  publishProductSuccess,
+  publishProductFailed,
+  publishProductStart,
+  unpublishProductStart,
+  unpublishProductSuccess,
+  unpublishProductFailed,
+} from './shopSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -26,14 +37,80 @@ export const signupShop = async (shop, dispatch, navigate) => {
   }
 };
 
-export const getAllDraftsOfShop = async (accessToken, productID, dispatch) => {
+export const getAllDraftsOfShop = async (accessToken, shopID, dispatch) => {
   dispatch(getProductsStart());
   try {
     const res = await axios.get(`${REACT_APP_BASE_URL}product/draft/all`, {
-      headers: { authorization: `${accessToken}`, user: `${productID}` },
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
     });
     dispatch(getProductsSuccess(res.data));
   } catch (error) {
     dispatch(getProductsFailed());
+  }
+};
+
+export const getAllPublishOfShop = async (accessToken, shopID, dispatch) => {
+  dispatch(getProductsStart());
+  try {
+    const res = await axios.get(`${REACT_APP_BASE_URL}product/publish/all`, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(getProductsSuccess(res.data));
+  } catch (error) {
+    dispatch(getProductsFailed());
+  }
+};
+
+export const createNewProduct = async (accessToken, shopID, product, dispatch, navigate) => {
+  dispatch(createProductStart());
+  try {
+    const res = await axios.post(`${REACT_APP_BASE_URL}product/create`, product, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(createProductSuccess(res.data));
+    navigate('/shop/draft');
+  } catch (error) {
+    dispatch(createProductFailed());
+  }
+};
+
+export const publishProduct = async (accessToken, shopID, productID, dispatch, navigate) => {
+  dispatch(publishProductStart());
+  try {
+    await axios.post(
+      `${REACT_APP_BASE_URL}product/publish/${productID}`,
+      {}, // Dữ liệu gửi đi rỗng trong trường hợp này
+      {
+        headers: {
+          authorization: accessToken,
+          user: shopID,
+        },
+      },
+    );
+    dispatch(publishProductSuccess());
+    navigate('.', { replace: true });
+  } catch (error) {
+    dispatch(publishProductFailed());
+  }
+};
+
+export const unpublishProduct = async (accessToken, shopID, productID, dispatch, navigate) => {
+  dispatch(unpublishProductStart());
+  try {
+    console.log(accessToken, shopID, productID, dispatch);
+    await axios.post(
+      `${REACT_APP_BASE_URL}product/unpublish/${productID}`,
+      {}, // Dữ liệu gửi đi rỗng trong trường hợp này
+      {
+        headers: {
+          authorization: accessToken,
+          user: shopID,
+        },
+      },
+    );
+    dispatch(unpublishProductSuccess());
+    navigate('.', { replace: true });
+  } catch (error) {
+    dispatch(unpublishProductFailed());
   }
 };

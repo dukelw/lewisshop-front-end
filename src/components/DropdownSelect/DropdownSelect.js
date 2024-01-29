@@ -16,7 +16,7 @@ const DropdownSelect = ({ choices, name }) => {
   // eslint-disable-next-line
   const handleAddToCart = () => {
     // Handle adding to cart logic here
-    console.log(`Selected ${name}: ${selected.value}`);
+    // console.log(`Selected ${name}: ${selected.value}`);
   };
 
   const options = choices.map((choice) => ({ value: choice, label: choice }));

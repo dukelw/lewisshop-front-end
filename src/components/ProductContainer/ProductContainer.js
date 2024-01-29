@@ -1,8 +1,6 @@
 import classNames from 'classnames/bind';
 import React from 'react';
 import 'tippy.js/dist/tippy.css';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -12,20 +10,10 @@ import ProductCard from '../ProductCard';
 import { FilterIcon, SortIcon } from '~/components/Icons';
 import Search from '~/layouts/components/Search';
 import Button from '../Button';
-import { getAllDraftsOfShop } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
-function ProductContainer() {
-  const shop = useSelector((state) => state.auth.signin?.currentUser);
-  const dispatch = useDispatch();
-  const product = useSelector((state) => state.products.products.allProducts);
-  const data = product?.metadata || [];
-
-  useEffect(() => {
-    getAllDraftsOfShop(shop?.metadata.tokens.accessToken, shop?.metadata.shop._id, dispatch);
-  }, []);
-
+function ProductContainer({ data }) {
   return (
     <div className={cx('wrapper')}>
       <div className={cx('tools')}>
