@@ -14,7 +14,7 @@ const ShopCreateProduct = () => {
   const shop = useSelector((state) => state.authShop.signin?.currentShop);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const axiosJWT = createAxios();
+  const axiosJWT = createAxios(shop);
 
   const handleSubmit = (event) => {
     event.preventDefault();
