@@ -1,5 +1,15 @@
 import axios from 'axios';
-import { signinStart, signinSuccess, signinFailure, signupStart, signupSuccess, signupFailure } from './authShopSlice';
+import {
+  signinStart,
+  signinSuccess,
+  signinFailure,
+  signupStart,
+  signupSuccess,
+  signupFailure,
+  logoutStart,
+  logoutFailure,
+  logoutSuccess,
+} from './authShopSlice';
 import { getProductsFailed, getProductsStart, getProductsSuccess } from './productSlice';
 import {
   createProductStart,
@@ -92,6 +102,10 @@ export const publishProduct = async (accessToken, shopID, productID, dispatch, n
       },
     );
     dispatch(publishProductSuccess());
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/draft/all`, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(getProductsSuccess(res.data));
     navigate('.', { replace: true });
   } catch (error) {
     dispatch(publishProductFailed());
@@ -112,8 +126,33 @@ export const unpublishProduct = async (accessToken, shopID, productID, dispatch,
       },
     );
     dispatch(unpublishProductSuccess());
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/publish/all`, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(getProductsSuccess(res.data));
     navigate('.', { replace: true });
   } catch (error) {
     dispatch(unpublishProductFailed());
+  }
+};
+
+export const logout = async (accessToken, shopID, dispatch, navigate, axiosJWT) => {
+  dispatch(logoutStart());
+  try {
+    await axiosJWT.post(
+      `${REACT_APP_BASE_URL}shop/logout`,
+      {}, // Dữ liệu gửi đi rỗng trong trường hợp này
+      {
+        headers: {
+          authorization: accessToken,
+          user: shopID,
+        },
+      },
+    );
+    dispatch(logoutSuccess());
+    dispatch(getProductsFailed()); // help Shop Home stop render published product
+    navigate('/shop/signin');
+  } catch (error) {
+    dispatch(logoutFailure());
   }
 };

@@ -3,7 +3,8 @@ import React, { Fragment } from 'react';
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { createAxios } from '~/createAxios';
 
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import config from '~/config';
@@ -28,7 +29,8 @@ import {
 } from '~/components/Icons';
 import Search from '../Search';
 import CartBlank from '~/components/CartBlank';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
@@ -86,9 +88,18 @@ const MENU_ITEMS = [
 
 function ShopHeader() {
   const currentShop = useSelector((state) => state.authShop.signin.currentShop);
+  const accessToken = currentShop?.metadata.tokens.accessToken;
+  const shopID = currentShop?.metadata.shop._id;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const axiosJWT = createAxios(currentShop);
 
   const handleMenuChange = (menuItem) => {
     // console.log(menuItem);
+  };
+
+  const handleLogout = () => {
+    logout(accessToken, shopID, dispatch, navigate, axiosJWT);
   };
 
   const userMenu = [
@@ -106,8 +117,9 @@ function ShopHeader() {
     {
       icon: <LogoutIcon />,
       title: 'Log out',
-      to: '/logout',
+      to: '/shop/home',
       separate: true,
+      onClick: handleLogout,
     },
   ];
 
@@ -150,6 +162,7 @@ function ShopHeader() {
             // When does not signin
             <>
               <HeadlessTippy
+                appendTo={document.body}
                 interactive
                 placement="bottom"
                 render={(attrs) => (
@@ -165,32 +178,35 @@ function ShopHeader() {
                 </button>
               </HeadlessTippy>
 
-              <HeadlessTippy
-                interactive
-                placement="bottom"
-                render={(attrs) => (
-                  <div className={cx('signin-role')} tabIndex={-1} {...attrs}>
-                    <PopperWrapper>
-                      <Link to={'/user/signin'}>
-                        <button className={cx('action-btn')}>
-                          <UserIcon />
-                          <span className={cx('role')}>Signin as User</span>
-                        </button>
-                      </Link>
-                      <Link to={'/shop/signin'}>
-                        <button className={cx('action-btn')}>
-                          <ShopIcon />
-                          <span className={cx('role')}>Signin as Shop</span>
-                        </button>
-                      </Link>
-                    </PopperWrapper>
-                  </div>
-                )}
-              >
-                <button className={cx('action-btn')}>
-                  <AuthenIcon></AuthenIcon>
-                </button>
-              </HeadlessTippy>
+              <Fragment>
+                <HeadlessTippy
+                  appendTo={document.body}
+                  interactive
+                  placement="bottom"
+                  render={(attrs) => (
+                    <div className={cx('signin-role')} tabIndex={-1} {...attrs}>
+                      <PopperWrapper>
+                        <Link to={'/user/signin'}>
+                          <button className={cx('action-btn')}>
+                            <UserIcon />
+                            <span className={cx('role')}>Signin as User</span>
+                          </button>
+                        </Link>
+                        <Link to={'/shop/signin'}>
+                          <button className={cx('action-btn')}>
+                            <ShopIcon />
+                            <span className={cx('role')}>Signin as Shop</span>
+                          </button>
+                        </Link>
+                      </PopperWrapper>
+                    </div>
+                  )}
+                >
+                  <button className={cx('action-btn')}>
+                    <AuthenIcon></AuthenIcon>
+                  </button>
+                </HeadlessTippy>
+              </Fragment>
             </>
           )}
           <Menu items={currentShop ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>

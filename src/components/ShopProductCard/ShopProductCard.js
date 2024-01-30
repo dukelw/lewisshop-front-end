@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-const ShopProductCard = ({ product, axiosJWT }) => {
+const ShopProductCard = ({ product, axiosJWT, publishEnable }) => {
   const shop = useSelector((state) => state.authShop.signin?.currentShop);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,12 +36,16 @@ const ShopProductCard = ({ product, axiosJWT }) => {
         </Card.Text>
       </Card.Body>
       <Card.Footer className={cx('actions')}>
-        <Button onClick={(e) => handlePublish(e, product._id)} className={cx('action-button')}>
-          Publish
-        </Button>
-        <Button onClick={(e) => handleUnpublish(e, product._id)} className={cx('action-button')}>
-          Unpublish
-        </Button>
+        {publishEnable && (
+          <Button onClick={(e) => handlePublish(e, product._id)} className={cx('action-button')}>
+            Publish
+          </Button>
+        )}
+        {!publishEnable && (
+          <Button onClick={(e) => handleUnpublish(e, product._id)} className={cx('action-button')}>
+            Unpublish
+          </Button>
+        )}
         <Button onClick={(e) => {}} className={cx('action-button')}>
           Delete
         </Button>

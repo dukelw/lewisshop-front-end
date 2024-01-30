@@ -13,6 +13,10 @@ const authShopSlide = createSlice({
       error: false,
       success: false,
     },
+    logout: {
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     signinStart: (state) => {
@@ -42,9 +46,30 @@ const authShopSlide = createSlice({
       state.signup.error = true;
       state.signup.success = false;
     },
+    logoutStart: (state) => {
+      state.signin.isFetching = true;
+    },
+    logoutSuccess: (state) => {
+      state.signin.isFetching = false;
+      state.signin.currentShop = null;
+      state.signin.error = false;
+    },
+    logoutFailure: (state) => {
+      state.signin.isFetching = false;
+      state.signin.error = true;
+    },
   },
 });
 
-export const { signinStart, signinSuccess, signinFailure, signupStart, signupSuccess, signupFailure } =
-  authShopSlide.actions;
+export const {
+  signinStart,
+  signinSuccess,
+  signinFailure,
+  signupStart,
+  signupSuccess,
+  signupFailure,
+  logoutStart,
+  logoutSuccess,
+  logoutFailure,
+} = authShopSlide.actions;
 export default authShopSlide.reducer;

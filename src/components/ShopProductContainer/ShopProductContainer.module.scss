@@ -2,3 +2,14 @@
   display: flex;
   justify-content: center;
 }
+
+.row {
+  padding: 60px;
+  background-color: var(--black);
+}
+
+.part {
+  color: var(--white);
+  font-size: 3rem;
+  margin-bottom: 40px;
+}

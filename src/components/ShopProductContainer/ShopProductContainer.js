@@ -6,24 +6,25 @@ import styles from './ShopProductContainer.module.scss';
 
 const cx = classNames.bind(styles);
 
-function ShopProductContainer({ products = [], axiosJWT }) {
+function ShopProductContainer({ products = [], axiosJWT, part, publishEnable }) {
   const halfIndex = Math.ceil(products.length / 2);
   const firstHalf = products.slice(0, halfIndex);
   const secondHalf = products.slice(halfIndex);
 
   return (
-    <Row>
-      <Col md={6}>
+    <Row className={cx('row')}>
+      <h1 className={cx('part')}>{part}</h1>
+      <Col className={cx('col-left')} md={6}>
         {firstHalf.map((product, index) => (
           <Link className={cx('link')} key={index} to={product._id}>
-            <ShopProductCard axiosJWT={axiosJWT} product={product} />
+            <ShopProductCard axiosJWT={axiosJWT} product={product} publishEnable={publishEnable}/>
           </Link>
         ))}
       </Col>
-      <Col md={6}>
+      <Col className={cx('col-right')} md={6}>
         {secondHalf.map((product, index) => (
           <Link className={cx('link')} key={index} to={product._id}>
-            <ShopProductCard axiosJWT={axiosJWT} product={product} />
+            <ShopProductCard axiosJWT={axiosJWT} product={product} publishEnable={publishEnable}/>
           </Link>
         ))}
       </Col>

@@ -19,6 +19,7 @@ const productSlice = createSlice({
     },
     getProductsFailed: (state) => {
       state.products.isFetching = false;
+      state.products.allProducts = null;
       state.products.error = true;
     },
   },
