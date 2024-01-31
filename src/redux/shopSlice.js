@@ -41,6 +41,16 @@ const shopSlice = createSlice({
       state.shops.isFetching = false;
       state.shops.error = true;
     },
+    editProductStart: (state) => {
+      state.shops.isFetching = true;
+    },
+    editProductSuccess: (state) => {
+      state.shops.isFetching = false;
+    },
+    editProductFailed: (state) => {
+      state.shops.isFetching = false;
+      state.shops.error = true;
+    },
   },
 });
 

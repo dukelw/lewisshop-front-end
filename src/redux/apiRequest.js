@@ -115,9 +115,19 @@ export const getAllPublishOfShop = async (accessToken, shopID, dispatch, axiosJW
 export const getAllProductOfShop = async (accessToken, shopID, dispatch, axiosJWT) => {
   dispatch(getProductsStart());
   try {
-    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product`, {
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product?shop_id=${shopID}`, {
       headers: { authorization: `${accessToken}`, user: `${shopID}` },
     });
+    dispatch(getProductsSuccess(res.data));
+  } catch (error) {
+    dispatch(getProductsFailed());
+  }
+};
+
+export const getAllProduct = async (dispatch) => {
+  dispatch(getProductsStart());
+  try {
+    const res = await axios.get(`${REACT_APP_BASE_URL}product`);
     dispatch(getProductsSuccess(res.data));
   } catch (error) {
     dispatch(getProductsFailed());
@@ -162,6 +172,30 @@ export const publishProduct = async (accessToken, shopID, productID, dispatch, n
 };
 
 export const unpublishProduct = async (accessToken, shopID, productID, dispatch, navigate, axiosJWT) => {
+  dispatch(unpublishProductStart());
+  try {
+    await axiosJWT.post(
+      `${REACT_APP_BASE_URL}product/unpublish/${productID}`,
+      {}, // Dữ liệu gửi đi rỗng trong trường hợp này
+      {
+        headers: {
+          authorization: accessToken,
+          user: shopID,
+        },
+      },
+    );
+    dispatch(unpublishProductSuccess());
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/publish/all`, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(getProductsSuccess(res.data));
+    navigate('.', { replace: true });
+  } catch (error) {
+    dispatch(unpublishProductFailed());
+  }
+};
+
+export const editProduct = async (accessToken, shopID, productID, dispatch, navigate, axiosJWT) => {
   dispatch(unpublishProductStart());
   try {
     await axiosJWT.post(

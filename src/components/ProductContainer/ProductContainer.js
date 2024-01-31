@@ -13,9 +13,10 @@ import Button from '../Button';
 
 const cx = classNames.bind(styles);
 
-function ProductContainer({ data }) {
+function ProductContainer({ data, part }) {
   return (
     <div className={cx('wrapper')}>
+      <h1 className={cx('part')}>{part}</h1>
       <div className={cx('tools')}>
         <p className={cx('status')}>1 of 10 pages</p>
         <div className={cx('actions')}>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './ShopProductCard.module.scss';
 import { publishProduct, unpublishProduct } from '~/redux/apiRequest';
@@ -46,7 +47,10 @@ const ShopProductCard = ({ product, axiosJWT, publishEnable }) => {
             Unpublish
           </Button>
         )}
-        <Button onClick={(e) => {}} className={cx('action-button')}>
+        <Link to={`/shop/edit/:${product._id}`}>
+          <Button className={cx('action-button')}>Edit</Button>
+        </Link>
+        <Button onClick={() => {}} className={cx('action-button')}>
           Delete
         </Button>
       </Card.Footer>
