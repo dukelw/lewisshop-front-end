@@ -21,7 +21,14 @@ import {
   userLogoutSuccess,
   userLogoutFailure,
 } from './authUserSlice';
-import { getProductsFailed, getProductsStart, getProductsSuccess } from './productSlice';
+import {
+  findProductFailed,
+  findProductStart,
+  findProductSuccess,
+  getProductsFailed,
+  getProductsStart,
+  getProductsSuccess,
+} from './productSlice';
 import {
   createProductStart,
   createProductSuccess,
@@ -32,6 +39,9 @@ import {
   unpublishProductStart,
   unpublishProductSuccess,
   unpublishProductFailed,
+  updateProductStart,
+  updateProductSuccess,
+  updateProductFailed,
 } from './shopSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -195,30 +205,6 @@ export const unpublishProduct = async (accessToken, shopID, productID, dispatch,
   }
 };
 
-export const editProduct = async (accessToken, shopID, productID, dispatch, navigate, axiosJWT) => {
-  dispatch(unpublishProductStart());
-  try {
-    await axiosJWT.post(
-      `${REACT_APP_BASE_URL}product/unpublish/${productID}`,
-      {}, // Dữ liệu gửi đi rỗng trong trường hợp này
-      {
-        headers: {
-          authorization: accessToken,
-          user: shopID,
-        },
-      },
-    );
-    dispatch(unpublishProductSuccess());
-    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/publish/all`, {
-      headers: { authorization: `${accessToken}`, user: `${shopID}` },
-    });
-    dispatch(getProductsSuccess(res.data));
-    navigate('.', { replace: true });
-  } catch (error) {
-    dispatch(unpublishProductFailed());
-  }
-};
-
 export const logout = async (accessToken, shopID, dispatch, navigate, axiosJWT) => {
   dispatch(logoutStart());
   try {
@@ -257,5 +243,30 @@ export const userLogout = async (accessToken, userID, dispatch, navigate, axiosJ
     navigate('/user/signin');
   } catch (error) {
     dispatch(userLogoutFailure());
+  }
+};
+
+export const findProductByID = async (accessToken, shopID, productID, dispatch, axiosJWT) => {
+  dispatch(findProductStart());
+  try {
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/${productID}`, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(findProductSuccess(res.data));
+  } catch (error) {
+    dispatch(findProductFailed());
+  }
+};
+
+export const editProduct = async (accessToken, shopID, productID, product, dispatch, navigate, axiosJWT) => {
+  dispatch(updateProductStart());
+  try {
+    await axiosJWT.patch(`${REACT_APP_BASE_URL}product/update/${productID}`, product, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(updateProductSuccess());
+    navigate('/shop');
+  } catch (error) {
+    dispatch(updateProductFailed());
   }
 };

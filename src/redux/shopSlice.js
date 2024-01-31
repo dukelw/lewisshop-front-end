@@ -41,13 +41,13 @@ const shopSlice = createSlice({
       state.shops.isFetching = false;
       state.shops.error = true;
     },
-    editProductStart: (state) => {
+    updateProductStart: (state) => {
       state.shops.isFetching = true;
     },
-    editProductSuccess: (state) => {
+    updateProductSuccess: (state) => {
       state.shops.isFetching = false;
     },
-    editProductFailed: (state) => {
+    updateProductFailed: (state) => {
       state.shops.isFetching = false;
       state.shops.error = true;
     },
@@ -64,6 +64,9 @@ export const {
   unpublishProductStart,
   unpublishProductSuccess,
   unpublishProductFailed,
+  updateProductStart,
+  updateProductSuccess,
+  updateProductFailed,
 } = shopSlice.actions;
 
 export default shopSlice.reducer;

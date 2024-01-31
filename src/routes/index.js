@@ -22,6 +22,7 @@ import ShopHome from '~/pages/ShopHome';
 import ShopDraft from '~/pages/ShopDraft';
 import ShopPublished from '~/pages/ShopPublished';
 import ShopCreateProduct from '~/pages/ShopCreateProduct';
+import ShopEditProduct from '~/pages/ShopEditProduct';
 
 const publicRoutes = [
   { path: config.routes.home, component: Home },
@@ -43,6 +44,7 @@ const privateRoutes = [
   { type: 'shop', path: config.routes.shopDraft, component: ShopDraft, layout: ShopDefaultLayout },
   { type: 'shop', path: config.routes.shopPublished, component: ShopPublished, layout: ShopDefaultLayout },
   { type: 'shop', path: config.routes.shopCreateProduct, component: ShopCreateProduct, layout: ShopDefaultLayout },
+  { type: 'shop', path: config.routes.shopEditProduct, component: ShopEditProduct, layout: ShopDefaultLayout },
 ];
 
 export { publicRoutes, privateRoutes };

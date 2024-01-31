@@ -14,6 +14,7 @@ const routes = {
   shopDraft: '/shop/draft',
   shopPublished: '/shop/published',
   shopCreateProduct: '/shop/create/product',
+  shopEditProduct: '/shop/edit/:productID',
   shopHome: '/shop/',
 };
 
