@@ -9,10 +9,12 @@ const routes = {
   productDetail: '/detail/:productID',
   shopSignin: '/shop/signin',
   shopSignup: '/shop/signup',
+  userSignin: '/user/signin',
+  userSignup: '/user/signup',
   shopDraft: '/shop/draft',
   shopPublished: '/shop/published',
-  shopHome: '/shop/home',
   shopCreateProduct: '/shop/create/product',
+  shopHome: '/shop/',
 };
 
 export default routes;

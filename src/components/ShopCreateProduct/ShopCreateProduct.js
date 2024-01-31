@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 import styles from './ShopCreateProduct.module.scss';

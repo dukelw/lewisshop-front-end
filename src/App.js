@@ -2,8 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { privateRoutes, publicRoutes } from '~/routes';
-import DefaultLayout from './layouts';
 import { useSelector } from 'react-redux';
+import DefaultLayout from './layouts';
 
 function App() {
   const currentShop = useSelector((state) => state.authShop.signin.currentShop);

@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import config from '~/config';
@@ -29,7 +29,9 @@ import {
 } from '~/components/Icons';
 import Search from '../Search';
 import CartBlank from '~/components/CartBlank';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { userLogout } from '~/redux/apiRequest';
+import { createAxios } from '~/createAxios';
 
 const cx = classNames.bind(styles);
 
@@ -94,10 +96,19 @@ const MENU_ITEMS = [
 ];
 
 function Header() {
-  const currentUser = useSelector((state) => state.auth.signin.currentUser);
+  const currentUser = useSelector((state) => state.authUser.signin.currentUser);
+  const accessToken = currentUser?.metadata.tokens.accessToken;
+  const userID = currentUser?.metadata.user._id;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const axiosJWT = createAxios(currentUser);
 
   const handleMenuChange = (menuItem) => {
     console.log(menuItem);
+  };
+
+  const handleLogout = () => {
+    userLogout(accessToken, userID, dispatch, navigate, axiosJWT);
   };
 
   const userMenu = [
@@ -120,8 +131,9 @@ function Header() {
     {
       icon: <LogoutIcon />,
       title: 'Log out',
-      to: '/logout',
+      to: '/user/signin',
       separate: true,
+      onClick: handleLogout,
     },
   ];
 
@@ -194,7 +206,7 @@ function Header() {
                 interactive
                 placement="bottom"
                 render={(attrs) => (
-                  <div className={cx('signin-role')}>
+                  <div className={cx('signin-role')} {...attrs}>
                     <PopperWrapper>
                       <Link to={'/user/signin'}>
                         <button className={cx('action-btn')}>
@@ -224,7 +236,7 @@ function Header() {
                 placement="top"
                 render={(attrs) => (
                   <span className={cx('user-name')} {...attrs}>
-                    {currentUser.metadata.shop.name}
+                    {currentUser.metadata.user.name}
                   </span>
                 )}
               >

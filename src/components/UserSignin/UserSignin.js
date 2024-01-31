@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import { Link, useNavigate } from 'react-router-dom';
-import styles from './ShopSignin.module.scss';
-import { signinShop } from '~/redux/apiRequest';
-import { ShopIcon, HouseFlagIcon } from '../Icons';
+import styles from './UserSignin.module.scss';
+import { signinUser } from '~/redux/apiRequest';
 import InputBox from '../InputBox';
+import { UserIcon, HouseFlagIcon } from '../Icons';
 import { useDispatch } from 'react-redux';
 
 const cx = classNames.bind(styles);
@@ -20,7 +20,7 @@ function UserSignin() {
       email,
       password,
     };
-    signinShop(user, dispatch, navigate);
+    signinUser(user, dispatch, navigate);
   };
 
   return (
@@ -30,7 +30,7 @@ function UserSignin() {
       </Link>
       <div className={cx('signin-box')}>
         <div className={cx('signin-header')}>
-          <ShopIcon />
+          <UserIcon />
           <header>Signin</header>
         </div>
         <InputBox placeholder="Email" value={email} setValue={setEmail}></InputBox>
@@ -50,7 +50,7 @@ function UserSignin() {
         </div>
         <div className={cx('sign-up-link')}>
           <p>
-            Don't have an account? <Link to="/shop/signup">Sign Up</Link>
+            Don't have an account? <Link to="/user/signup">Sign Up</Link>
           </p>
         </div>
       </div>

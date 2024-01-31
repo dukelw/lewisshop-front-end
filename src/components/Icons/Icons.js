@@ -7,6 +7,7 @@ import {
   faEyeSlash,
   faFilter,
   faHeart,
+  faHouseFlag,
   faList,
   faMessage,
   faRightFromBracket,
@@ -20,6 +21,23 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClockFour, faStar as faStarRegular, faBookmark } from '@fortawesome/free-regular-svg-icons';
+
+export const HouseFlagIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faHouseFlag}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
 
 export const ClockIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
   <FontAwesomeIcon

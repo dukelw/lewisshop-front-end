@@ -28,7 +28,7 @@ function OffCanvas({ Icon = ListIcon, content = 'All', className }) {
   const SHOP_LIST_ITEMS = [
     {
       title: 'Home',
-      to: '/home',
+      to: '/shop',
     },
     {
       title: 'All orders',

@@ -117,7 +117,7 @@ function ShopHeader() {
     {
       icon: <LogoutIcon />,
       title: 'Log out',
-      to: '/shop/home',
+      to: '/shop',
       separate: true,
       onClick: handleLogout,
     },

@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import { Link, useNavigate } from 'react-router-dom';
-import styles from './ShopSignin.module.scss';
-import { signinShop } from '~/redux/apiRequest';
-import { ShopIcon, HouseFlagIcon } from '../Icons';
+import styles from './UserSignup.module.scss';
 import InputBox from '../InputBox';
 import { useDispatch } from 'react-redux';
+import { signupUser } from '~/redux/apiRequest';
+import { UserIcon, HouseFlagIcon } from '../Icons';
 
 const cx = classNames.bind(styles);
 
-function UserSignin() {
+function UserSignup() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSignIn = () => {
-    const user = {
+  const handleSignUp = () => {
+    const shop = {
+      name,
       email,
       password,
     };
-    signinShop(user, dispatch, navigate);
+    signupUser(shop, dispatch, navigate);
   };
 
   return (
@@ -30,11 +33,18 @@ function UserSignin() {
       </Link>
       <div className={cx('signin-box')}>
         <div className={cx('signin-header')}>
-          <ShopIcon />
-          <header>Signin</header>
+          <UserIcon />
+          <header>Signup</header>
         </div>
+        <InputBox placeholder="Name" value={name} setValue={setName}></InputBox>
         <InputBox placeholder="Email" value={email} setValue={setEmail}></InputBox>
         <InputBox placeholder="Password" value={password} setValue={setPassword} show={false}></InputBox>
+        <InputBox
+          placeholder="Confirm password"
+          value={confirmPassword}
+          setValue={setConfirmPassword}
+          show={false}
+        ></InputBox>
         <div className={cx('forgot')}>
           <section>
             <input type="checkbox" id="check" />
@@ -45,12 +55,12 @@ function UserSignin() {
           </section>
         </div>
         <div className={cx('input-submit')}>
-          <button className={cx('submit-btn')} onClick={handleSignIn}></button>
-          <label htmlFor="submit">Sign In</label>
+          <button className={cx('submit-btn')} onClick={handleSignUp}></button>
+          <label htmlFor="submit">Sign Up</label>
         </div>
         <div className={cx('sign-up-link')}>
           <p>
-            Don't have an account? <Link to="/shop/signup">Sign Up</Link>
+            Don't have an account? <Link to="/user/signin">Sign In</Link>
           </p>
         </div>
       </div>
@@ -58,4 +68,4 @@ function UserSignin() {
   );
 }
 
-export default UserSignin;
+export default UserSignup;

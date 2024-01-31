@@ -3,8 +3,6 @@ import classNames from 'classnames/bind';
 import styles from './ShopDefaultLayout.module.scss';
 
 import ShopHeader from '../components/ShopHeader';
-import Footer from '../components/Footer';
-import Sidebar from '../components/Sidebar';
 
 const cx = classNames.bind(styles);
 

@@ -14,8 +14,10 @@ import Search from '~/pages/Search';
 import Live from '~/pages/Live';
 import Product from '~/pages/Product';
 import ProductDetailContainer from '~/pages/ProductDetailContainer';
-import ShopSignin from '~/components/ShopSignin';
-import ShopSignup from '~/components/ShopSignup';
+import ShopSignin from '~/pages/ShopSignin';
+import ShopSignup from '~/pages/ShopSignup';
+import UserSignin from '~/pages/UserSignin';
+import UserSignup from '~/pages/UserSignup';
 import ShopHome from '~/pages/ShopHome';
 import ShopDraft from '~/pages/ShopDraft';
 import ShopPublished from '~/pages/ShopPublished';
@@ -32,6 +34,8 @@ const publicRoutes = [
   { path: config.routes.productDetail, component: ProductDetailContainer, layout: HeaderAndFooter },
   { path: config.routes.shopSignin, component: ShopSignin, layout: null },
   { path: config.routes.shopSignup, component: ShopSignup, layout: null },
+  { path: config.routes.userSignin, component: UserSignin, layout: null },
+  { path: config.routes.userSignup, component: UserSignup, layout: null },
   { path: config.routes.shopHome, component: ShopHome, layout: ShopDefaultLayout },
 ];
 

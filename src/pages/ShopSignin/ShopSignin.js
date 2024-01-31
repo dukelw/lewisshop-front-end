@@ -1,4 +1,4 @@
-import { ShopSignin as ShopSigninComponent } from '~/components/ShopSignin';
+import ShopSigninComponent from '~/components/ShopSignin';
 function ShopSignin() {
   return <ShopSigninComponent></ShopSigninComponent>;
 }
