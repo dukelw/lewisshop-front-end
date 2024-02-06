@@ -16,6 +16,7 @@ const routes = {
   shopCreateProduct: '/shop/create/product',
   shopEditProduct: '/shop/edit/:productID',
   shopHome: '/shop/',
+  userCart: '/cart',
 };
 
 export default routes;

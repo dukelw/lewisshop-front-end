@@ -5,19 +5,29 @@ import { AddIcon, SubtractIcon } from '../Icons';
 
 const cx = classNames.bind(styles);
 
-function QuantitySelect({ className, large }) {
-  const [quantity, setQuantity] = useState(1);
+function QuantitySelect({ className, large, outline, initial, handleClickUpDown }) {
+  const [quantity, setQuantity] = useState(initial ? initial : 1);
 
-  const classNames = { large, [className]: className };
+  const handleUp = (e) => {
+    setQuantity((pre) => pre + 1);
+    handleClickUpDown(1);
+  };
+
+  const handleDown = (e) => {
+    setQuantity((pre) => pre - 1);
+    handleClickUpDown(-1);
+  };
+
+  const classNames = cx('wrapper', {
+    large,
+    outline,
+    [className]: className,
+  });
   return (
-    <div
-      className={cx('wrapper', {
-        ...classNames,
-      })}
-    >
-      <SubtractIcon className={cx('icon')} onClick={(e) => setQuantity((prev) => prev - 1)}></SubtractIcon>
+    <div className={classNames}>
+      <SubtractIcon className={cx('icon')} onClick={(e) => handleDown(e)}></SubtractIcon>
       <p className={cx('quantity')}>{quantity}</p>
-      <AddIcon className={cx('icon')} onClick={(e) => setQuantity((pre) => pre + 1)}></AddIcon>
+      <AddIcon className={cx('icon')} onClick={(e) => handleUp(e)}></AddIcon>
     </div>
   );
 }

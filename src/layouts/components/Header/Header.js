@@ -30,7 +30,7 @@ import {
 import Search from '../Search';
 import CartBlank from '~/components/CartBlank';
 import { useDispatch, useSelector } from 'react-redux';
-import { userLogout } from '~/redux/apiRequest';
+import { getCartByUserID, userLogout } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
 
 const cx = classNames.bind(styles);
@@ -61,8 +61,6 @@ const NAVIGATION_ITEMS = [
     to: '/customer services',
   },
 ];
-
-const cartResult = [];
 
 const MENU_ITEMS = [
   {
@@ -109,6 +107,10 @@ function Header() {
 
   const handleLogout = () => {
     userLogout(accessToken, userID, dispatch, navigate, axiosJWT);
+  };
+
+  const handleCart = () => {
+    getCartByUserID(accessToken, userID, dispatch, navigate, axiosJWT);
   };
 
   const userMenu = [
@@ -166,11 +168,9 @@ function Header() {
           {currentUser ? (
             <Fragment>
               <div className={cx('current-user')}>
-                <Tippy content="Cart" placement="bottom" trigger="click" delay={[0, 200]}>
-                  <button className={cx('action-btn')}>
-                    <CartIcon />
-                  </button>
-                </Tippy>
+                <button className={cx('action-btn')}>
+                  <CartIcon onClick={handleCart} />
+                </button>
                 <Tippy content="Favourite" placement="bottom" trigger="click" delay={[0, 200]}>
                   <button className={cx('action-btn')}>
                     <FavouriteIcon />

@@ -47,7 +47,7 @@ function ProductDetail({ product, recentProducts, relatedProducts }) {
           </div>
 
           <div className={cx('actions')}>
-            <QuantitySelect large className={cx('action')}></QuantitySelect>
+            <QuantitySelect outline large className={cx('action')}></QuantitySelect>
             <Button className={cx('action', 'add')} large primary>
               Add to cart
             </Button>

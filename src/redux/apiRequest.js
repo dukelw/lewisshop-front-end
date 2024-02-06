@@ -20,6 +20,18 @@ import {
   userLogoutStart,
   userLogoutSuccess,
   userLogoutFailure,
+  getCartStart,
+  getCartSuccess,
+  getCartFailure,
+  addToCartSuccess,
+  addToCartStart,
+  addToCartFailure,
+  deleteFromCartStart,
+  deleteFromCartSuccess,
+  deleteFromCartFailure,
+  updateCartStart,
+  updateCartSuccess,
+  updateCartFailure,
 } from './authUserSlice';
 import {
   findProductFailed,
@@ -42,7 +54,11 @@ import {
   updateProductStart,
   updateProductSuccess,
   updateProductFailed,
+  findShopStart,
+  findShopSuccess,
+  findShopFailed,
 } from './shopSlice';
+import { checkoutFailed, checkoutStart, checkoutSuccess } from './orderSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -258,6 +274,18 @@ export const findProductByID = async (accessToken, shopID, productID, dispatch, 
   }
 };
 
+export const findShopByID = async (accessToken, userID, shopID, dispatch, axiosJWT) => {
+  dispatch(findShopStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}shop/find`, shopID, {
+      headers: { authorization: `${accessToken}`, user: `${userID}` },
+    });
+    dispatch(findShopSuccess(res.data));
+  } catch (error) {
+    dispatch(findShopFailed());
+  }
+};
+
 export const editProduct = async (accessToken, shopID, productID, product, dispatch, navigate, axiosJWT) => {
   dispatch(updateProductStart());
   try {
@@ -268,5 +296,79 @@ export const editProduct = async (accessToken, shopID, productID, product, dispa
     navigate('/shop');
   } catch (error) {
     dispatch(updateProductFailed());
+  }
+};
+
+// User
+export const getCartByUserID = async (accessToken, userID, dispatch, navigate, axiosJWT) => {
+  dispatch(getCartStart());
+  try {
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}cart?user_id=${userID}`, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    dispatch(getCartSuccess(res.data));
+    navigate('/cart');
+  } catch (error) {
+    dispatch(getCartFailure());
+  }
+};
+
+export const addProductToCart = async (accessToken, userID, products, dispatch, axiosJWT) => {
+  dispatch(addToCartStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}cart`, products, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    dispatch(addToCartSuccess(res.data));
+  } catch (error) {
+    dispatch(addToCartFailure());
+  }
+};
+
+export const updateProductInCart = async (accessToken, userID, product, dispatch, axiosJWT) => {
+  dispatch(updateCartStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}cart/update`, product, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    dispatch(updateCartSuccess(res.data));
+    const response = await axiosJWT.get(`${REACT_APP_BASE_URL}cart?user_id=${userID}`, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    dispatch(getCartSuccess(response.data));
+  } catch (error) {
+    dispatch(updateCartFailure());
+  }
+};
+
+export const deleteProductInCartByID = async (accessToken, userID, data, dispatch, axiosJWT) => {
+  dispatch(deleteFromCartStart());
+  try {
+    const res = await axiosJWT.delete(`${REACT_APP_BASE_URL}cart`, {
+      data: data,
+      headers: {
+        authorization: accessToken,
+        user: userID,
+      },
+    });
+    dispatch(deleteFromCartSuccess(res.data));
+    const response = await axiosJWT.get(`${REACT_APP_BASE_URL}cart?user_id=${userID}`, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    dispatch(getCartSuccess(response.data));
+  } catch (error) {
+    dispatch(deleteFromCartFailure());
+  }
+};
+
+export const checkout = async (accessToken, userID, data, dispatch, axiosJWT) => {
+  dispatch(checkoutStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}order/review`, data, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    dispatch(checkoutSuccess(res.data));
+  } catch (error) {
+    dispatch(checkoutFailed());
   }
 };

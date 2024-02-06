@@ -1,18 +1,31 @@
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './ProductCard.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
 import StarRating from '../HeartRating';
 import { DongIcon } from '../Icons';
+import { addProductToCart } from '~/redux/apiRequest';
+import { createAxios } from '~/createAxios';
 
 const cx = classNames.bind(styles);
 
 function ProductCard({ data }) {
-  const handleThumbClick = (event) => {
-    // Prevent the default behavior of the link
+  const currentUser = useSelector((state) => state.authUser.signin.currentUser);
+  const accessToken = currentUser?.metadata.tokens.accessToken;
+  const userID = currentUser?.metadata.user._id;
+  const dispatch = useDispatch();
+  const axiosJWT = createAxios(currentUser);
+  const handleAddToCart = (event, productID, shopID) => {
     event.preventDefault();
-
-    // Handle your thumb click logic here
-    // console.log('Thumb clicked!');
+    const products = {
+      user_id: userID,
+      product: {
+        product_id: productID,
+        shop_id: shopID,
+        quantity: 1,
+      },
+    };
+    addProductToCart(accessToken, userID, products, dispatch, axiosJWT);
   };
 
   return (
@@ -26,7 +39,7 @@ function ProductCard({ data }) {
                 <p className={cx('name')}>{data.product_name}</p>
               </div>
               <div className={cx('right')}>
-                <div className={cx('btn-thumb')} onClick={handleThumbClick}>
+                <div className={cx('btn-thumb')} onClick={(e) => handleAddToCart(e, data._id, data.product_shop)}>
                   <p>+</p>
                 </div>
               </div>

@@ -8,6 +8,11 @@ const shopSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    shop: {
+      foundShop: null,
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     createProductStart: (state) => {
@@ -51,6 +56,17 @@ const shopSlice = createSlice({
       state.shops.isFetching = false;
       state.shops.error = true;
     },
+    findShopStart: (state) => {
+      state.shop.isFetching = true;
+    },
+    findShopSuccess: (state, action) => {
+      state.shop.isFetching = false;
+      state.shop.foundShop = action.payload;
+    },
+    findShopFailed: (state) => {
+      state.shop.isFetching = false;
+      state.shop.error = true;
+    },
   },
 });
 
@@ -67,6 +83,9 @@ export const {
   updateProductStart,
   updateProductSuccess,
   updateProductFailed,
+  findShopStart,
+  findShopSuccess,
+  findShopFailed,
 } = shopSlice.actions;
 
 export default shopSlice.reducer;

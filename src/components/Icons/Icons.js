@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAdd,
+  faArrowLeft,
   faDongSign,
   faEye,
   faEyeSlash,
@@ -21,6 +22,23 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClockFour, faStar as faStarRegular, faBookmark } from '@fortawesome/free-regular-svg-icons';
+
+export const ArrowLeftIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faArrowLeft}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
 
 export const HouseFlagIcon = ({
   width = '2rem',
@@ -184,8 +202,13 @@ export const TwitterIcon = ({ width = '2rem', height = '2rem', className, color,
   <FontAwesomeIcon icon={faTwitter} className={className} style={{ width, height, color: color, padding: padding }} />
 );
 
-export const CartIcon = ({ width = '2rem', height = '2rem', className }) => (
-  <FontAwesomeIcon icon={faShoppingCart} className={className} style={{ width, height }} />
+export const CartIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    icon={faShoppingCart}
+    onClick={onClick}
+    className={className}
+    style={{ width, height, padding, color, ...style }}
+  />
 );
 
 export const FavouriteIcon = ({ width = '2rem', height = '2rem', className }) => (
