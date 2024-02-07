@@ -11,7 +11,7 @@ function CartShop() {
   const currentCart = useSelector((state) => state.authUser.getCart.cart);
   const cartProducts = currentCart.metadata.cart_products;
   const currentCheckout = useSelector((state) => state.order.checkout.checkoutResult);
-  const checkoutPrices = currentCheckout?.metadata.shop_order_ids_new;
+  const checkoutPrices = currentCheckout?.metadata.shop_order_ids_new || [];
   const productGroups = {};
 
   cartProducts.forEach((product) => {
@@ -26,10 +26,9 @@ function CartShop() {
 
   const shopElements = Object.keys(productGroups).map((shopId) => {
     const { shop_name, products } = productGroups[shopId];
-    console.log(checkoutPrices);
     const foundShop = checkoutPrices.find((shop) => shop.shop_id === shopId);
-    const subTotalPrice = foundShop.rawPrice;
-    const discountedPrice = foundShop.appliedDiscountPrice;
+    const subTotalPrice = foundShop?.rawPrice;
+    const discountedPrice = foundShop?.appliedDiscountPrice;
     const discounted = subTotalPrice - discountedPrice;
 
     return (
