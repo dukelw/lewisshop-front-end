@@ -10,6 +10,8 @@ const cx = classNames.bind(styles);
 function CartShop() {
   const currentCart = useSelector((state) => state.authUser.getCart.cart);
   const cartProducts = currentCart.metadata.cart_products;
+  const currentCheckout = useSelector((state) => state.order.checkout.checkoutResult);
+  const checkoutPrices = currentCheckout?.metadata.shop_order_ids_new;
   const productGroups = {};
 
   cartProducts.forEach((product) => {
@@ -24,6 +26,12 @@ function CartShop() {
 
   const shopElements = Object.keys(productGroups).map((shopId) => {
     const { shop_name, products } = productGroups[shopId];
+    console.log(checkoutPrices);
+    const foundShop = checkoutPrices.find((shop) => shop.shop_id === shopId);
+    const subTotalPrice = foundShop.rawPrice;
+    const discountedPrice = foundShop.appliedDiscountPrice;
+    const discounted = subTotalPrice - discountedPrice;
+
     return (
       <Container className={cx('shop')} key={shopId}>
         <Row>
@@ -33,6 +41,18 @@ function CartShop() {
               {product.product_name}
             </CartItem>
           ))}
+          <div className={cx('price')}>
+            <p className={cx('total')}>Subtotal</p>
+            <p className={cx('money')}>{subTotalPrice}</p>
+          </div>
+          <div className={cx('price')}>
+            <p className={cx('total')}>Discount</p>
+            <p className={cx('money')}>{discounted}</p>
+          </div>
+          <div className={cx('price')}>
+            <p className={cx('total')}>Total</p>
+            <p className={cx('money')}>{discountedPrice}</p>
+          </div>
         </Row>
       </Container>
     );

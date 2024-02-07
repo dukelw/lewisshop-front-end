@@ -89,7 +89,6 @@ function CartItem({ product }) {
           </p>
         </Col>
       </Row>
-      <p>Total</p>
     </Container>
   );
 }

@@ -31,8 +31,19 @@ function Cart() {
   const [selectedDiscount, setSelectedDiscount] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleSelectDiscount = (code, id, shopID) => {
-    // const 
+  const handleSelectDiscount = (code, discountID, shopID) => {
+    const discountableCart = convertData(cartProducts, cartID, cartUserID);
+    discountableCart.shop_order_ids.map((shop) => {
+      if (shop.shop_id === shopID) {
+        shop.shop_discounts.push({
+          shop_id: shopID,
+          discount_id: discountID,
+          code: code,
+        });
+      }
+    });
+    console.log(`Discountable cart:::`, discountableCart);
+    checkout(accessToken, userID, discountableCart, dispatch, axiosJWT);
     setSelectedDiscount(code);
     setModalVisible(false);
   };

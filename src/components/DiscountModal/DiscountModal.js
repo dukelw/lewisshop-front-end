@@ -7,9 +7,8 @@ import Button from '../Button';
 const cx = classNames.bind(styles);
 
 const DiscountModal = ({ discountCodes, onSelectDiscount, handleDisplay }) => {
-  console.log(discountCodes);
   return (
-    <div show={true} className={cx('wrapper')} centered>
+    <div className={cx('wrapper')}>
       <div className={cx('header')}>
         <h1>Choose a discount code</h1>
         <XMarkIcon onClick={handleDisplay}></XMarkIcon>
@@ -21,7 +20,7 @@ const DiscountModal = ({ discountCodes, onSelectDiscount, handleDisplay }) => {
               <h2>{data.shop_name}</h2>
               {data.shop_discount.map((discount) => {
                 return (
-                  <div className={cx('discount')}>
+                  <div key={discount._id} className={cx('discount')}>
                     <div className={'text'}>
                       <p className={cx('code')}>{discount.code}</p>
                       <p className={cx('name')}>{discount.name}</p>
