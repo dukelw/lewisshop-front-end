@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import classNames from 'classnames/bind';
@@ -6,45 +6,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import CartShop from '../CartShop';
 import { ArrowLeftIcon } from '../Icons/index';
 import Button from '../Button';
+import DiscountModal from '../DiscountModal';
 import { createAxios } from '~/createAxios';
 import styles from './Cart.module.scss';
-import { checkout } from '~/redux/apiRequest';
+import { checkout, getDiscountsOfShopsByUser } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
-
-function convertData(data, cartID, cartUserID) {
-  const convertedData = {
-    cart_id: cartID,
-    user_id: cartUserID,
-    shop_order_ids: [],
-  };
-
-  data.forEach((product) => {
-    const shopIndex = convertedData.shop_order_ids.findIndex((shop) => shop.shop_id === product.shop_id);
-
-    if (shopIndex !== -1) {
-      convertedData.shop_order_ids[shopIndex].item_products.push({
-        price: product.product_price,
-        quantity: product.quantity,
-        product_id: product.product_id,
-      });
-    } else {
-      convertedData.shop_order_ids.push({
-        shop_id: product.shop_id,
-        shop_discounts: [],
-        item_products: [
-          {
-            price: product.product_price,
-            quantity: product.quantity,
-            product_id: product.product_id,
-          },
-        ],
-      });
-    }
-  });
-
-  return convertedData;
-}
 
 function Cart() {
   const currentCart = useSelector((state) => state?.authUser.getCart.cart);
@@ -58,15 +25,73 @@ function Cart() {
   const axiosJWT = createAxios(currentUser);
   const currentCheckout = useSelector((state) => state?.order.checkout.checkoutResult);
   const checkoutOrder = currentCheckout?.metadata.checkout_order;
+  const currentDiscount = useSelector((state) => state?.discount.discounts.foundDiscounts);
+  const discountCodes = currentDiscount?.metadata;
+  console.log(discountCodes);
+  const [selectedDiscount, setSelectedDiscount] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleSelectDiscount = (code, id, shopID) => {
+    // const 
+    setSelectedDiscount(code);
+    setModalVisible(false);
+  };
+
+  const handleEnterCodeClick = () => {
+    setModalVisible(!modalVisible);
+  };
+  const currentShops = [];
+
+  function convertData(data, cartID, cartUserID) {
+    const convertedData = {
+      cart_id: cartID,
+      user_id: cartUserID,
+      shop_order_ids: [],
+    };
+
+    data.forEach((product) => {
+      const shopIndex = convertedData.shop_order_ids.findIndex((shop) => shop.shop_id === product.shop_id);
+
+      if (shopIndex !== -1) {
+        convertedData.shop_order_ids[shopIndex].item_products.push({
+          price: product.product_price,
+          quantity: product.quantity,
+          product_id: product.product_id,
+        });
+      } else {
+        currentShops.push(product.shop_id);
+        convertedData.shop_order_ids.push({
+          shop_id: product.shop_id,
+          shop_discounts: [],
+          item_products: [
+            {
+              price: product.product_price,
+              quantity: product.quantity,
+              product_id: product.product_id,
+            },
+          ],
+        });
+      }
+    });
+    return convertedData;
+  }
 
   useEffect(() => {
     const checkoutCart = convertData(cartProducts, cartID, cartUserID);
     console.log('Checkout cart:', checkoutCart);
+    getDiscountsOfShopsByUser(accessToken, userID, currentShops, dispatch, axiosJWT);
     checkout(accessToken, userID, checkoutCart, dispatch, axiosJWT);
   }, [currentCart]);
 
   return (
     <div className={cx('wrapper')}>
+      {modalVisible && (
+        <DiscountModal
+          discountCodes={discountCodes}
+          onSelectDiscount={handleSelectDiscount}
+          handleDisplay={handleEnterCodeClick}
+        />
+      )}
       <h1 className={cx('header')}>Shopping Cart</h1>
       <Link className={cx('sub-header')} to={'/products'}>
         <h2 className={cx('sub-header')}>
@@ -107,7 +132,7 @@ function Cart() {
                   Do you have a voucher? <span>(Optional)</span>
                 </p>
                 <div className={cx('actions')}>
-                  <Button className={cx('btn')} outline large>
+                  <Button onClick={handleEnterCodeClick} className={cx('btn')} outline large>
                     Enter the code
                   </Button>
                   <Button className={cx('btn')} primary large>
@@ -126,6 +151,12 @@ function Cart() {
                     <p className={cx('other-money')}>{checkoutOrder?.feeShip}</p>
                   </div>
                 </div>
+                {selectedDiscount && (
+                  <div className={cx('price')}>
+                    <p className={cx('title')}>Selected Discount Code</p>
+                    <p className={cx('money')}>{selectedDiscount}</p>
+                  </div>
+                )}
                 <div className={cx('price')}>
                   <p className={cx('title')}>Discount</p>
                   <p className={cx('money')}>{checkoutOrder?.totalDiscount}</p>

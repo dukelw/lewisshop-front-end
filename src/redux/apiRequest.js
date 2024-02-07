@@ -59,6 +59,7 @@ import {
   findShopFailed,
 } from './shopSlice';
 import { checkoutFailed, checkoutStart, checkoutSuccess } from './orderSlice';
+import { findDiscountsFailed, findDiscountsStart, findDiscountsSuccess } from './discountSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -370,5 +371,33 @@ export const checkout = async (accessToken, userID, data, dispatch, axiosJWT) =>
     dispatch(checkoutSuccess(res.data));
   } catch (error) {
     dispatch(checkoutFailed());
+  }
+};
+
+export const getDiscountsOfShopByUser = async (accessToken, userID, shopID, dispatch, axiosJWT) => {
+  dispatch(findDiscountsStart());
+  try {
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}discount/discount-codes?discount_shop_id=${shopID}`, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    dispatch(findDiscountsSuccess(res.data));
+  } catch (error) {
+    dispatch(findDiscountsFailed());
+  }
+};
+
+export const getDiscountsOfShopsByUser = async (accessToken, userID, shopIDs, dispatch, axiosJWT) => {
+  dispatch(findDiscountsStart());
+  try {
+    const res = await axiosJWT.post(
+      `${REACT_APP_BASE_URL}discount/codes-of-shops`,
+      { discount_shop_ids: shopIDs },
+      {
+        headers: { authorization: `${accessToken}`, user: userID },
+      },
+    );
+    dispatch(findDiscountsSuccess(res.data));
+  } catch (error) {
+    dispatch(findDiscountsFailed());
   }
 };

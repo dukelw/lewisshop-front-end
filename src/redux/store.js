@@ -2,8 +2,9 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authShopReducer from './authShopSlice';
 import authUserReducer from './authUserSlice';
 import productsReducer from './productSlice';
-import orderReducer from './orderSlice';
 import shopReducer from './shopSlice';
+import orderReducer from './orderSlice';
+import discountReducer from './discountSlice';
 
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   products: productsReducer,
   shop: shopReducer,
   order: orderReducer,
+  discount: discountReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

@@ -19,6 +19,7 @@ import {
   faStar as faStartSolid,
   faSubtract,
   faUser,
+  faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClockFour, faStar as faStarRegular, faBookmark } from '@fortawesome/free-regular-svg-icons';
@@ -52,6 +53,15 @@ export const HouseFlagIcon = ({
   <FontAwesomeIcon
     onClick={onClick}
     icon={faHouseFlag}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const XMarkIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faXmark}
     className={className}
     style={{ width, height, color: color, padding: padding, ...style }}
   />
