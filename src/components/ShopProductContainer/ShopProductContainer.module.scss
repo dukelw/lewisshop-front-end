@@ -1,3 +1,22 @@
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--grey);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--grey);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--grey);
+}
+
 .link {
   display: flex;
   justify-content: center;
@@ -6,6 +25,11 @@
 .row {
   padding: 60px;
   background-color: var(--black);
+
+  &.apply {
+    max-height: 600px;
+    overflow-y: scroll;
+  }
 }
 
 .part {

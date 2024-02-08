@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -11,13 +11,22 @@ import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-const ShopProductCard = ({ product, axiosJWT, publishEnable }) => {
+const ShopProductCard = ({
+  product,
+  axiosJWT,
+  publishEnable,
+  discountApplyEnable = false,
+  handleApply = () => {},
+  handleUnapply = () => {},
+  small = false,
+}) => {
   const shop = useSelector((state) => state.authShop.signin?.currentShop);
   const accessToken = shop?.metadata.tokens.accessToken;
   const shopID = shop?.metadata.shop._id;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { product_thumb, product_name, product_description, product_price, product_quantity } = product;
+  const [applied, setApplied] = useState(false);
 
   const handlePublish = (e, id) => {
     e.preventDefault();
@@ -35,7 +44,7 @@ const ShopProductCard = ({ product, axiosJWT, publishEnable }) => {
   };
 
   return (
-    <Card className={cx('card')}>
+    <Card className={cx('card', small ? 'small' : '')}>
       <Card.Img variant="top" src={product_thumb} className={cx('thumb')} />
       <Card.Body className={cx('body')}>
         <Card.Title className={cx('title')}>{product_name}</Card.Title>
@@ -45,22 +54,48 @@ const ShopProductCard = ({ product, axiosJWT, publishEnable }) => {
         </Card.Text>
       </Card.Body>
       <Card.Footer className={cx('actions')}>
-        {publishEnable && (
-          <Button onClick={(e) => handlePublish(e, product._id)} className={cx('action-button')}>
-            Publish
-          </Button>
+        {discountApplyEnable ? (
+          !applied ? (
+            <Button
+              onClick={(e) => {
+                setApplied(!applied);
+                handleApply(e, product._id, product_name);
+              }}
+              className={cx('action-button')}
+            >
+              Apply
+            </Button>
+          ) : (
+            <Button
+              onClick={(e) => {
+                setApplied(!applied);
+                handleUnapply(e, product._id, product_name);
+              }}
+              className={cx('action-button')}
+            >
+              Unapply
+            </Button>
+          )
+        ) : (
+          <div className={cx('actions')}>
+            {publishEnable && (
+              <Button onClick={(e) => handlePublish(e, product._id)} className={cx('action-button')}>
+                Publish
+              </Button>
+            )}
+            {!publishEnable && (
+              <Button onClick={(e) => handleUnpublish(e, product._id)} className={cx('action-button')}>
+                Unpublish
+              </Button>
+            )}
+            <Button onClick={(e) => handleEdit(e, product._id)} className={cx('action-button')}>
+              Edit
+            </Button>
+            <Button onClick={() => {}} className={cx('action-button')}>
+              Delete
+            </Button>
+          </div>
         )}
-        {!publishEnable && (
-          <Button onClick={(e) => handleUnpublish(e, product._id)} className={cx('action-button')}>
-            Unpublish
-          </Button>
-        )}
-        <Button onClick={(e) => handleEdit(e, product._id)} className={cx('action-button')}>
-          Edit
-        </Button>
-        <Button onClick={() => {}} className={cx('action-button')}>
-          Delete
-        </Button>
       </Card.Footer>
     </Card>
   );

@@ -48,7 +48,7 @@ function OffCanvas({ Icon = ListIcon, content = 'All', className }) {
     },
     {
       title: 'Add new discounts',
-      to: '/add/discount',
+      to: '/shop/create/discount',
     },
   ];
 
