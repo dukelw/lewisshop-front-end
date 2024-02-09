@@ -6,6 +6,8 @@ import StarRating from '../HeartRating';
 import { DongIcon } from '../Icons';
 import { addProductToCart } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
+import { hideToast, showToast } from '~/redux/toastSlice';
+import Cookies from 'js-cookie';
 
 const cx = classNames.bind(styles);
 
@@ -26,6 +28,10 @@ function ProductCard({ data }) {
       },
     };
     addProductToCart(accessToken, userID, products, dispatch, axiosJWT);
+    dispatch(showToast({ message: 'Add product to cart successfully', type: 'success', show: true }));
+    setTimeout(() => {
+      dispatch(hideToast());
+    }, 2000);
   };
 
   return (

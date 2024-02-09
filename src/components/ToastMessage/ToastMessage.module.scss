@@ -1,0 +1,160 @@
+:root {
+  --dark: #34495e;
+  --light: #ffffff;
+  --success: #0abf30;
+  --error: #e24d4c;
+  --warning: #e9bd0c;
+  --info: #3498db;
+}
+
+.toast {
+  min-width: 600px;
+  min-height: 80px;
+  position: absolute;
+  top: 10%;
+  right: 4%;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  list-style: none;
+  border-radius: 4px;
+  padding: 16px 17px;
+  margin-bottom: 10px;
+  background: var(--light);
+  justify-content: space-between;
+  animation: show_toast 0.5s ease-in-out forwards;
+  box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
+
+  &.hide {
+    animation: hide_toast 1.5s ease-in-out forwards;
+  }
+
+  &::before {
+    position: absolute;
+    content: '';
+    height: 6px;
+    width: 100%;
+    bottom: 0px;
+    left: 0px;
+    animation: progress 1.5s linear forwards;
+  }
+}
+
+@keyframes show_toast {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-10px);
+  }
+}
+
+// @keyframes hide_toast {
+//   0% {
+//     transform: translateX(-10px);
+//   }
+//   100% {
+//     transform: translateX(130%);
+//   }
+// }
+
+@keyframes progress {
+  100% {
+    width: 0%;
+  }
+}
+
+.toast.success::before,
+.btn#success {
+  background: var(--success);
+}
+
+.toast.error::before,
+.btn#error {
+  background: var(--error);
+}
+
+.toast.warning::before,
+.btn#warning {
+  background: var(--warning);
+}
+
+.toast.info::before,
+.btn#info {
+  background: var(--info);
+}
+
+.icon {
+  font-size: 1.75rem;
+
+  .toast.success & {
+    color: var(--success);
+  }
+
+  .toast.error & {
+    color: var(--error);
+  }
+
+  .toast.warning & {
+    color: var(--warning);
+  }
+
+  .toast.info & {
+    color: var(--info);
+  }
+}
+
+.toast .column {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  span {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-left: 12px;
+  }
+}
+
+.toast .icon:last-child {
+  color: #aeb0d7;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--dark);
+  }
+}
+
+.buttons .btn {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin: 0 5px;
+  color: var(--light);
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+@media screen and (max-width: 530px) {
+  .toast {
+    width: 100%;
+    font-size: 1rem;
+    margin-left: 20px;
+  }
+
+  .buttons .btn {
+    margin: 0 1px;
+    font-size: 1.1rem;
+    padding: 8px 15px;
+  }
+}
+
+.close {
+  &:hover {
+    color: var(--pink);
+    cursor: pointer;
+  }
+}

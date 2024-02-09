@@ -1,13 +1,13 @@
 import classNames from 'classnames/bind';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
 import { Link, useNavigate } from 'react-router-dom';
-
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import config from '~/config';
 import Image from '~/components/Image';
+import ToastMessage from '~/components/ToastMessage';
 import Menu from '~/components/Popper/Menu';
 import styles from './Header.module.scss';
 import {
@@ -32,6 +32,7 @@ import CartBlank from '~/components/CartBlank';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCartByUserID, userLogout } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
+import Cookies from 'js-cookie';
 
 const cx = classNames.bind(styles);
 
@@ -100,6 +101,9 @@ function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosJWT = createAxios(currentUser);
+  const showToast = useSelector((state) => state.toast.show);
+  const toastMessage = useSelector((state) => state.toast.message);
+  const toastType = useSelector((state) => state.toast.type);
 
   const handleMenuChange = (menuItem) => {
     console.log(menuItem);
@@ -141,6 +145,7 @@ function Header() {
 
   return (
     <header className={cx('wrapper')}>
+      <ToastMessage message={toastMessage} type={toastType} isShow={showToast}></ToastMessage>
       {/* Logo */}
       <Link to={config.routes.home} className={cx('logo-link')}>
         <div className={cx('logo')}>
