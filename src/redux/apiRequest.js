@@ -59,7 +59,14 @@ import {
   findShopFailed,
 } from './shopSlice';
 import { checkoutFailed, checkoutStart, checkoutSuccess } from './orderSlice';
-import { findDiscountsFailed, findDiscountsStart, findDiscountsSuccess } from './discountSlice';
+import {
+  createDiscountFailed,
+  createDiscountStart,
+  createDiscountSuccess,
+  findDiscountsFailed,
+  findDiscountsStart,
+  findDiscountsSuccess,
+} from './discountSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -171,6 +178,20 @@ export const createNewProduct = async (accessToken, shopID, product, dispatch, n
     navigate('/shop/draft');
   } catch (error) {
     dispatch(createProductFailed());
+  }
+};
+
+export const createNewDiscount = async (accessToken, shopID, discount, dispatch, navigate, axiosJWT) => {
+  dispatch(createDiscountStart());
+  try {
+    console.log(accessToken, shopID, discount);
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}discount/create`, discount, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(createDiscountSuccess(res.data));
+    // navigate('/shop/discount');
+  } catch (error) {
+    dispatch(createDiscountFailed());
   }
 };
 

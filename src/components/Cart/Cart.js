@@ -27,12 +27,12 @@ function Cart() {
   const checkoutOrder = currentCheckout?.metadata.checkout_order;
   const currentDiscount = useSelector((state) => state?.discount.discounts.foundDiscounts);
   const discountCodes = currentDiscount?.metadata;
-  console.log(discountCodes);
-  const [selectedDiscount, setSelectedDiscount] = useState(null);
+  const [selectedDiscount, setSelectedDiscount] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleSelectDiscount = (code, discountID, shopID) => {
-    const discountableCart = convertData(cartProducts, cartID, cartUserID);
+    const discountableCart =
+      JSON.parse(localStorage.getItem('discountableCart')) || convertData(cartProducts, cartID, cartUserID);
     discountableCart.shop_order_ids.map((shop) => {
       if (shop.shop_id === shopID) {
         shop.shop_discounts.push({
@@ -42,9 +42,10 @@ function Cart() {
         });
       }
     });
+    localStorage.setItem('discountableCart', JSON.stringify(discountableCart));
     console.log(`Discountable cart:::`, discountableCart);
     checkout(accessToken, userID, discountableCart, dispatch, axiosJWT);
-    setSelectedDiscount(code);
+    if (selectedDiscount.indexOf(code) === -1) setSelectedDiscount((prev) => [...prev, code]);
     setModalVisible(false);
   };
 
@@ -162,10 +163,10 @@ function Cart() {
                     <p className={cx('other-money')}>{checkoutOrder?.feeShip}</p>
                   </div>
                 </div>
-                {selectedDiscount && (
+                {selectedDiscount.length > 0 && (
                   <div className={cx('price')}>
                     <p className={cx('title')}>Selected Discount Code</p>
-                    <p className={cx('money')}>{selectedDiscount}</p>
+                    <p className={cx('money')}>{selectedDiscount.join(', ')}</p>
                   </div>
                 )}
                 <div className={cx('price')}>

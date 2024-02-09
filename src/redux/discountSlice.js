@@ -8,6 +8,11 @@ const discountSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    create: {
+      newDiscount: null,
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     findDiscountsStart: (state) => {
@@ -22,9 +27,28 @@ const discountSlice = createSlice({
       state.discounts.foundDiscounts = null;
       state.discounts.error = true;
     },
+    createDiscountStart: (state) => {
+      state.create.isFetching = true;
+    },
+    createDiscountSuccess: (state, action) => {
+      state.create.isFetching = false;
+      state.create.newDiscount = action.payload;
+    },
+    createDiscountFailed: (state) => {
+      state.create.isFetching = false;
+      state.create.newDiscount = null;
+      state.create.error = true;
+    },
   },
 });
 
-export const { findDiscountsStart, findDiscountsSuccess, findDiscountsFailed } = discountSlice.actions;
+export const {
+  findDiscountsStart,
+  findDiscountsSuccess,
+  findDiscountsFailed,
+  createDiscountStart,
+  createDiscountSuccess,
+  createDiscountFailed,
+} = discountSlice.actions;
 
 export default discountSlice.reducer;

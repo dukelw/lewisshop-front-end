@@ -23,26 +23,24 @@ function ProductModal({ onDataChange, text = 'Modal' }) {
       getAllProductOfShop(shop?.metadata.tokens.accessToken, shop?.metadata.shop._id, dispatch, axiosJWT);
     }
   }, []);
+
   const [show, setShow] = useState(false);
-  let applyProduct = [];
+  const [applyProduct, setApplyProduct] = useState([]);
 
   const handleApply = (e, id, name) => {
     e.preventDefault();
-    if (!applyProduct.includes(id)) {
-      applyProduct.push({ id, name });
+    if (!applyProduct.some((item) => item.id === id)) {
+      setApplyProduct((prevApplyProduct) => [...prevApplyProduct, { id, name }]);
     }
-    console.log(applyProduct);
   };
 
-  const handleUnapply = (e, id, name) => {
+  const handleUnapply = (e, id) => {
     e.preventDefault();
-    applyProduct = applyProduct.filter((item) => item.id !== id);
-    console.log(applyProduct);
+    setApplyProduct((prevApplyProduct) => prevApplyProduct.filter((item) => item.id !== id));
   };
 
   const sendDataToShopCreateDiscount = () => {
-    const data = applyProduct;
-    onDataChange(data);
+    onDataChange(applyProduct);
     setShow(false);
   };
 

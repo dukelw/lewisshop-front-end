@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 import styles from './ShopCreateDiscount.module.scss';
 import Button from '../Button';
-import { createNewProduct } from '~/redux/apiRequest';
+import { createNewDiscount } from '~/redux/apiRequest';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { createAxios } from '~/createAxios';
@@ -30,6 +30,14 @@ const ShopCreateDiscount = () => {
     });
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const month = (date.getMonth() + 1).toString();
+    const day = date.getDate().toString();
+    const year = date.getFullYear().toString();
+    return `${month}/${day}/${year}`;
+  };
+
   const handleApplyTo = (event) => {
     const type = event.target.value;
     setApplyTo(type);
@@ -41,16 +49,24 @@ const ShopCreateDiscount = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    event.stopPropagation();
+
+    const convertedFormData = {
+      ...formData,
+      discount_start_date: formatDate(formData.discount_start_date),
+      discount_end_date: formatDate(formData.discount_end_date),
+    };
 
     if (shop) {
-      createNewProduct(
+      createNewDiscount(
         shop?.metadata.tokens.accessToken,
         shop?.metadata.shop._id,
-        formData,
+        convertedFormData,
         dispatch,
         navigate,
         axiosJWT,
       );
+      localStorage.setItem('formData', JSON.stringify(initialState));
     } else {
       navigate('/shop/signin');
     }
@@ -63,23 +79,23 @@ const ShopCreateDiscount = () => {
   };
 
   const nameRef = useRef(null);
-  const discountBasicData = [
-    'discount_name',
-    'discount_description',
-    'discount_type',
-    'discount_value',
-    'discount_max_value',
-    'discount_code',
-    'discount_start_date',
-    'discount_end_date',
-    'discount_max_uses',
-    'discount_max_uses_per_user',
-    'discount_min_order_value',
-    'discount_is_active',
-    'discount_applies_to',
-    'discount_product_ids',
-  ];
-  const initialState = {
+  // const discountBasicData = [
+  //   'discount_name',
+  //   'discount_description',
+  //   'discount_type',
+  //   'discount_value',
+  //   'discount_max_value',
+  //   'discount_code',
+  //   'discount_start_date',
+  //   'discount_end_date',
+  //   'discount_max_uses',
+  //   'discount_max_uses_per_user',
+  //   'discount_min_order_value',
+  //   'discount_is_active',
+  //   'discount_applies_to',
+  //   'discount_product_ids',
+  // ];
+  const initialState = JSON.parse(localStorage.getItem('formData')) || {
     discount_name: '',
     discount_description: '',
     discount_type: 'fixed_amount',
@@ -95,8 +111,22 @@ const ShopCreateDiscount = () => {
     discount_is_active: true,
     discount_applies_to: 'all',
     discount_product_ids: [],
+    discount_uses_count: 0,
   };
   const [formData, setFormData] = useState(initialState);
+
+  // Save data of form to Local Storage when formData is changing
+  useEffect(() => {
+    localStorage.setItem('formData', JSON.stringify(formData));
+  }, [formData]);
+
+  // Restore data from form in Local Storage when component is being created
+  useEffect(() => {
+    const savedFormData = JSON.parse(localStorage.getItem('formData'));
+    if (savedFormData) {
+      setFormData(savedFormData);
+    }
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -107,7 +137,7 @@ const ShopCreateDiscount = () => {
   };
 
   const getApplyProduct = (products) => {
-    formData.discount_applies_to = 'specific';
+    // formData.discount_applies_to = 'specific';
     if (formData.discount_applies_to === 'specific') {
       products.map((product) => {
         setApplyProductName((prev) => [...prev, product.name]);
@@ -123,15 +153,15 @@ const ShopCreateDiscount = () => {
   return (
     <div>
       <h1 className={cx('title')}>Create new discount</h1>
-      <Form className={cx('form')} onSubmit={handleSubmit}>
+      <Form onSubmitCapture={(e) => e.preventDefault()} className={cx('form')}>
         <Row>
           <Col md={5}>
-            <Form.Group className={cx('form-group')} controlId="discountCategory">
+            <Form.Group className={cx('form-group')} controlId="discount_type">
               <Form.Label className={cx('form-label')}>Category</Form.Label>
               <Form.Control
                 className={cx('form-control')}
                 as="select"
-                name="discountCategory"
+                name="discount_type"
                 value={discountType}
                 onChange={handleDiscountType}
               >
