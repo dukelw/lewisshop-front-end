@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
+import { useDispatch } from 'react-redux';
 import styles from './ToastMessage.module.scss';
 import { CircleCheckIcon, CircleInfoIcon, CircleXMarkIcon, TriangleExclamationIcon, XMarkIcon } from '../Icons';
+import { removeToast } from '~/redux/multiToastSlice';
 
 const cx = classNames.bind(styles);
 
@@ -20,29 +22,27 @@ const toastDetails = {
   },
 };
 
-function ToastMessage({ message = 'Toast message', type = 'success', isShow = false }) {
-  const [show, setShow] = useState(isShow);
-  const [hide, setHide] = useState(!isShow);
+function ToastMessage({ id, message = 'Toast message', type = 'success' }) {
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setShow(isShow);
-  }, [isShow]);
+    const timer = setTimeout(() => {
+      dispatch(removeToast(id));
+    }, 3000);
 
-  const removeToast = () => {
-    setShow(false);
-  };
+    return () => clearTimeout(timer);
+  }, [dispatch, id]);
 
   const Component = toastDetails[type]?.icon;
+
   return (
-    show && (
-      <div className={cx('toast', type, 'show')}>
-        <div className={cx('column')}>
-          <Component className={cx('icon')} />
-          <span>{message}</span>
-        </div>
-        <XMarkIcon className={cx('close')} onClick={removeToast}></XMarkIcon>
+    <div className={cx('toast', type, 'show')}>
+      <div className={cx('column')}>
+        <Component className={cx('icon')} />
+        <span>{message}</span>
       </div>
-    )
+      <XMarkIcon className={cx('close')} onClick={() => dispatch(removeToast(id))} />
+    </div>
   );
 }
 

@@ -8,11 +8,9 @@
 }
 
 .toast {
-  min-width: 600px;
+  width: 100%;
   min-height: 80px;
-  position: absolute;
-  top: 10%;
-  right: 4%;
+  margin-bottom: 12px;
   z-index: 100;
   display: flex;
   justify-content: space-between;

@@ -6,6 +6,7 @@ import shopReducer from './shopSlice';
 import orderReducer from './orderSlice';
 import discountReducer from './discountSlice';
 import toastReducer from './toastSlice';
+import multiToastReducer from './multiToastSlice';
 
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   order: orderReducer,
   discount: discountReducer,
   toast: toastReducer,
+  multiToast: multiToastReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

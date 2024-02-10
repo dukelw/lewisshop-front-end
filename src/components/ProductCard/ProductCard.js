@@ -4,7 +4,7 @@ import styles from './ProductCard.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import StarRating from '../HeartRating';
 import { DongIcon } from '../Icons';
-import { addProductToCart } from '~/redux/apiRequest';
+import { addProductToCart, addToast } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
 import { hideToast, showToast } from '~/redux/toastSlice';
 import Cookies from 'js-cookie';
@@ -28,10 +28,7 @@ function ProductCard({ data }) {
       },
     };
     addProductToCart(accessToken, userID, products, dispatch, axiosJWT);
-    dispatch(showToast({ message: 'Add product to cart successfully', type: 'success', show: true }));
-    setTimeout(() => {
-      dispatch(hideToast());
-    }, 2000);
+    addToast({ message: 'Add product to cart successfully', type: 'success', show: true }, dispatch);
   };
 
   return (

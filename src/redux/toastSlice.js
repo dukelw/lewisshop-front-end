@@ -1,9 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  message: '',
-  type: 'success',
-  show: false,
+  toasts: [],
 };
 
 const toastSlice = createSlice({
@@ -11,12 +9,10 @@ const toastSlice = createSlice({
   initialState,
   reducers: {
     showToast(state, action) {
-      state.message = action.payload.message;
-      state.type = action.payload.type;
-      state.show = action.payload.show;
+      state.toasts.push(action.payload);
     },
-    hideToast(state) {
-      state.show = false;
+    hideToast(state, action) {
+      state.toasts = state.toasts.filter((toast) => toast.id !== action.payload);
     },
   },
 });

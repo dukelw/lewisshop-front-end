@@ -67,6 +67,8 @@ import {
   findDiscountsStart,
   findDiscountsSuccess,
 } from './discountSlice';
+import { hideToast, showToast } from './toastSlice';
+import { addToastsFailed, addToastsStart, addToastsSuccess, removeExpiredToasts } from './multiToastSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -420,5 +422,18 @@ export const getDiscountsOfShopsByUser = async (accessToken, userID, shopIDs, di
     dispatch(findDiscountsSuccess(res.data));
   } catch (error) {
     dispatch(findDiscountsFailed());
+  }
+};
+
+export const addToast = async (toastData, dispatch) => {
+  dispatch(addToastsStart());
+  try {
+    dispatch(showToast({ ...toastData }));
+    dispatch(addToastsSuccess({ ...toastData }));
+    setTimeout(() => {
+      dispatch(removeExpiredToasts());
+    }, 3000);
+  } catch (error) {
+    dispatch(addToastsFailed());
   }
 };

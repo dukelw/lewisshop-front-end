@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import React, { Fragment, useEffect, useRef } from 'react';
+import React, { Fragment} from 'react';
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import config from '~/config';
 import Image from '~/components/Image';
-import ToastMessage from '~/components/ToastMessage';
+import ToastMessageContainer from '~/components/ToastMessageContainer';
 import Menu from '~/components/Popper/Menu';
 import styles from './Header.module.scss';
 import {
@@ -145,7 +145,8 @@ function Header() {
 
   return (
     <header className={cx('wrapper')}>
-      <ToastMessage message={toastMessage} type={toastType} isShow={showToast}></ToastMessage>
+      <ToastMessageContainer></ToastMessageContainer>
+      {/* <ToastMessage message={toastMessage} type={toastType} isShow={showToast}></ToastMessage> */}
       {/* Logo */}
       <Link to={config.routes.home} className={cx('logo-link')}>
         <div className={cx('logo')}>
