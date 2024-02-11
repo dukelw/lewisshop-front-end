@@ -35,17 +35,31 @@ function Cart() {
       JSON.parse(localStorage.getItem('discountableCart')) || convertData(cartProducts, cartID, cartUserID);
     discountableCart.shop_order_ids.map((shop) => {
       if (shop.shop_id === shopID) {
-        shop.shop_discounts.push({
-          shop_id: shopID,
-          discount_id: discountID,
-          code: code,
-        });
+        if (shop.shop_discounts.length === 0) {
+          shop.shop_discounts.push({
+            shop_id: shopID,
+            discount_id: discountID,
+            code: code,
+          });
+          setSelectedDiscount((prev) => [...prev, code]);
+        } else {
+          shop.shop_discounts.shift();
+          shop.shop_discounts.push({
+            shop_id: shopID,
+            discount_id: discountID,
+            code: code,
+          });
+          setSelectedDiscount((prev) => {
+            prev.shift();
+            return [...prev, code];
+          });
+        }
       }
     });
     localStorage.setItem('discountableCart', JSON.stringify(discountableCart));
     console.log(`Discountable cart:::`, discountableCart);
     checkout(accessToken, userID, discountableCart, dispatch, axiosJWT);
-    if (selectedDiscount.indexOf(code) === -1) setSelectedDiscount((prev) => [...prev, code]);
+    // if (selectedDiscount.indexOf(code) === -1) setSelectedDiscount((prev) => [...prev, code]);
     setModalVisible(false);
   };
 
@@ -102,6 +116,7 @@ function Cart() {
           discountCodes={discountCodes}
           onSelectDiscount={handleSelectDiscount}
           handleDisplay={handleEnterCodeClick}
+          currentCheckout={currentCheckout}
         />
       )}
       <h1 className={cx('header')}>Shopping Cart</h1>
