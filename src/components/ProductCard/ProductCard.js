@@ -6,29 +6,49 @@ import StarRating from '../HeartRating';
 import { DongIcon } from '../Icons';
 import { addProductToCart, addToast } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
-import { hideToast, showToast } from '~/redux/toastSlice';
-import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function ProductCard({ data }) {
   const currentUser = useSelector((state) => state.authUser.signin.currentUser);
+  const addToCart = useSelector((state) => state.authUser.addToCart.addedProduct);
   const accessToken = currentUser?.metadata.tokens.accessToken;
   const userID = currentUser?.metadata.user._id;
   const dispatch = useDispatch();
   const axiosJWT = createAxios(currentUser);
+  const navigate = useNavigate();
+  let toast = { message: '', type: 'success', show: true };
   const handleAddToCart = (event, productID, shopID) => {
     event.preventDefault();
-    const products = {
-      user_id: userID,
-      product: {
-        product_id: productID,
-        shop_id: shopID,
-        quantity: 1,
-      },
-    };
-    addProductToCart(accessToken, userID, products, dispatch, axiosJWT);
-    addToast({ message: 'Add product to cart successfully', type: 'success', show: true }, dispatch);
+    if (!currentUser) {
+      toast.message = 'Please sign in first!';
+      toast.type = 'warning';
+      addToast(toast, dispatch);
+      setTimeout(() => {
+        navigate('/user/signin');
+      }, 1500);
+    } else {
+      const products = {
+        user_id: userID,
+        product: {
+          product_id: productID,
+          shop_id: shopID,
+          quantity: 1,
+        },
+      };
+      addProductToCart(accessToken, userID, products, dispatch, axiosJWT);
+      console.log(addToCart);
+      if (addToCart?.statusCode === 200) {
+        toast.message = addToCart.message;
+      } else if (!addToCart?.statusCode) {
+        toast.message = 'Add product to cart successfully';
+      } else {
+        toast.message = 'There is an error when adding to cart. Please try again';
+        toast.type = 'error';
+      }
+      addToast(toast, dispatch);
+    }
   };
 
   return (

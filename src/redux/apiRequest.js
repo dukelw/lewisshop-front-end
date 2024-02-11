@@ -432,7 +432,7 @@ export const addToast = async (toastData, dispatch) => {
     dispatch(addToastsSuccess({ ...toastData }));
     setTimeout(() => {
       dispatch(removeExpiredToasts());
-    }, 3000);
+    }, 1500);
   } catch (error) {
     dispatch(addToastsFailed());
   }

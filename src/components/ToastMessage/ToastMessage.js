@@ -28,7 +28,7 @@ function ToastMessage({ id, message = 'Toast message', type = 'success' }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(removeToast(id));
-    }, 3000);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, [dispatch, id]);
