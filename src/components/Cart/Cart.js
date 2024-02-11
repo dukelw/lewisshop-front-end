@@ -35,32 +35,51 @@ function Cart() {
       JSON.parse(localStorage.getItem('discountableCart')) || convertData(cartProducts, cartID, cartUserID);
     discountableCart.shop_order_ids.map((shop) => {
       if (shop.shop_id === shopID) {
+        // When discounts of the shop have not been used yet
         if (shop.shop_discounts.length === 0) {
+          // Add a new discount
           shop.shop_discounts.push({
             shop_id: shopID,
             discount_id: discountID,
             code: code,
           });
-          setSelectedDiscount((prev) => [...prev, code]);
+          setSelectedDiscount((prev) => [...prev, { code, shop_id: shopID }]);
         } else {
-          shop.shop_discounts.shift();
-          shop.shop_discounts.push({
-            shop_id: shopID,
-            discount_id: discountID,
-            code: code,
+          // When a discount of the shop has been used
+          // Delete old discount
+          const isSameShop = selectedDiscount.find((discount) => {
+            return discount.shop_id === shopID;
           });
-          setSelectedDiscount((prev) => {
-            prev.shift();
-            return [...prev, code];
-          });
+          if (isSameShop) {
+            setSelectedDiscount((prev) => {
+              const discounts = prev.filter((discount) => discount !== isSameShop);
+              return [...discounts, { code, shop_id: shopID }];
+            });
+            // Add new discount
+            shop.shop_discounts = shop.shop_discounts.filter((discount) => discount.code !== isSameShop.code);
+            shop.shop_discounts.push({
+              shop_id: shopID,
+              discount_id: discountID,
+              code: code,
+            });
+          } else {
+            setSelectedDiscount((prev) => {
+              return [...prev, { code, shop_id: shopID }];
+            });
+          }
         }
       }
     });
     localStorage.setItem('discountableCart', JSON.stringify(discountableCart));
-    console.log(`Discountable cart:::`, discountableCart);
     checkout(accessToken, userID, discountableCart, dispatch, axiosJWT);
-    // if (selectedDiscount.indexOf(code) === -1) setSelectedDiscount((prev) => [...prev, code]);
     setModalVisible(false);
+  };
+
+  const handleRedeem = () => {
+    localStorage.removeItem('discountableCart');
+    setSelectedDiscount([]);
+    const discountableCart = convertData(cartProducts, cartID, cartUserID);
+    checkout(accessToken, userID, discountableCart, dispatch, axiosJWT);
   };
 
   const handleEnterCodeClick = () => {
@@ -162,7 +181,7 @@ function Cart() {
                   <Button onClick={handleEnterCodeClick} className={cx('btn')} outline large>
                     Enter the code
                   </Button>
-                  <Button className={cx('btn')} primary large>
+                  <Button onClick={handleRedeem} className={cx('btn')} primary large>
                     Redeem
                   </Button>
                 </div>
@@ -181,7 +200,15 @@ function Cart() {
                 {selectedDiscount.length > 0 && (
                   <div className={cx('price')}>
                     <p className={cx('title')}>Selected Discount Code</p>
-                    <p className={cx('money')}>{selectedDiscount.join(', ')}</p>
+                    <p className={cx('money')}>
+                      {selectedDiscount.map((discount, index) => {
+                        return (
+                          <span key={index}>
+                            {discount.code} <br />
+                          </span>
+                        );
+                      })}
+                    </p>
                   </div>
                 )}
                 <div className={cx('price')}>

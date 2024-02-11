@@ -39,9 +39,6 @@ const DiscountModal = ({ discountCodes, onSelectDiscount, handleDisplay, current
     };
   });
 
-  console.log('Valid', validDiscounts);
-  console.log('Invalid', inValidDiscounts);
-
   return (
     <div className={cx('wrapper')}>
       <div className={cx('header')}>
