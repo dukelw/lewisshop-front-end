@@ -18,6 +18,11 @@ const productSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    recentProduct: {
+      recentProducts: [],
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     getProductsStart: (state) => {
@@ -56,6 +61,13 @@ const productSlice = createSlice({
       state.relateProduct.relatedProducts = null;
       state.relateProduct.error = true;
     },
+    addRecentProduct: (state, action) => {
+      console.log('Action payload', action.payload);
+      console.log('Recent', state.recentProduct.recentProducts);
+      console.log(state.recentProduct.recentProducts.includes(action.payload));
+      state.recentProduct.isFetching = false;
+      state.recentProduct.recentProducts.push(action.payload);
+    },
   },
 });
 
@@ -69,6 +81,7 @@ export const {
   findRelateProductFailed,
   findRelateProductSuccess,
   findRelateProductStart,
+  addRecentProduct,
 } = productSlice.actions;
 
 export default productSlice.reducer;

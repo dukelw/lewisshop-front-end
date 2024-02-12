@@ -23,11 +23,19 @@ function ProductDetail() {
   const dispatch = useDispatch();
   const currentProduct = useSelector((state) => state?.products.product.foundProduct);
   const relate = useSelector((state) => state?.products.relateProduct.relatedProducts);
+  const originalRecentProducts = useSelector((state) => state?.products.recentProduct.recentProducts);
   const relatedProducts = relate?.metadata;
   const productShop = useSelector((state) => state?.shop.shop.foundShop);
   const shop = productShop?.metadata;
   const product = currentProduct?.metadata;
   const [display, setDisplay] = useState('detail');
+  const recentProducts = originalRecentProducts.filter(
+    (value, index, self) =>
+      index ===
+      self.findIndex(
+        (t) => t.metadata._id === value.metadata._id, // check duplicates by _id
+      ),
+  );
 
   useEffect(() => {
     // Use axios because this function can be used even if user has not signed in
@@ -96,13 +104,14 @@ function ProductDetail() {
         <p className={cx('title')}>Relate Products</p>
         <Container>
           <Row>
-            {relatedProducts.map((item, index) => {
-              return (
-                <Col key={index} sm={6} xl={2} lg={2}>
-                  <ProductCard data={item}></ProductCard>
-                </Col>
-              );
-            })}
+            {relatedProducts &&
+              relatedProducts.map((item, index) => {
+                return (
+                  <Col key={index} sm={6} xl={2} lg={2}>
+                    <ProductCard data={item}></ProductCard>
+                  </Col>
+                );
+              })}
           </Row>
         </Container>
       </div>
@@ -110,11 +119,11 @@ function ProductDetail() {
         <p className={cx('title')}>Recently Viewed Products</p>
         <Container>
           <Row>
-            {relatedProducts &&
-              relatedProducts.map((item, index) => {
+            {recentProducts &&
+              recentProducts.map((item, index) => {
                 return (
                   <Col key={index} sm={6} xl={2} lg={2}>
-                    <ProductCard data={item}></ProductCard>
+                    <ProductCard data={item?.metadata}></ProductCard>
                   </Col>
                 );
               })}

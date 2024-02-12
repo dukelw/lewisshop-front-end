@@ -34,6 +34,7 @@ import {
   updateCartFailure,
 } from './authUserSlice';
 import {
+  addRecentProduct,
   findProductFailed,
   findProductStart,
   findProductSuccess,
@@ -293,7 +294,9 @@ export const findProductByID = async (productID, dispatch, axiosJWT) => {
   dispatch(findProductStart());
   try {
     const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/id/${productID}`);
+    dispatch(addRecentProduct(res.data));
     dispatch(findProductSuccess(res.data));
+    return res.data;
   } catch (error) {
     dispatch(findProductFailed());
   }
