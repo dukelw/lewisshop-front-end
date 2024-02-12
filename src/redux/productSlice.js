@@ -62,11 +62,12 @@ const productSlice = createSlice({
       state.relateProduct.error = true;
     },
     addRecentProduct: (state, action) => {
-      console.log('Action payload', action.payload);
-      console.log('Recent', state.recentProduct.recentProducts);
-      console.log(state.recentProduct.recentProducts.includes(action.payload));
       state.recentProduct.isFetching = false;
       state.recentProduct.recentProducts.push(action.payload);
+    },
+    resetRecentProduct: (state) => {
+      state.recentProduct.isFetching = false;
+      state.recentProduct.recentProducts = [];
     },
   },
 });
@@ -82,6 +83,7 @@ export const {
   findRelateProductSuccess,
   findRelateProductStart,
   addRecentProduct,
+  resetRecentProduct,
 } = productSlice.actions;
 
 export default productSlice.reducer;

@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import React, { Fragment} from 'react';
+import React, { Fragment } from 'react';
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
@@ -32,7 +32,6 @@ import CartBlank from '~/components/CartBlank';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCartByUserID, userLogout } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
-import Cookies from 'js-cookie';
 
 const cx = classNames.bind(styles);
 
@@ -101,9 +100,6 @@ function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosJWT = createAxios(currentUser);
-  const showToast = useSelector((state) => state.toast.show);
-  const toastMessage = useSelector((state) => state.toast.message);
-  const toastType = useSelector((state) => state.toast.type);
 
   const handleMenuChange = (menuItem) => {
     console.log(menuItem);
@@ -111,6 +107,7 @@ function Header() {
 
   const handleLogout = () => {
     userLogout(accessToken, userID, dispatch, navigate, axiosJWT);
+    localStorage.clear();
   };
 
   const handleCart = () => {

@@ -44,6 +44,7 @@ import {
   getProductsFailed,
   getProductsStart,
   getProductsSuccess,
+  resetRecentProduct,
 } from './productSlice';
 import {
   createProductStart,
@@ -263,6 +264,7 @@ export const logout = async (accessToken, shopID, dispatch, navigate, axiosJWT) 
       },
     );
     dispatch(logoutSuccess());
+    dispatch(resetRecentProduct());
     dispatch(getProductsFailed()); // help Shop Home stop render published product
     navigate('/shop/signin');
   } catch (error) {
@@ -284,6 +286,7 @@ export const userLogout = async (accessToken, userID, dispatch, navigate, axiosJ
       },
     );
     dispatch(userLogoutSuccess());
+    dispatch(resetRecentProduct());
     navigate('/user/signin');
   } catch (error) {
     dispatch(userLogoutFailure());
