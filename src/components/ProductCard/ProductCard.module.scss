@@ -90,6 +90,14 @@
       color: var(--white);
       margin: 0;
     }
+
+    p:hover {
+      opacity: 0.9;
+    }
+
+    &:hover {
+      opacity: 0.9;
+    }
   }
 }
 

@@ -3,12 +3,15 @@ import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import ProductCard from '../ProductCard';
 import styles from './ProductDetail.module.scss';
+import { addToast } from '~/redux/apiRequest';
 import QuantitySelect from '../QuantitySelect';
 import Button from '../Button';
 import { FavouriteIcon } from '../Icons';
+import { addProductToCart } from '~/redux/apiRequest';
+import { createAxios } from '~/createAxios';
 import axios from 'axios';
 import DropdownSelect from '../DropdownSelect';
 import { findProductByID, findRelateProduct, findShopByID } from '~/redux/apiRequest';
@@ -17,6 +20,10 @@ import { useDispatch, useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 
 function ProductDetail() {
+  const currentUser = useSelector((state) => state.authUser.signin.currentUser);
+  const addToCart = useSelector((state) => state.authUser.addToCart.addedProduct);
+  const accessToken = currentUser?.metadata.tokens.accessToken;
+  const userID = currentUser?.metadata.user._id;
   const productID = localStorage.getItem('productDetailID');
   const shopID = localStorage.getItem('productShopID');
   const productType = localStorage.getItem('productType');
@@ -28,6 +35,8 @@ function ProductDetail() {
   const productShop = useSelector((state) => state?.shop.shop.foundShop);
   const shop = productShop?.metadata;
   const product = currentProduct?.metadata;
+  const axiosJWT = createAxios(currentUser);
+  const navigate = useNavigate();
   const [display, setDisplay] = useState('detail');
   const recentProducts = originalRecentProducts.filter(
     (value, index, self) =>
@@ -37,12 +46,46 @@ function ProductDetail() {
       ),
   );
 
+  let toast = { message: '', type: 'success', show: true };
+  const handleAddToCart = (event, productID, shopID) => {
+    event.preventDefault();
+    if (!currentUser) {
+      toast.message = 'Please sign in first!';
+      toast.type = 'warning';
+      addToast(toast, dispatch);
+      setTimeout(() => {
+        navigate('/user/signin');
+      }, 1500);
+    } else {
+      const products = {
+        user_id: userID,
+        product: {
+          product_id: productID,
+          shop_id: shopID,
+          quantity: 1,
+        },
+      };
+      addProductToCart(accessToken, userID, products, dispatch, axiosJWT);
+      if (addToCart?.statusCode === 200) {
+        toast.message = addToCart.message;
+      } else if (!addToCart?.statusCode) {
+        toast.message = 'Add product to cart successfully';
+      } else {
+        toast.message = 'There is an error when adding to cart. Please try again';
+        toast.type = 'error';
+      }
+      addToast(toast, dispatch);
+    }
+  };
+
+  const { product_slug } = useParams();
+
   useEffect(() => {
     // Use axios because this function can be used even if user has not signed in
     findProductByID(productID, dispatch, axios);
     findShopByID(shopID, dispatch, axios);
     findRelateProduct(productType, dispatch, axios);
-  }, []);
+  }, [product_slug]);
 
   return (
     <div className={cx('wrapper')}>
@@ -63,7 +106,12 @@ function ProductDetail() {
 
           <div className={cx('actions')}>
             <QuantitySelect outline large className={cx('action')}></QuantitySelect>
-            <Button className={cx('action', 'add')} large primary>
+            <Button
+              onClick={(e) => handleAddToCart(e, productID, shopID)}
+              className={cx('action', 'add')}
+              large
+              primary
+            >
               Add to cart
             </Button>
             <Button className={cx('action', 'favourite')} square outline>
