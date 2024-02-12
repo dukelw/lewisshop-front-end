@@ -12,8 +12,12 @@ import {
   faFilter,
   faHeart,
   faHouseFlag,
+  faLandMineOn,
+  faLayerGroup,
   faList,
   faMessage,
+  faMoneyBill1Wave,
+  faPercent,
   faRightFromBracket,
   faSearch,
   faShop,
@@ -25,8 +29,69 @@ import {
   faUser,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faFacebook, faInstagram, faMintbit, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClockFour, faStar as faStarRegular, faBookmark } from '@fortawesome/free-regular-svg-icons';
+
+export const LayerGroupIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faLayerGroup}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const LandMineOnIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faLandMineOn}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const MintBitIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faMintbit}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const PercentIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faPercent}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const MoneyBillIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faMoneyBill1Wave}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
 
 export const TriangleExclamationIcon = ({
   width = '2rem',

@@ -18,6 +18,7 @@ const routes = {
   shopEditProduct: '/shop/edit/:productID',
   shopHome: '/shop/',
   userCart: '/cart',
+  shopDiscounts: '/discounts',
 };
 
 export default routes;

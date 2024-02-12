@@ -219,7 +219,7 @@ const ShopCreateProduct = () => {
           </Col>
         </Row>
         <Row>
-          <Col md={6}>
+          <Col md={5}>
             <Form.Group className={cx('form-group')} controlId="product_name">
               <Form.Label className={cx('form-label')}>Name</Form.Label>
               <Form.Control
@@ -253,7 +253,7 @@ const ShopCreateProduct = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={6}>
+          <Col md={5}>
             <Form.Group className={cx('form-group')} controlId="product_thumb">
               <Form.Label className={cx('form-label')}>Thumbnail</Form.Label>
               <Form.Control
@@ -276,10 +276,12 @@ const ShopCreateProduct = () => {
             </Form.Group>
             {renderCategoryFields()}
           </Col>
+          <Col md={2}>
+            <Button className={cx('submit-btn')} primary onClick={handleSubmit}>
+              Create
+            </Button>
+          </Col>
         </Row>
-        <Button className={cx('submit-btn')} primary onClick={handleSubmit}>
-          Create
-        </Button>
       </Form>
     </div>
   );

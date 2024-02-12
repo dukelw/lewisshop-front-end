@@ -53,8 +53,6 @@ const NAVIGATION_ITEMS = [
   },
 ];
 
-const cartResult = [];
-
 const MENU_ITEMS = [
   {
     icon: <LanguageIcon />,
