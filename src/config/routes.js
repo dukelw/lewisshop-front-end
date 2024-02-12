@@ -6,7 +6,7 @@ const routes = {
   search: '/search',
   live: '/live',
   product: '/products',
-  productDetail: '/detail/:productID',
+  productDetail: '/product/:productSlug',
   shopSignin: '/shop/signin',
   shopSignup: '/shop/signup',
   userSignin: '/user/signin',

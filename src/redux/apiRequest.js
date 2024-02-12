@@ -37,6 +37,9 @@ import {
   findProductFailed,
   findProductStart,
   findProductSuccess,
+  findRelateProductFailed,
+  findRelateProductStart,
+  findRelateProductSuccess,
   getProductsFailed,
   getProductsStart,
   getProductsSuccess,
@@ -286,24 +289,30 @@ export const userLogout = async (accessToken, userID, dispatch, navigate, axiosJ
   }
 };
 
-export const findProductByID = async (accessToken, shopID, productID, dispatch, axiosJWT) => {
+export const findProductByID = async (productID, dispatch, axiosJWT) => {
   dispatch(findProductStart());
   try {
-    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/${productID}`, {
-      headers: { authorization: `${accessToken}`, user: `${shopID}` },
-    });
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/id/${productID}`);
     dispatch(findProductSuccess(res.data));
   } catch (error) {
     dispatch(findProductFailed());
   }
 };
 
-export const findShopByID = async (accessToken, userID, shopID, dispatch, axiosJWT) => {
+export const findRelateProduct = async (productType, dispatch, axiosJWT) => {
+  dispatch(findRelateProductStart());
+  try {
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/type/${productType}`);
+    dispatch(findRelateProductSuccess(res.data));
+  } catch (error) {
+    dispatch(findRelateProductFailed());
+  }
+};
+
+export const findShopByID = async (shopID, dispatch, axiosJWT) => {
   dispatch(findShopStart());
   try {
-    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}shop/find`, shopID, {
-      headers: { authorization: `${accessToken}`, user: `${userID}` },
-    });
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}shop/${shopID}`);
     dispatch(findShopSuccess(res.data));
   } catch (error) {
     dispatch(findShopFailed());

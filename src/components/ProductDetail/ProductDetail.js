@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,37 +9,44 @@ import styles from './ProductDetail.module.scss';
 import QuantitySelect from '../QuantitySelect';
 import Button from '../Button';
 import { FavouriteIcon } from '../Icons';
+import axios from 'axios';
 import DropdownSelect from '../DropdownSelect';
+import { findProductByID, findRelateProduct, findShopByID } from '~/redux/apiRequest';
+import { useDispatch, useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
-function ProductDetail({ product, recentProducts, relatedProducts }) {
-  const [largeImage, setLargeImage] = useState(product.img);
+function ProductDetail() {
+  const productID = localStorage.getItem('productDetailID');
+  const shopID = localStorage.getItem('productShopID');
+  const productType = localStorage.getItem('productType');
+  const dispatch = useDispatch();
+  const currentProduct = useSelector((state) => state?.products.product.foundProduct);
+  const relate = useSelector((state) => state?.products.relateProduct.relatedProducts);
+  const relatedProducts = relate?.metadata;
+  const productShop = useSelector((state) => state?.shop.shop.foundShop);
+  const shop = productShop?.metadata;
+  const product = currentProduct?.metadata;
   const [display, setDisplay] = useState('detail');
+
+  useEffect(() => {
+    // Use axios because this function can be used even if user has not signed in
+    findProductByID(productID, dispatch, axios);
+    findShopByID(shopID, dispatch, axios);
+    findRelateProduct(productType, dispatch, axios);
+  }, []);
+
   return (
     <div className={cx('wrapper')}>
       {/* Product section */}
       <div className={cx('product')}>
         <div className={cx('left')}>
-          <div className={cx('large-img', 'img')} style={{ backgroundImage: `url(${largeImage})` }}></div>
-          <div className={cx('small-imgs')}>
-            {product.imgs.map((img, index) => {
-              return (
-                <div
-                  onClick={(e) => setLargeImage(img)}
-                  key={index}
-                  className={cx('small-img', 'img')}
-                  style={{ backgroundImage: `url(${img})` }}
-                ></div>
-              );
-            })}
-            {/* Where place more btn */}
-          </div>
+          <div className={cx('img')} style={{ backgroundImage: `url(${product?.product_thumb})` }}></div>
         </div>
         <div className={cx('right')}>
-          <h2 className={cx('name')}>{product.name}</h2>
-          <h3 className={cx('price')}>{product.new_price}</h3>
-          <p className={cx('description')}>{product.description}</p>
+          <h2 className={cx('name')}>{product?.product_name}</h2>
+          <h3 className={cx('price')}>{product?.product_price}</h3>
+          <p className={cx('description')}>{product?.product_description}</p>
 
           <div className={cx('variance')}>
             <DropdownSelect choices={['S', 'M', 'L', 'XL', 'XXL']} name={'sizes'}></DropdownSelect>
@@ -57,19 +64,23 @@ function ProductDetail({ product, recentProducts, relatedProducts }) {
           </div>
 
           <ul className={cx('assurance')}>
-            <li className={cx('square')}>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-            <li className={cx('square')}>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-            <li className={cx('square')}>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+            {product?.product_attributes &&
+              Object.entries(product?.product_attributes).map(([key, value]) => (
+                <li className={cx('square')} key={key}>
+                  <span>{key.toUpperCase()}: </span>
+                  <span>{value}</span>
+                </li>
+              ))}
           </ul>
         </div>
       </div>
-      <Link to={product.shop_id}>
+      <Link to={shop?._id}>
         <div className={cx('shop')}>
           <p className={cx('invite')}>Go to the shop for more products</p>
-          <div className={cx('shop-avt')} style={{ backgroundImage: `url('${product.shop_img}')` }}></div>
+          <div className={cx('shop-avt')} style={{ backgroundImage: `url('${shop?.thumb}')` }}></div>
           <div className={cx('shop-info')}>
-            <p className={cx('shop-name')}>{product.shop_name}</p>
-            <p className={cx('shop-status')}>{product.shop_status}</p>
+            <p className={cx('shop-name')}>{shop?.name}</p>
+            <p className={cx('shop-status')}>{shop?.status}</p>
           </div>
         </div>
       </Link>
@@ -99,13 +110,14 @@ function ProductDetail({ product, recentProducts, relatedProducts }) {
         <p className={cx('title')}>Recently Viewed Products</p>
         <Container>
           <Row>
-            {relatedProducts.map((item, index) => {
-              return (
-                <Col key={index} sm={6} xl={2} lg={2}>
-                  <ProductCard data={item}></ProductCard>
-                </Col>
-              );
-            })}
+            {relatedProducts &&
+              relatedProducts.map((item, index) => {
+                return (
+                  <Col key={index} sm={6} xl={2} lg={2}>
+                    <ProductCard data={item}></ProductCard>
+                  </Col>
+                );
+              })}
           </Row>
         </Container>
       </div>
