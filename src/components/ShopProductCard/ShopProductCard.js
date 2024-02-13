@@ -27,7 +27,7 @@ const ShopProductCard = ({
   const appliedProducts = JSON.parse(localStorage.getItem('formData'))?.discount_product_ids;
 
   useEffect(() => {
-    if (appliedProducts.includes(product._id)) {
+    if (appliedProducts?.includes(product._id)) {
       setApplied(true);
     }
   }, []);

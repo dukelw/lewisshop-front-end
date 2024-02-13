@@ -117,7 +117,13 @@ function DiscountInfoModal({ children, data }) {
             <p className={cx('text')}>
               {data.discount_applies_to === 'all'
                 ? data.discount_applies_to
-                : data.discount_product_ids.map((id, index) => <li key={index}>{id}</li>)}
+                : data.discount_product_ids?.map((id, index) => (
+                    <React.Fragment key={index}>
+                      <br />
+                      <span>{id}</span>
+                      <br />
+                    </React.Fragment>
+                  ))}
             </p>
           </div>
           <div className={cx('group')}>
