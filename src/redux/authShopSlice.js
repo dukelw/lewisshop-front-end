@@ -23,11 +23,9 @@ const authShopSlide = createSlice({
       state.signin.isFetching = true;
     },
     signinSuccess: (state, action) => {
-      console.log('sign in success');
       state.signin.isFetching = false;
       state.signin.currentShop = action.payload;
       state.signin.error = false;
-      console.log(`current Shop`, state.signin.currentShop);
     },
     signinFailure: (state) => {
       state.signin.isFetching = false;

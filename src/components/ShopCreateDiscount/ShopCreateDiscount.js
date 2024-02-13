@@ -23,10 +23,6 @@ const ShopCreateDiscount = ({ isEdit = false, editDiscount = {} }) => {
   const [applyProductName, setApplyProductName] = useState([]);
   const [applyProductID, setApplyProductID] = useState([]);
 
-  if (editDiscount) {
-    console.log('Data', editDiscount);
-  }
-
   const handleDiscountType = (event) => {
     const type = event.target.value;
     setDiscountType(type);

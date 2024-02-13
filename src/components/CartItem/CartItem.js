@@ -24,8 +24,6 @@ function CartItem({ product }) {
     deleteProductInCartByID(accessToken, userID, data, dispatch, axiosJWT);
   };
 
-  // console.log(product);
-
   const handleClickUpDown = (productID, shopID, oldQuantity, newQuantity, price) => {
     const product = {
       user_id: userID,

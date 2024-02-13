@@ -123,7 +123,6 @@ function Cart() {
 
   useEffect(() => {
     const checkoutCart = convertData(cartProducts, cartID, cartUserID);
-    console.log('Checkout cart:', checkoutCart);
     getDiscountsOfShopsByUser(accessToken, userID, currentShops, dispatch, axiosJWT);
     checkout(accessToken, userID, checkoutCart, dispatch, axiosJWT);
   }, [currentCart]);

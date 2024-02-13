@@ -43,14 +43,11 @@ function ProductModal({ onDataChange, text = 'Modal' }) {
     e.preventDefault();
     setApplyProduct((prevApplyProduct) => prevApplyProduct.filter((item) => item.id !== id));
     if (formData) {
-      console.log(`Form data change`);
       const newAppliedProducts = appliedProducts.filter((item) => item !== id);
-      console.log('id', id, 'newIDs', newAppliedProducts);
       const newFormData = {
         ...formData,
         discount_product_ids: newAppliedProducts,
       };
-      console.log('New form dâta products: ', newFormData);
       localStorage.removeItem('formData');
       localStorage.setItem('formData', JSON.stringify(newFormData));
     }

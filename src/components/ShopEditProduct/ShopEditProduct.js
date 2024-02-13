@@ -51,7 +51,6 @@ const ShopEditProduct = () => {
     event.preventDefault();
 
     if (shop) {
-      console.log(formData);
       editProduct(accessToken, shopID, productID, formData, dispatch, navigate, axiosJWT);
     } else {
       navigate('/shop/signin');
