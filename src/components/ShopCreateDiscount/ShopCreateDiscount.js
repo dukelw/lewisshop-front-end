@@ -79,22 +79,6 @@ const ShopCreateDiscount = () => {
   };
 
   const nameRef = useRef(null);
-  // const discountBasicData = [
-  //   'discount_name',
-  //   'discount_description',
-  //   'discount_type',
-  //   'discount_value',
-  //   'discount_max_value',
-  //   'discount_code',
-  //   'discount_start_date',
-  //   'discount_end_date',
-  //   'discount_max_uses',
-  //   'discount_max_uses_per_user',
-  //   'discount_min_order_value',
-  //   'discount_is_active',
-  //   'discount_applies_to',
-  //   'discount_product_ids',
-  // ];
   const initialState = JSON.parse(localStorage.getItem('formData')) || {
     discount_name: '',
     discount_description: '',
@@ -145,9 +129,6 @@ const ShopCreateDiscount = () => {
         return formData.discount_product_ids.push(product.id);
       });
     }
-    console.log(`Product`, products);
-    console.log('Applies to', formData.discount_applies_to);
-    console.log('Form data', formData);
   };
 
   return (

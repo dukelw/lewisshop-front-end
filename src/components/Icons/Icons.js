@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAdd,
   faArrowLeft,
+  faBarcode,
   faCircleCheck,
   faCircleInfo,
   faCircleXmark,
@@ -11,6 +12,8 @@ import {
   faEyeSlash,
   faFilter,
   faHeart,
+  faHourglassEnd,
+  faHourglassStart,
   faHouseFlag,
   faLandMineOn,
   faLayerGroup,
@@ -25,11 +28,14 @@ import {
   faSort,
   faStar as faStartSolid,
   faSubtract,
+  faTimeline,
   faTriangleExclamation,
   faUser,
+  faUserXmark,
+  faUsers,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faInstagram, faMintbit, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faFacebook, faInstagram, faMintbit, faProductHunt, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClockFour, faStar as faStarRegular, faBookmark } from '@fortawesome/free-regular-svg-icons';
 
 export const LayerGroupIcon = ({
@@ -49,7 +55,15 @@ export const LayerGroupIcon = ({
   />
 );
 
-export const LandMineOnIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+export const LandMineOnIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
   <FontAwesomeIcon
     onClick={onClick}
     icon={faLandMineOn}
@@ -62,6 +76,109 @@ export const MintBitIcon = ({ width = '2rem', height = '2rem', className, color,
   <FontAwesomeIcon
     onClick={onClick}
     icon={faMintbit}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const TimeLineIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faTimeline}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const UsersIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faUsers}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const HourGlassStartIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faHourglassStart}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const BarCodeIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faBarcode}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const ProductHuntIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faProductHunt}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const HourGlassEndIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faHourglassEnd}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const UserXmarkIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faUserXmark}
     className={className}
     style={{ width, height, color: color, padding: padding, ...style }}
   />

@@ -196,7 +196,7 @@ export const createNewDiscount = async (accessToken, shopID, discount, dispatch,
       headers: { authorization: `${accessToken}`, user: `${shopID}` },
     });
     dispatch(createDiscountSuccess(res.data));
-    // navigate('/shop/discount');
+    navigate('/discounts');
   } catch (error) {
     dispatch(createDiscountFailed());
   }

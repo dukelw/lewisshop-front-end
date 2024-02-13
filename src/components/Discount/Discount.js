@@ -4,8 +4,9 @@ import { useEffect } from 'react';
 import { Row, Col, Container, Card } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 import styles from './Discount.module.scss';
-import { LandMineOnIcon } from '../Icons';
+import { BarCodeIcon, LandMineOnIcon } from '../Icons';
 import Button from '../Button';
+import DiscountInfoModal from '../DiscountInfoModal';
 import { DongIcon, LayerGroupIcon, MoneyBillIcon, PercentIcon, MintBitIcon } from '../Icons';
 import { createAxios } from '~/createAxios';
 import { getDiscountsOfShopByUser } from '~/redux/apiRequest';
@@ -20,7 +21,6 @@ function Discount() {
   const accessToken = currentShop?.metadata.tokens.accessToken;
   const shopID = currentShop?.metadata.shop._id;
   const axiosJWT = createAxios(currentShop);
-  console.log(discounts);
 
   useEffect(() => {
     getDiscountsOfShopByUser(accessToken, shopID, shopID, dispatch, axiosJWT);
@@ -30,7 +30,7 @@ function Discount() {
     <Container className={cx('wrapper')}>
       <Row>
         {discounts.map((discount, index) => (
-          <Col md={3} key={index} onClick={() => {}}>
+          <Col style={{ margin: '7px 0px' }} md={3} key={index} onClick={() => {}}>
             <Card className={cx('card')}>
               <Card.Img
                 className={cx('image')}
@@ -62,12 +62,10 @@ function Discount() {
                 </div>
                 <div className={cx('group')}>
                   <p className={cx('title')}>
-                    <MintBitIcon />
-                    Min
+                    <BarCodeIcon />
+                    Code
                   </p>
-                  <p className={cx('text')}>
-                    {discount.discount_min_order_value} <DongIcon></DongIcon>
-                  </p>
+                  <p className={cx('text')}>{discount.discount_code}</p>
                 </div>
                 <div className={cx('group')}>
                   <p className={cx('title')}>
@@ -82,9 +80,11 @@ function Discount() {
                 <Card.Text className={cx('description')}>{discount.discount_description}</Card.Text>
               </Card.Body>
               <Card.Footer className={cx('footer')}>
-                <Button outline rounded>
-                  Detail
-                </Button>
+                <DiscountInfoModal data={discount}>
+                  <Button outline rounded>
+                    Detail
+                  </Button>
+                </DiscountInfoModal>
                 <Button outline rounded>
                   More
                 </Button>
