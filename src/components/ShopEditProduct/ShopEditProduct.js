@@ -20,7 +20,6 @@ const ShopEditProduct = () => {
   const navigate = useNavigate();
   const axiosJWT = createAxios(shop);
 
-  // setTimeout(() )
   const foundProduct = useSelector((state) => state.products.product?.foundProduct);
   const {
     product_description,

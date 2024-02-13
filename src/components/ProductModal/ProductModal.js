@@ -17,6 +17,8 @@ function ProductModal({ onDataChange, text = 'Modal' }) {
   const product = useSelector((state) => state.products.products.allProducts);
   const data = product?.metadata || [];
   const axiosJWT = createAxios(shop);
+  const formData = JSON.parse(localStorage.getItem('formData'));
+  const appliedProducts = JSON.parse(localStorage.getItem('formData'))?.discount_product_ids;
 
   useEffect(() => {
     if (shop) {
@@ -29,14 +31,29 @@ function ProductModal({ onDataChange, text = 'Modal' }) {
 
   const handleApply = (e, id, name) => {
     e.preventDefault();
+
     if (!applyProduct.some((item) => item.id === id)) {
       setApplyProduct((prevApplyProduct) => [...prevApplyProduct, { id, name }]);
+    } else {
+      console.log('Product has been apply');
     }
   };
 
   const handleUnapply = (e, id) => {
     e.preventDefault();
     setApplyProduct((prevApplyProduct) => prevApplyProduct.filter((item) => item.id !== id));
+    if (formData) {
+      console.log(`Form data change`);
+      const newAppliedProducts = appliedProducts.filter((item) => item !== id);
+      console.log('id', id, 'newIDs', newAppliedProducts);
+      const newFormData = {
+        ...formData,
+        discount_product_ids: newAppliedProducts,
+      };
+      console.log('New form dâta products: ', newFormData);
+      localStorage.removeItem('formData');
+      localStorage.setItem('formData', JSON.stringify(newFormData));
+    }
   };
 
   const sendDataToShopCreateDiscount = () => {

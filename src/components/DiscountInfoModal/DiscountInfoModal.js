@@ -114,7 +114,11 @@ function DiscountInfoModal({ children, data }) {
               <ProductHuntIcon />
               Apply to
             </p>
-            <p className={cx('text')}>{data.discount_applies_to}</p>
+            <p className={cx('text')}>
+              {data.discount_applies_to === 'all'
+                ? data.discount_applies_to
+                : data.discount_product_ids.map((id, index) => <li key={index}>{id}</li>)}
+            </p>
           </div>
           <div className={cx('group')}>
             <p className={cx('title')}>

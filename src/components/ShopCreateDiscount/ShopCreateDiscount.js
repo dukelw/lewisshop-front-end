@@ -3,7 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 import styles from './ShopCreateDiscount.module.scss';
 import Button from '../Button';
-import { createNewDiscount } from '~/redux/apiRequest';
+import { createNewDiscount, updateDiscount, getDiscountsOfShopByUser } from '~/redux/apiRequest';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { createAxios } from '~/createAxios';
@@ -11,15 +11,21 @@ import ProductModal from '../ProductModal';
 
 const cx = classNames.bind(styles);
 
-const ShopCreateDiscount = () => {
+const ShopCreateDiscount = ({ isEdit = false, editDiscount = {} }) => {
   const shop = useSelector((state) => state.authShop.signin?.currentShop);
+  const accessToken = shop?.metadata.tokens.accessToken;
+  const shopID = shop?.metadata.shop._id;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosJWT = createAxios(shop);
   const [discountType, setDiscountType] = useState('');
-  const [applyTo, setApplyTo] = useState('all');
+  const [applyTo, setApplyTo] = useState('specific');
   const [applyProductName, setApplyProductName] = useState([]);
   const [applyProductID, setApplyProductID] = useState([]);
+
+  if (editDiscount) {
+    console.log('Data', editDiscount);
+  }
 
   const handleDiscountType = (event) => {
     const type = event.target.value;
@@ -58,24 +64,23 @@ const ShopCreateDiscount = () => {
     };
 
     if (shop) {
-      createNewDiscount(
-        shop?.metadata.tokens.accessToken,
-        shop?.metadata.shop._id,
-        convertedFormData,
-        dispatch,
-        navigate,
-        axiosJWT,
-      );
-      localStorage.setItem('formData', JSON.stringify(initialState));
+      if (isEdit) {
+        updateDiscount(accessToken, shopID, convertedFormData, dispatch, navigate, axiosJWT);
+        getDiscountsOfShopByUser(accessToken, shopID, shopID, dispatch, axiosJWT);
+      } else {
+        createNewDiscount(accessToken, shopID, convertedFormData, dispatch, navigate, axiosJWT);
+      }
     } else {
       navigate('/shop/signin');
     }
 
-    // Reset form
-    setFormData(initialState);
-
     // Focus name
     nameRef.current.focus();
+
+    // Remove formData from localStorage
+    return () => {
+      localStorage.removeItem('formData');
+    };
   };
 
   const nameRef = useRef(null);
@@ -93,7 +98,7 @@ const ShopCreateDiscount = () => {
     discount_min_order_value: 100000,
     discount_shop_id: shop?.metadata.shop._id,
     discount_is_active: true,
-    discount_applies_to: 'all',
+    discount_applies_to: 'specific',
     discount_product_ids: [],
     discount_uses_count: 0,
   };
@@ -106,9 +111,13 @@ const ShopCreateDiscount = () => {
 
   // Restore data from form in Local Storage when component is being created
   useEffect(() => {
-    const savedFormData = JSON.parse(localStorage.getItem('formData'));
-    if (savedFormData) {
-      setFormData(savedFormData);
+    if (isEdit) {
+      setFormData(editDiscount);
+    } else {
+      const savedFormData = JSON.parse(localStorage.getItem('formData'));
+      if (savedFormData) {
+        setFormData(savedFormData);
+      }
     }
   }, []);
 
@@ -121,19 +130,25 @@ const ShopCreateDiscount = () => {
   };
 
   const getApplyProduct = (products) => {
-    // formData.discount_applies_to = 'specific';
     if (formData.discount_applies_to === 'specific') {
-      products.map((product) => {
+      if (isEdit) {
+        const editFormData = JSON.parse(localStorage.getItem('formData'));
+        setFormData(editFormData);
+      }
+      products.forEach((product) => {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          discount_product_ids: [...prevFormData.discount_product_ids, product.id],
+        }));
         setApplyProductName((prev) => [...prev, product.name]);
         setApplyProductID((prev) => [...prev, product.id]);
-        return formData.discount_product_ids.push(product.id);
       });
     }
   };
 
   return (
     <div>
-      <h1 className={cx('title')}>Create new discount</h1>
+      <h1 className={cx('title')}>{isEdit ? 'Edit discount' : 'Create new discount'}</h1>
       <Form onSubmitCapture={(e) => e.preventDefault()} className={cx('form')}>
         <Row>
           <Col md={5}>
@@ -276,7 +291,7 @@ const ShopCreateDiscount = () => {
             </Form.Group>
             {applyTo === 'specific' && (
               <Form.Group className={cx('form-group', 'apply')} controlId="discount_product_ids">
-                <ProductModal onDataChange={getApplyProduct} text="Choose products"></ProductModal>
+                <ProductModal isEdit={isEdit} onDataChange={getApplyProduct} text="Choose products"></ProductModal>
                 <Form.Label className={cx('form-label')}>Select products</Form.Label>
                 {applyProductName.map((name, index) => (
                   <Link key={index} to={`/product/${applyProductID[index]}`}>
@@ -288,7 +303,7 @@ const ShopCreateDiscount = () => {
           </Col>
           <Col className={cx('submit-col')} md={2}>
             <Button className={cx('submit-btn')} primary onClick={handleSubmit}>
-              Create
+              {isEdit ? 'Update' : 'Create'}
             </Button>
           </Col>
         </Row>

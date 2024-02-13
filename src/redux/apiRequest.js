@@ -68,11 +68,14 @@ import {
   createDiscountFailed,
   createDiscountStart,
   createDiscountSuccess,
+  editDiscountFailed,
+  editDiscountStart,
+  editDiscountSuccess,
   findDiscountsFailed,
   findDiscountsStart,
   findDiscountsSuccess,
 } from './discountSlice';
-import { hideToast, showToast } from './toastSlice';
+import { showToast } from './toastSlice';
 import { addToastsFailed, addToastsStart, addToastsSuccess, removeExpiredToasts } from './multiToastSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -191,7 +194,6 @@ export const createNewProduct = async (accessToken, shopID, product, dispatch, n
 export const createNewDiscount = async (accessToken, shopID, discount, dispatch, navigate, axiosJWT) => {
   dispatch(createDiscountStart());
   try {
-    console.log(accessToken, shopID, discount);
     const res = await axiosJWT.post(`${REACT_APP_BASE_URL}discount/create`, discount, {
       headers: { authorization: `${accessToken}`, user: `${shopID}` },
     });
@@ -199,6 +201,20 @@ export const createNewDiscount = async (accessToken, shopID, discount, dispatch,
     navigate('/discounts');
   } catch (error) {
     dispatch(createDiscountFailed());
+  }
+};
+
+export const updateDiscount = async (accessToken, shopID, discount, dispatch, navigate, axiosJWT) => {
+  dispatch(editDiscountStart());
+  try {
+    const res = await axiosJWT.patch(`${REACT_APP_BASE_URL}discount/update/${discount.discount_code}`, discount, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(editDiscountSuccess(res.data));
+    addToast({ message: 'Edit discount successfully', type: 'success', show: true }, dispatch);
+    
+  } catch (error) {
+    dispatch(editDiscountFailed());
   }
 };
 

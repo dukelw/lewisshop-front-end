@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { Row, Col, Container, Card } from 'react-bootstrap';
@@ -7,7 +6,8 @@ import styles from './Discount.module.scss';
 import { BarCodeIcon, LandMineOnIcon } from '../Icons';
 import Button from '../Button';
 import DiscountInfoModal from '../DiscountInfoModal';
-import { DongIcon, LayerGroupIcon, MoneyBillIcon, PercentIcon, MintBitIcon } from '../Icons';
+import DiscountEditModal from '../DiscountEditModal';
+import { DongIcon, LayerGroupIcon, MoneyBillIcon, PercentIcon } from '../Icons';
 import { createAxios } from '~/createAxios';
 import { getDiscountsOfShopByUser } from '~/redux/apiRequest';
 
@@ -17,7 +17,7 @@ function Discount() {
   const dispatch = useDispatch();
   const currentShop = useSelector((state) => state?.authShop.signin?.currentShop);
   const currentDiscounts = useSelector((state) => state?.discount.discounts.foundDiscounts);
-  const discounts = currentDiscounts?.metadata;
+  const discounts = currentDiscounts?.metadata || [];
   const accessToken = currentShop?.metadata.tokens.accessToken;
   const shopID = currentShop?.metadata.shop._id;
   const axiosJWT = createAxios(currentShop);
@@ -85,9 +85,12 @@ function Discount() {
                     Detail
                   </Button>
                 </DiscountInfoModal>
-                <Button outline rounded>
-                  More
-                </Button>
+
+                <DiscountEditModal data={discount}>
+                  <Button outline rounded>
+                    Edit
+                  </Button>
+                </DiscountEditModal>
               </Card.Footer>
             </Card>
           </Col>

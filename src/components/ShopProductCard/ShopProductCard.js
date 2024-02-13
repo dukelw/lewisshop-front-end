@@ -1,8 +1,7 @@
-import React, { Fragment, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { findProductByID } from '~/redux/apiRequest';
 import classNames from 'classnames/bind';
 import styles from './ShopProductCard.module.scss';
@@ -21,12 +20,17 @@ const ShopProductCard = ({
   small = false,
 }) => {
   const shop = useSelector((state) => state.authShop.signin?.currentShop);
-  const accessToken = shop?.metadata.tokens.accessToken;
-  const shopID = shop?.metadata.shop._id;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { product_thumb, product_name, product_description, product_price, product_quantity } = product;
   const [applied, setApplied] = useState(false);
+  const appliedProducts = JSON.parse(localStorage.getItem('formData'))?.discount_product_ids;
+
+  useEffect(() => {
+    if (appliedProducts.includes(product._id)) {
+      setApplied(true);
+    }
+  }, []);
 
   const handlePublish = (e, id) => {
     e.preventDefault();
@@ -40,7 +44,7 @@ const ShopProductCard = ({
 
   const handleEdit = (e, id) => {
     e.preventDefault();
-    findProductByID(accessToken, shopID, product._id, dispatch, axiosJWT).then(navigate(`/shop/edit/${id}`));
+    findProductByID(product._id, dispatch, axiosJWT).then(navigate(`/shop/edit/${id}`));
   };
 
   return (
