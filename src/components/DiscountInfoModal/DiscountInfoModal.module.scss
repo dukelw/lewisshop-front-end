@@ -73,3 +73,22 @@
 .type {
   padding-right: 0 !important;
 }
+
+.products-group {
+  display: flex;
+  align-items: flex-start;
+}
+
+.products {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+
+  li {
+    margin: 4px 0 0 0;
+    padding: 4px 8px;
+    background-color: var(--pink);
+    border-radius: 25px;
+    color: var(--white);
+  }
+}

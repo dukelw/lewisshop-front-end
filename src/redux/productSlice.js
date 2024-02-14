@@ -13,6 +13,11 @@ const productSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    IDsProducts: {
+      foundProducts: null,
+      isFetching: false,
+      error: false,
+    },
     relateProduct: {
       relatedProducts: null,
       isFetching: false,
@@ -49,6 +54,18 @@ const productSlice = createSlice({
       state.product.foundProduct = null;
       state.product.error = true;
     },
+    findProductsStart: (state) => {
+      state.IDsProducts.isFetching = true;
+    },
+    findProductsSuccess: (state, action) => {
+      state.IDsProducts.isFetching = false;
+      state.IDsProducts.foundProducts = action.payload;
+    },
+    findProductsFailed: (state) => {
+      state.IDsProducts.isFetching = false;
+      state.IDsProducts.foundProducts = null;
+      state.IDsProducts.error = true;
+    },
     findRelateProductStart: (state) => {
       state.relateProduct.isFetching = true;
     },
@@ -79,6 +96,9 @@ export const {
   findProductStart,
   findProductSuccess,
   findProductFailed,
+  findProductsStart,
+  findProductsSuccess,
+  findProductsFailed,
   findRelateProductFailed,
   findRelateProductSuccess,
   findRelateProductStart,

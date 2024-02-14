@@ -1,9 +1,21 @@
+.text-limit {
+  max-width: 70%;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .card {
   display: flex;
   flex-direction: column;
   border: none;
   box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
   border-radius: 25px;
+}
+
+.type {
+  padding-right: 0 !important;
 }
 
 .wrapper {
@@ -59,6 +71,7 @@
   margin-bottom: 4px;
   font-size: 1.6rem;
   font-weight: normal;
+  text-align: right;
 }
 
 .title {

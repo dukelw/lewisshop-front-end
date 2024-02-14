@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from './DiscountInfoModal.module.scss';
 import {
@@ -16,11 +17,21 @@ import {
   HourGlassEndIcon,
   BarCodeIcon,
 } from '../Icons';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function DiscountInfoModal({ children, data }) {
+  const currentAppliedProducts = useSelector((state) => state.products.IDsProducts.foundProducts);
+  const appliedProducts = currentAppliedProducts?.metadata;
   const [show, setShow] = useState(false);
+  const handleProductDetail = (productID, shopID, productType) => {
+    localStorage.setItem('productDetailID', productID);
+    localStorage.setItem('productShopID', shopID);
+    localStorage.setItem('productType', productType);
+  };
+
+  console.log('Applied', appliedProducts);
 
   return (
     <>
@@ -109,21 +120,23 @@ function DiscountInfoModal({ children, data }) {
             </p>
             <p className={cx('text')}>{data.discount_max_uses_per_user}</p>
           </div>
-          <div className={cx('group')}>
+          <div className={cx('group', 'products-group')}>
             <p className={cx('title')}>
               <ProductHuntIcon />
               Apply to
             </p>
-            <p className={cx('text')}>
-              {data.discount_applies_to === 'all'
-                ? data.discount_applies_to
-                : data.discount_product_ids?.map((id, index) => (
-                    <React.Fragment key={index}>
-                      <br />
-                      <span>{id}</span>
-                      <br />
-                    </React.Fragment>
-                  ))}
+            <p className={cx('products')}>
+              {data.discount_applies_to === 'all' ? (
+                <li>All</li>
+              ) : (
+                appliedProducts?.map((product, index) => (
+                  <div onClick={() => handleProductDetail(product._id, product.product_shop, product.product_type)}>
+                    <Link key={index} to={`/product/${product.product_slug}`}>
+                      <li>{product.product_name}</li>
+                    </Link>
+                  </div>
+                ))
+              )}
             </p>
           </div>
           <div className={cx('group')}>

@@ -29,11 +29,11 @@ function ProductModal({ onDataChange, text = 'Modal' }) {
   const [show, setShow] = useState(false);
   const [applyProduct, setApplyProduct] = useState([]);
 
-  const handleApply = (e, id, name) => {
+  const handleApply = (e, id, name, slug, type, shop) => {
     e.preventDefault();
 
     if (!applyProduct.some((item) => item.id === id)) {
-      setApplyProduct((prevApplyProduct) => [...prevApplyProduct, { id, name }]);
+      setApplyProduct((prevApplyProduct) => [...prevApplyProduct, { id, name, slug, type, shop }]);
     } else {
       console.log('Product has been apply');
     }

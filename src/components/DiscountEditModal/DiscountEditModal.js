@@ -8,6 +8,9 @@ const cx = classNames.bind(styles);
 
 function DiscountInfoModal({ children, data }) {
   const [show, setShow] = useState(false);
+  const handleCloseModal = () => {
+    setShow(false);
+  };
 
   return (
     <>
@@ -15,7 +18,10 @@ function DiscountInfoModal({ children, data }) {
 
       <Modal
         show={show}
-        onHide={() => setShow(false)}
+        onHide={() => {
+          localStorage.removeItem('formData');
+          setShow(false);
+        }}
         aria-labelledby="example-custom-modal-styling-title"
         dialogClassName={cx('wrapper')}
         contentClassName={cx('inner')}
@@ -27,7 +33,7 @@ function DiscountInfoModal({ children, data }) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ShopCreateDiscount isEdit={true} editDiscount={data}></ShopCreateDiscount>
+          <ShopCreateDiscount isEdit={true} editDiscount={data} onCloseModal={handleCloseModal}></ShopCreateDiscount>
         </Modal.Body>
       </Modal>
     </>

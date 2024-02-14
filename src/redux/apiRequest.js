@@ -38,6 +38,9 @@ import {
   findProductFailed,
   findProductStart,
   findProductSuccess,
+  findProductsFailed,
+  findProductsStart,
+  findProductsSuccess,
   findRelateProductFailed,
   findRelateProductStart,
   findRelateProductSuccess,
@@ -212,7 +215,6 @@ export const updateDiscount = async (accessToken, shopID, discount, dispatch, na
     });
     dispatch(editDiscountSuccess(res.data));
     addToast({ message: 'Edit discount successfully', type: 'success', show: true }, dispatch);
-    
   } catch (error) {
     dispatch(editDiscountFailed());
   }
@@ -318,6 +320,18 @@ export const findProductByID = async (productID, dispatch, axiosJWT) => {
     return res.data;
   } catch (error) {
     dispatch(findProductFailed());
+  }
+};
+
+export const findProductsByID = async (productIDs, dispatch, axiosJWT) => {
+  dispatch(findProductsStart());
+  try {
+    console.log('Product IDs: ', productIDs);
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}product/find-products`, productIDs);
+    dispatch(findProductsSuccess(res.data));
+    return res.data;
+  } catch (error) {
+    dispatch(findProductsFailed());
   }
 };
 

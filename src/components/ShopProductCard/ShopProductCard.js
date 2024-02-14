@@ -22,7 +22,16 @@ const ShopProductCard = ({
   const shop = useSelector((state) => state.authShop.signin?.currentShop);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { product_thumb, product_name, product_description, product_price, product_quantity } = product;
+  const {
+    product_thumb,
+    product_name,
+    product_description,
+    product_price,
+    product_quantity,
+    product_slug,
+    product_type,
+    product_shop,
+  } = product;
   const [applied, setApplied] = useState(false);
   const appliedProducts = JSON.parse(localStorage.getItem('formData'))?.discount_product_ids;
 
@@ -63,7 +72,7 @@ const ShopProductCard = ({
             <Button
               onClick={(e) => {
                 setApplied(!applied);
-                handleApply(e, product._id, product_name);
+                handleApply(e, product._id, product_name, product_slug, product_type, product_shop);
               }}
               className={cx('action-button')}
             >

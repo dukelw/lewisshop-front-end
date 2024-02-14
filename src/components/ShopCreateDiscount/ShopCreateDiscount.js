@@ -11,7 +11,7 @@ import ProductModal from '../ProductModal';
 
 const cx = classNames.bind(styles);
 
-const ShopCreateDiscount = ({ isEdit = false, editDiscount = {} }) => {
+const ShopCreateDiscount = ({ isEdit = false, editDiscount = {}, onCloseModal = () => {} }) => {
   const shop = useSelector((state) => state.authShop.signin?.currentShop);
   const accessToken = shop?.metadata.tokens.accessToken;
   const shopID = shop?.metadata.shop._id;
@@ -20,8 +20,7 @@ const ShopCreateDiscount = ({ isEdit = false, editDiscount = {} }) => {
   const axiosJWT = createAxios(shop);
   const [discountType, setDiscountType] = useState('');
   const [applyTo, setApplyTo] = useState('specific');
-  const [applyProductName, setApplyProductName] = useState([]);
-  const [applyProductID, setApplyProductID] = useState([]);
+  const [applyProduct, setApplyProduct] = useState([]);
 
   const handleDiscountType = (event) => {
     const type = event.target.value;
@@ -30,6 +29,12 @@ const ShopCreateDiscount = ({ isEdit = false, editDiscount = {} }) => {
       ...formData,
       discount_type: type,
     });
+  };
+
+  const handleProductDetail = (productID, shopID, productType) => {
+    localStorage.setItem('productDetailID', productID);
+    localStorage.setItem('productShopID', shopID);
+    localStorage.setItem('productType', productType);
   };
 
   const formatDate = (dateString) => {
@@ -73,6 +78,11 @@ const ShopCreateDiscount = ({ isEdit = false, editDiscount = {} }) => {
     // Focus name
     nameRef.current.focus();
 
+    // Close modal if is being edited
+    if (isEdit) {
+      onCloseModal();
+    }
+
     // Remove formData from localStorage
     return () => {
       localStorage.removeItem('formData');
@@ -110,6 +120,7 @@ const ShopCreateDiscount = ({ isEdit = false, editDiscount = {} }) => {
     if (isEdit) {
       setFormData(editDiscount);
     } else {
+      console.log('Not edit', JSON.parse(localStorage.getItem('formData')));
       const savedFormData = JSON.parse(localStorage.getItem('formData'));
       if (savedFormData) {
         setFormData(savedFormData);
@@ -136,10 +147,13 @@ const ShopCreateDiscount = ({ isEdit = false, editDiscount = {} }) => {
           ...prevFormData,
           discount_product_ids: [...prevFormData.discount_product_ids, product.id],
         }));
-        setApplyProductName((prev) => [...prev, product.name]);
-        setApplyProductID((prev) => [...prev, product.id]);
+        setApplyProduct((prev) => [
+          ...prev,
+          { name: product.name, id: product.id, slug: product.slug, type: product.type, shop: product.shop },
+        ]);
       });
     }
+    console.log('Apply product name', applyProduct);
   };
 
   return (
@@ -289,10 +303,12 @@ const ShopCreateDiscount = ({ isEdit = false, editDiscount = {} }) => {
               <Form.Group className={cx('form-group', 'apply')} controlId="discount_product_ids">
                 <ProductModal isEdit={isEdit} onDataChange={getApplyProduct} text="Choose products"></ProductModal>
                 <Form.Label className={cx('form-label')}>Select products</Form.Label>
-                {applyProductName.map((name, index) => (
-                  <Link key={index} to={`/product/${applyProductID[index]}`}>
-                    <li>{name}</li>
-                  </Link>
+                {applyProduct.map((product, index) => (
+                  <div onClick={() => handleProductDetail(product.id, product.shop, product.type)}>
+                    <Link key={index} to={`/product/${product.slug}`}>
+                      <li>{product.name}</li>
+                    </Link>
+                  </div>
                 ))}
               </Form.Group>
             )}

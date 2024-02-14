@@ -9,7 +9,7 @@ import DiscountInfoModal from '../DiscountInfoModal';
 import DiscountEditModal from '../DiscountEditModal';
 import { DongIcon, LayerGroupIcon, MoneyBillIcon, PercentIcon } from '../Icons';
 import { createAxios } from '~/createAxios';
-import { getDiscountsOfShopByUser } from '~/redux/apiRequest';
+import { findProductsByID, getDiscountsOfShopByUser } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
@@ -21,6 +21,11 @@ function Discount() {
   const accessToken = currentShop?.metadata.tokens.accessToken;
   const shopID = currentShop?.metadata.shop._id;
   const axiosJWT = createAxios(currentShop);
+
+  const handleDetailClick = (discount) => {
+    // Call findProducts with the discount's product IDs
+    findProductsByID(discount.discount_product_ids, dispatch);
+  };
 
   useEffect(() => {
     getDiscountsOfShopByUser(accessToken, shopID, shopID, dispatch, axiosJWT);
@@ -57,7 +62,11 @@ function Discount() {
                     <LayerGroupIcon /> Type
                   </p>
                   <p className={cx('text')}>
-                    {discount.discount_type === 'percentage' ? <PercentIcon /> : <DongIcon></DongIcon>}
+                    {discount.discount_type === 'percentage' ? (
+                      <PercentIcon className={cx('type')} />
+                    ) : (
+                      <DongIcon className={cx('type')}></DongIcon>
+                    )}
                   </p>
                 </div>
                 <div className={cx('group')}>
@@ -65,7 +74,7 @@ function Discount() {
                     <BarCodeIcon />
                     Code
                   </p>
-                  <p className={cx('text')}>{discount.discount_code}</p>
+                  <p className={cx('text', 'text-limit')}>{discount.discount_code}</p>
                 </div>
                 <div className={cx('group')}>
                   <p className={cx('title')}>
@@ -74,14 +83,18 @@ function Discount() {
                   </p>
                   <p className={cx('text')}>
                     {discount.discount_value}
-                    {discount.discount_type === 'percentage' ? <PercentIcon /> : <DongIcon></DongIcon>}
+                    {discount.discount_type === 'percentage' ? (
+                      <PercentIcon className={cx('type')} />
+                    ) : (
+                      <DongIcon className={cx('type')}></DongIcon>
+                    )}
                   </p>
                 </div>
                 <Card.Text className={cx('description')}>{discount.discount_description}</Card.Text>
               </Card.Body>
               <Card.Footer className={cx('footer')}>
                 <DiscountInfoModal data={discount}>
-                  <Button outline rounded>
+                  <Button outline rounded onClick={() => handleDetailClick(discount)}>
                     Detail
                   </Button>
                 </DiscountInfoModal>
