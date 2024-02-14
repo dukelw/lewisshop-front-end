@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Row, Col, Container, Card } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 import styles from './Discount.module.scss';
@@ -10,6 +10,8 @@ import DiscountEditModal from '../DiscountEditModal';
 import { DongIcon, LayerGroupIcon, MoneyBillIcon, PercentIcon } from '../Icons';
 import { createAxios } from '~/createAxios';
 import { findProductsByID, getDiscountsOfShopByUser } from '~/redux/apiRequest';
+import DeleteConfirm from '../DeleteConfirm';
+import axios from 'axios';
 
 const cx = classNames.bind(styles);
 
@@ -21,10 +23,11 @@ function Discount() {
   const accessToken = currentShop?.metadata.tokens.accessToken;
   const shopID = currentShop?.metadata.shop._id;
   const axiosJWT = createAxios(currentShop);
+  const [deleteMode, setDeleteMode] = useState(false);
 
   const handleDetailClick = (discount) => {
     // Call findProducts with the discount's product IDs
-    findProductsByID(discount.discount_product_ids, dispatch);
+    findProductsByID(discount.discount_product_ids, dispatch, axios);
   };
 
   useEffect(() => {
@@ -33,6 +36,16 @@ function Discount() {
 
   return (
     <Container className={cx('wrapper')}>
+      <Row>
+        <Col md={6}>
+          <p classNacme={'part'}>All Voucher</p>
+        </Col>
+        <Col md={6}>
+          <Button onClick={(e) => setDeleteMode(!deleteMode)} rounded primary>
+            {deleteMode ? 'View Mode' : 'Delete Mode'}
+          </Button>
+        </Col>
+      </Row>
       <Row>
         {discounts.map((discount, index) => (
           <Col style={{ margin: '7px 0px' }} md={3} key={index} onClick={() => {}}>
@@ -93,11 +106,19 @@ function Discount() {
                 <Card.Text className={cx('description')}>{discount.discount_description}</Card.Text>
               </Card.Body>
               <Card.Footer className={cx('footer')}>
-                <DiscountInfoModal data={discount}>
-                  <Button outline rounded onClick={() => handleDetailClick(discount)}>
-                    Detail
-                  </Button>
-                </DiscountInfoModal>
+                {!deleteMode ? (
+                  <DiscountInfoModal data={discount}>
+                    <Button outline rounded onClick={handleDetailClick(discount)}>
+                      Detail
+                    </Button>
+                  </DiscountInfoModal>
+                ) : (
+                  <DeleteConfirm discount_code={discount.discount_code}>
+                    <Button outline rounded>
+                      Delete
+                    </Button>
+                  </DeleteConfirm>
+                )}
 
                 <DiscountEditModal data={discount}>
                   <Button outline rounded>

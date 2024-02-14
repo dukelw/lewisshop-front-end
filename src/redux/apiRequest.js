@@ -71,6 +71,9 @@ import {
   createDiscountFailed,
   createDiscountStart,
   createDiscountSuccess,
+  deleteDiscountFailed,
+  deleteDiscountStart,
+  deleteDiscountSuccess,
   editDiscountFailed,
   editDiscountStart,
   editDiscountSuccess,
@@ -328,8 +331,8 @@ export const findProductsByID = async (productIDs, dispatch, axiosJWT) => {
   try {
     console.log('Product IDs: ', productIDs);
     const res = await axiosJWT.post(`${REACT_APP_BASE_URL}product/find-products`, productIDs);
+    console.log('Res', res.data);
     dispatch(findProductsSuccess(res.data));
-    return res.data;
   } catch (error) {
     dispatch(findProductsFailed());
   }
@@ -467,6 +470,19 @@ export const getDiscountsOfShopsByUser = async (accessToken, userID, shopIDs, di
     dispatch(findDiscountsSuccess(res.data));
   } catch (error) {
     dispatch(findDiscountsFailed());
+  }
+};
+
+export const deleteDiscount = async (accessToken, shopID, discountCode, dispatch, axiosJWT) => {
+  dispatch(deleteDiscountStart());
+  try {
+    await axiosJWT.delete(`${REACT_APP_BASE_URL}discount/delete/${discountCode}`, {
+      headers: { authorization: `${accessToken}`, user: shopID },
+    });
+    dispatch(deleteDiscountSuccess());
+    getDiscountsOfShopByUser(accessToken, shopID, shopID, dispatch, axiosJWT);
+  } catch (error) {
+    dispatch(deleteDiscountFailed());
   }
 };
 

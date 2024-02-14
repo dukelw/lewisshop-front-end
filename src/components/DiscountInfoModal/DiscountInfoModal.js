@@ -31,7 +31,10 @@ function DiscountInfoModal({ children, data }) {
     localStorage.setItem('productType', productType);
   };
 
+  console.log('Applied', currentAppliedProducts);
+
   console.log('Applied', appliedProducts);
+  useState(() => {}, []);
 
   return (
     <>
