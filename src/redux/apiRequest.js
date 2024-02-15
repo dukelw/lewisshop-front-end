@@ -48,6 +48,9 @@ import {
   getProductsStart,
   getProductsSuccess,
   resetRecentProduct,
+  searchProductFailed,
+  searchProductStart,
+  searchProductSuccess,
 } from './productSlice';
 import {
   createProductStart,
@@ -389,6 +392,16 @@ export const getCartByUserID = async (accessToken, userID, dispatch, navigate, a
     navigate('/cart');
   } catch (error) {
     dispatch(getCartFailure());
+  }
+};
+
+export const searchProducts = async (keySearch, dispatch, axiosJWT) => {
+  dispatch(searchProductStart());
+  try {
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/search/${keySearch}`);
+    dispatch(searchProductSuccess(res.data));
+  } catch (error) {
+    dispatch(searchProductFailed());
   }
 };
 

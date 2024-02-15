@@ -1,33 +1,35 @@
 import classNames from 'classnames/bind';
+import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import React, { useState, useEffect, useRef } from 'react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
 import PropTypes from 'prop-types';
-
-import * as searchService from '~/services/search';
-import { useDebounce } from '~/hooks';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
-import AccountItem from '~/components/AccountItem';
 import { SearchIcon } from '~/components/Icons';
 import styles from './Search.module.scss';
+import { searchProducts } from '~/redux/apiRequest';
+import ProductItem from '~/components/ProductItem';
 
 const cx = classNames.bind(styles);
 
 function Search() {
+  // const currentUser = useSelector((state) => state.authUser.signin.currentUser);
+  // const accessToken = currentUser?.metadata.tokens.accessToken;
+  // const userID = currentUser?.metadata.user._id;
+  const currentSearchResult = useSelector((state) => state?.products.search.matchedProducts);
+  const dispatch = useDispatch();
+  const searchResult = currentSearchResult?.metadata || [];
   const [searchValue, setSearchValue] = useState('');
   const [searchDisplay, setSearchDisplay] = useState(false);
-  const [searchResult, setSearchResult] = useState([]);
   const [showResult, setShowResult] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const debouncedValue = useDebounce(searchValue, 500);
 
   const inputRef = useRef();
 
   const handleClear = () => {
     inputRef.current.focus();
-    setSearchResult([]);
     setSearchValue('');
   };
 
@@ -36,24 +38,8 @@ function Search() {
   };
 
   useEffect(() => {
-    if (!debouncedValue.trim()) {
-      setSearchResult([]);
-      return;
-    }
-
-    setLoading(true);
-
-    const fetchApi = async () => {
-      setLoading(true);
-
-      const result = await searchService.search(debouncedValue);
-      setSearchResult(result);
-
-      setLoading(false);
-    };
-
-    fetchApi();
-  }, [debouncedValue]);
+    searchProducts(searchValue, dispatch, axios);
+  }, [searchValue]);
 
   const handleChange = (e) => {
     const searchValue = e.target.value;
@@ -75,14 +61,14 @@ function Search() {
       {searchDisplay && (
         <HeadlessTippy
           interactive
-          visible={showResult && searchResult.length > 0}
+          visible={showResult && searchResult?.length > 0}
           placement="bottom-end"
           render={(attrs) => (
             <div className={cx('search-result')} tabIndex={-1} {...attrs}>
               <PopperWrapper>
-                <h4 className={cx('search-title')}>Account</h4>
-                {searchResult.map((result) => {
-                  return <AccountItem key={result.id} data={result}></AccountItem>;
+                <h4 className={cx('search-title')}>Product</h4>
+                {searchResult?.map((result) => {
+                  return <ProductItem key={result._id} data={result}></ProductItem>;
                 })}
               </PopperWrapper>
             </div>
@@ -101,12 +87,11 @@ function Search() {
               onChange={handleChange}
               onFocus={() => setShowResult(true)}
             />
-            {!!searchValue && !loading && (
+            {!!searchValue && (
               <button className={cx('clear')} onClick={handleClear}>
                 <FontAwesomeIcon icon={faCircleXmark} />
               </button>
             )}
-            {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
           </div>
         </HeadlessTippy>
       )}
@@ -114,7 +99,7 @@ function Search() {
   );
 }
 
-AccountItem.propTypes = {
+ProductItem.propTypes = {
   data: PropTypes.object,
 };
 
