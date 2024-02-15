@@ -74,12 +74,21 @@ import {
   deleteDiscountFailed,
   deleteDiscountStart,
   deleteDiscountSuccess,
+  destroyDiscountFailed,
+  destroyDiscountStart,
+  destroyDiscountSuccess,
   editDiscountFailed,
   editDiscountStart,
   editDiscountSuccess,
+  findDeletedDiscountsFailed,
+  findDeletedDiscountsStart,
+  findDeletedDiscountsSuccess,
   findDiscountsFailed,
   findDiscountsStart,
   findDiscountsSuccess,
+  restoreDiscountFailed,
+  restoreDiscountStart,
+  restoreDiscountSuccess,
 } from './discountSlice';
 import { showToast } from './toastSlice';
 import { addToastsFailed, addToastsStart, addToastsSuccess, removeExpiredToasts } from './multiToastSlice';
@@ -329,9 +338,7 @@ export const findProductByID = async (productID, dispatch, axiosJWT) => {
 export const findProductsByID = async (productIDs, dispatch, axiosJWT) => {
   dispatch(findProductsStart());
   try {
-    console.log('Product IDs: ', productIDs);
     const res = await axiosJWT.post(`${REACT_APP_BASE_URL}product/find-products`, productIDs);
-    console.log('Res', res.data);
     dispatch(findProductsSuccess(res.data));
   } catch (error) {
     dispatch(findProductsFailed());
@@ -457,6 +464,18 @@ export const getDiscountsOfShopByUser = async (accessToken, userID, shopID, disp
   }
 };
 
+export const getDeletedDiscounts = async (accessToken, shopID, dispatch, axiosJWT) => {
+  dispatch(findDeletedDiscountsStart());
+  try {
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}discount/deleted-codes`, {
+      headers: { authorization: `${accessToken}`, user: shopID },
+    });
+    dispatch(findDeletedDiscountsSuccess(res.data));
+  } catch (error) {
+    dispatch(findDeletedDiscountsFailed());
+  }
+};
+
 export const getDiscountsOfShopsByUser = async (accessToken, userID, shopIDs, dispatch, axiosJWT) => {
   dispatch(findDiscountsStart());
   try {
@@ -480,9 +499,42 @@ export const deleteDiscount = async (accessToken, shopID, discountCode, dispatch
       headers: { authorization: `${accessToken}`, user: shopID },
     });
     dispatch(deleteDiscountSuccess());
+    getDeletedDiscounts(accessToken, shopID, dispatch, axiosJWT);
     getDiscountsOfShopByUser(accessToken, shopID, shopID, dispatch, axiosJWT);
   } catch (error) {
     dispatch(deleteDiscountFailed());
+  }
+};
+
+export const destroyDiscount = async (accessToken, shopID, discountID, dispatch, axiosJWT) => {
+  dispatch(destroyDiscountStart());
+  try {
+    await axiosJWT.delete(`${REACT_APP_BASE_URL}discount/destroy/${discountID}`, {
+      headers: { authorization: `${accessToken}`, user: shopID },
+    });
+    dispatch(destroyDiscountSuccess());
+    getDeletedDiscounts(accessToken, shopID, dispatch, axiosJWT);
+    getDiscountsOfShopByUser(accessToken, shopID, shopID, dispatch, axiosJWT);
+  } catch (error) {
+    dispatch(destroyDiscountFailed());
+  }
+};
+
+export const restoreDiscount = async (accessToken, shopID, discountID, dispatch, axiosJWT) => {
+  dispatch(restoreDiscountStart());
+  try {
+    await axiosJWT.post(
+      `${REACT_APP_BASE_URL}discount/restore/${discountID}`,
+      {},
+      {
+        headers: { authorization: `${accessToken}`, user: shopID },
+      },
+    );
+    dispatch(restoreDiscountSuccess());
+    getDiscountsOfShopByUser(accessToken, shopID, shopID, dispatch, axiosJWT);
+    getDeletedDiscounts(accessToken, shopID, dispatch, axiosJWT);
+  } catch (error) {
+    dispatch(restoreDiscountFailed());
   }
 };
 

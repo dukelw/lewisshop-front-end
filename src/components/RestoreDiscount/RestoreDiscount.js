@@ -2,28 +2,25 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Row, Col, Container, Card } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import classNames from 'classnames/bind';
-import styles from './Discount.module.scss';
+import styles from './RestoreDiscount.module.scss';
 import Button from '../Button';
 import DiscountInfoModal from '../DiscountInfoModal';
-import DiscountEditModal from '../DiscountEditModal';
 import {
   DongIcon,
   LayerGroupIcon,
   MoneyBillIcon,
   PercentIcon,
-  PlusIcon,
-  TrashCanIcon,
   BarCodeIcon,
   LandMineOnIcon,
   EyeIcon,
   SquareMinusIcon,
 } from '../Icons';
 import { createAxios } from '~/createAxios';
-import { findProductsByID, getDeletedDiscounts, getDiscountsOfShopByUser } from '~/redux/apiRequest';
+import { getDeletedDiscounts, getDiscountsOfShopByUser, findProductsByID, restoreDiscount } from '~/redux/apiRequest';
 import DeleteConfirm from '../DeleteConfirm';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -45,12 +42,12 @@ function Discount() {
     findProductsByID(discount.discount_product_ids, dispatch, axios);
   };
 
-  const handleGoToAdd = () => {
-    navigate('/shop/create/discount');
+  const handleGoToDiscount = () => {
+    navigate('/discounts');
   };
 
-  const handleGoToTrash = () => {
-    navigate('/shop/restore/discount');
+  const handleRestore = (discountID) => {
+    restoreDiscount(accessToken, shopID, discountID, dispatch, axiosJWT);
   };
 
   useEffect(() => {
@@ -64,29 +61,27 @@ function Discount() {
         <Button className={cx('fixed-btn')} onClick={(e) => setDeleteMode(!deleteMode)} rounded outline>
           {deleteMode ? <EyeIcon className={cx('fixed-icon')} /> : <SquareMinusIcon className={cx('fixed-icon')} />}
         </Button>
-        <Button onClick={handleGoToAdd} className={cx('fixed-btn')} rounded outline>
-          <PlusIcon className={cx('fixed-icon')}></PlusIcon>
-        </Button>
-        <Button onClick={handleGoToTrash} className={cx('fixed-btn')} rounded outline>
-          <TrashCanIcon className={cx('fixed-icon')}></TrashCanIcon>
-          <span className={cx('quantity')}>{deletedDiscounts.length}</span>
+        <Button onClick={handleGoToDiscount} className={cx('fixed-btn')} rounded outline>
+          <MoneyBillIcon className={cx('fixed-icon')}></MoneyBillIcon>
+          <span className={cx('quantity')}>{discounts.length}</span>
         </Button>
       </div>
-      <p className={cx('part')}>
-        {discounts.length > 0 ? (
-          'All Voucher'
-        ) : (
-          <div>
-            You do not have any voucher!
-            <br />
-            <Link className={cx('redirect')} to={'/shop/create/discount'}>
-              Create your voucher?
-            </Link>
-          </div>
-        )}
-      </p>
       <Row>
-        {discounts.map((discount, index) => (
+        <p className={cx('part')}>
+          {deletedDiscounts.length > 0 ? (
+            'All Deleted Voucher'
+          ) : (
+            <div>
+              The dustbin is empty! See your{' '}
+              <Link className={cx('redirect')} to={'/discounts'}>
+                all voucher?
+              </Link>
+            </div>
+          )}
+        </p>
+      </Row>
+      <Row>
+        {deletedDiscounts.map((discount, index) => (
           <Col style={{ margin: '7px 0px' }} md={3} key={index} onClick={() => {}}>
             <Card className={cx('card')}>
               <Card.Img
@@ -152,18 +147,16 @@ function Discount() {
                     </Button>
                   </DiscountInfoModal>
                 ) : (
-                  <DeleteConfirm discount_code={discount.discount_code}>
+                  <DeleteConfirm discount_code={discount.discount_code} isDestroy={true} discount_id={discount._id}>
                     <Button outline rounded>
                       Delete
                     </Button>
                   </DeleteConfirm>
                 )}
 
-                <DiscountEditModal data={discount}>
-                  <Button outline rounded>
-                    Edit
-                  </Button>
-                </DiscountEditModal>
+                <Button onClick={() => handleRestore(discount._id)} outline rounded>
+                  Restore
+                </Button>
               </Card.Footer>
             </Card>
           </Col>

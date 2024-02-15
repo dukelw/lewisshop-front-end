@@ -24,6 +24,7 @@ import ShopPublished from '~/pages/ShopPublished';
 import ShopCreateProduct from '~/pages/ShopCreateProduct';
 import ShopEditProduct from '~/pages/ShopEditProduct';
 import ShopCreateDiscount from '~/pages/ShopCreateDiscount';
+import ShopRestoreDiscount from '~/pages/ShopRestoreDiscount';
 import Cart from '~/pages/Cart';
 import Discount from '~/pages/Discount';
 
@@ -50,6 +51,7 @@ const privateRoutes = [
   { type: 'shop', path: config.routes.shopCreateProduct, component: ShopCreateProduct, layout: ShopDefaultLayout },
   { type: 'shop', path: config.routes.shopEditProduct, component: ShopEditProduct, layout: ShopDefaultLayout },
   { type: 'shop', path: config.routes.shopCreateDiscount, component: ShopCreateDiscount, layout: ShopDefaultLayout },
+  { type: 'shop', path: config.routes.shopRestoreDiscount, component: ShopRestoreDiscount, layout: ShopDefaultLayout },
   { type: 'user', path: config.routes.userCart, component: Cart, layout: HeaderAndFooter },
 ];
 

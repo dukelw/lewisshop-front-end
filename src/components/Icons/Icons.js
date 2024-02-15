@@ -21,14 +21,17 @@ import {
   faMessage,
   faMoneyBill1Wave,
   faPercent,
+  faPlus,
   faRightFromBracket,
   faSearch,
   faShop,
   faShoppingCart,
   faSort,
+  faSquareMinus,
   faStar as faStartSolid,
   faSubtract,
   faTimeline,
+  faTrashCan,
   faTriangleExclamation,
   faUser,
   faUserXmark,
@@ -93,6 +96,49 @@ export const TimeLineIcon = ({
   <FontAwesomeIcon
     onClick={onClick}
     icon={faTimeline}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const SquareMinusIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faSquareMinus}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const PlusIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faPlus}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const TrashCanIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faTrashCan}
     className={className}
     style={{ width, height, color: color, padding: padding, ...style }}
   />

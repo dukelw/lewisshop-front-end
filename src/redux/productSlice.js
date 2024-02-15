@@ -58,7 +58,6 @@ const productSlice = createSlice({
       state.IDsProducts.isFetching = true;
     },
     findProductsSuccess: (state, action) => {
-      console.log('Action.payload', action.payload);
       state.IDsProducts.isFetching = false;
       state.IDsProducts.foundProducts = action.payload;
     },

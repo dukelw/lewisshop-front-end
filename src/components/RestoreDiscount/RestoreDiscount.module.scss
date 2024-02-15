@@ -6,15 +6,15 @@
   overflow: hidden;
 }
 
-.redirect {
-  color: var(--pink);
-}
-
 .part {
   text-align: center;
   color: var(--black);
   font-weight: 700;
   font-size: 4rem;
+}
+
+.redirect {
+  color: var(--pink);
 }
 
 .card {
@@ -128,7 +128,7 @@
       color: var(--pink);
       position: absolute;
       left: 52%;
-      top: 126px;
+      top: 68px;
       padding: 1px 8px;
       font-size: 1.2rem;
       background-color: var(--white);

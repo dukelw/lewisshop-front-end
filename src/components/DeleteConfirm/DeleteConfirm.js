@@ -5,11 +5,11 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import styles from './DeleteConfirm.module.scss';
 import { createAxios } from '~/createAxios';
-import { deleteDiscount } from '~/redux/apiRequest';
+import { deleteDiscount, destroyDiscount } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
-function DeleteConfirm({ children, discount_code }) {
+function DeleteConfirm({ children, discount_code, isDestroy = false, discount_id }) {
   const dispatch = useDispatch();
   const currentShop = useSelector((state) => state?.authShop.signin?.currentShop);
   const accessToken = currentShop?.metadata.tokens.accessToken;
@@ -20,7 +20,11 @@ function DeleteConfirm({ children, discount_code }) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleDelete = () => {
-    deleteDiscount(accessToken, shopID, discount_code, dispatch, axiosJWT);
+    if (!isDestroy) {
+      deleteDiscount(accessToken, shopID, discount_code, dispatch, axiosJWT);
+    } else {
+      destroyDiscount(accessToken, shopID, discount_id, dispatch, axiosJWT);
+    }
     handleClose();
   };
 
@@ -33,7 +37,9 @@ function DeleteConfirm({ children, discount_code }) {
           <Modal.Title className={cx('title')}>Are you sure to delete?</Modal.Title>
         </Modal.Header>
         <Modal.Body className={cx('body')}>
-          You discount will be sent to the dustbin. You can access dustbin to restore
+          {isDestroy
+            ? 'The voucher will be deleted permanently and can not be restored'
+            : 'Your voucher will be sent to the dustbin. You can access dustbin to restore'}
         </Modal.Body>
         <Modal.Footer>
           <Button className={cx('button')} variant="secondary" onClick={handleClose}>

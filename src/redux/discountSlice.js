@@ -22,6 +22,19 @@ const discountSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    destroy: {
+      isFetching: false,
+      error: false,
+    },
+    deleted: {
+      deletedDiscounts: null,
+      isFetching: false,
+      error: false,
+    },
+    restore: {
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     findDiscountsStart: (state) => {
@@ -36,6 +49,18 @@ const discountSlice = createSlice({
       state.discounts.foundDiscounts = null;
       state.discounts.error = true;
     },
+    findDeletedDiscountsStart: (state) => {
+      state.deleted.isFetching = true;
+    },
+    findDeletedDiscountsSuccess: (state, action) => {
+      state.deleted.isFetching = false;
+      state.deleted.deletedDiscounts = action.payload;
+    },
+    findDeletedDiscountsFailed: (state) => {
+      state.deleted.isFetching = false;
+      state.deleted.deletedDiscounts = null;
+      state.deleted.error = true;
+    },
     createDiscountStart: (state) => {
       state.create.isFetching = true;
     },
@@ -47,6 +72,16 @@ const discountSlice = createSlice({
       state.create.isFetching = false;
       state.create.newDiscount = null;
       state.create.error = true;
+    },
+    restoreDiscountStart: (state) => {
+      state.restore.isFetching = true;
+    },
+    restoreDiscountSuccess: (state) => {
+      state.restore.isFetching = false;
+    },
+    restoreDiscountFailed: (state) => {
+      state.restore.isFetching = false;
+      state.restore.error = true;
     },
     editDiscountStart: (state) => {
       state.edit.isFetching = true;
@@ -70,6 +105,16 @@ const discountSlice = createSlice({
       state.edit.isFetching = false;
       state.edit.error = true;
     },
+    destroyDiscountStart: (state) => {
+      state.destroy.isFetching = true;
+    },
+    destroyDiscountSuccess: (state) => {
+      state.destroy.isFetching = false;
+    },
+    destroyDiscountFailed: (state) => {
+      state.edit.isFetching = false;
+      state.edit.error = true;
+    },
   },
 });
 
@@ -77,15 +122,24 @@ export const {
   findDiscountsStart,
   findDiscountsSuccess,
   findDiscountsFailed,
+  findDeletedDiscountsStart,
+  findDeletedDiscountsSuccess,
+  findDeletedDiscountsFailed,
   createDiscountStart,
   createDiscountSuccess,
   createDiscountFailed,
+  restoreDiscountStart,
+  restoreDiscountSuccess,
+  restoreDiscountFailed,
   editDiscountStart,
   editDiscountSuccess,
   editDiscountFailed,
   deleteDiscountStart,
   deleteDiscountSuccess,
   deleteDiscountFailed,
+  destroyDiscountStart,
+  destroyDiscountSuccess,
+  destroyDiscountFailed,
 } = discountSlice.actions;
 
 export default discountSlice.reducer;
