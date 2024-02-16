@@ -42,6 +42,7 @@ function Discount() {
 
   const handleDetailClick = (discount) => {
     // Call findProducts with the discount's product IDs
+    console.log('Clicked discount: ' + discount);
     findProductsByID(discount.discount_product_ids, dispatch, axios);
   };
 
@@ -146,8 +147,8 @@ function Discount() {
               </Card.Body>
               <Card.Footer className={cx('footer')}>
                 {!deleteMode ? (
-                  <DiscountInfoModal data={discount}>
-                    <Button outline rounded onClick={handleDetailClick(discount)}>
+                  <DiscountInfoModal data={discount} onDetailClick={handleDetailClick}>
+                    <Button outline rounded>
                       Detail
                     </Button>
                   </DiscountInfoModal>

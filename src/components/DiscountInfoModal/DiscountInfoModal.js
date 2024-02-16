@@ -21,7 +21,7 @@ import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-function DiscountInfoModal({ children, data }) {
+function DiscountInfoModal({ children, data, onDetailClick }) {
   const currentAppliedProducts = useSelector((state) => state.products.IDsProducts.foundProducts);
   const appliedProducts = currentAppliedProducts?.metadata;
   const [show, setShow] = useState(false);
@@ -35,7 +35,12 @@ function DiscountInfoModal({ children, data }) {
 
   return (
     <>
-      {React.cloneElement(children, { onClick: () => setShow(true) })}
+      {React.cloneElement(children, {
+        onClick: () => {
+          onDetailClick(data);
+          setShow(true);
+        },
+      })}
 
       <Modal
         show={show}
