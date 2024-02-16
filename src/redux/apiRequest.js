@@ -395,6 +395,18 @@ export const getCartByUserID = async (accessToken, userID, dispatch, navigate, a
   }
 };
 
+export const getCartQuantity = async (accessToken, userID, dispatch, axiosJWT) => {
+  dispatch(getCartStart());
+  try {
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}cart?user_id=${userID}`, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    dispatch(getCartSuccess(res.data));
+  } catch (error) {
+    dispatch(getCartFailure());
+  }
+};
+
 export const searchProducts = async (keySearch, dispatch, axiosJWT) => {
   dispatch(searchProductStart());
   try {

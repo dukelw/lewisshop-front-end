@@ -136,3 +136,15 @@
   font-size: 1.6rem;
   font-weight: 600;
 }
+
+.quantity {
+  position: absolute;
+  right: 6px;
+  top: 4px;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0 7px;
+  background-color: var(--black);
+  color: var(--white);
+  border-radius: 10px;
+}

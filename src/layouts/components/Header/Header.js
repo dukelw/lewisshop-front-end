@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
@@ -30,7 +30,7 @@ import {
 import Search from '../Search';
 import CartBlank from '~/components/CartBlank';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCartByUserID, userLogout } from '~/redux/apiRequest';
+import { getCartByUserID, getCartQuantity, userLogout } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
 
 const cx = classNames.bind(styles);
@@ -96,6 +96,8 @@ const MENU_ITEMS = [
 function Header() {
   const currentUser = useSelector((state) => state.authUser.signin.currentUser);
   const accessToken = currentUser?.metadata.tokens.accessToken;
+  const currentCart = useSelector((state) => state?.authUser.getCart.cart);
+  const cartProductsQuantity = currentCart?.metadata.cart_count_products;
   const userID = currentUser?.metadata.user._id;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -113,6 +115,10 @@ function Header() {
   const handleCart = () => {
     getCartByUserID(accessToken, userID, dispatch, navigate, axiosJWT);
   };
+
+  useEffect(() => {
+    getCartQuantity(accessToken, userID, dispatch, axiosJWT);
+  }, []);
 
   const userMenu = [
     {
@@ -143,7 +149,6 @@ function Header() {
   return (
     <header className={cx('wrapper')}>
       <ToastMessageContainer></ToastMessageContainer>
-      {/* <ToastMessage message={toastMessage} type={toastType} isShow={showToast}></ToastMessage> */}
       {/* Logo */}
       <Link to={config.routes.home} className={cx('logo-link')}>
         <div className={cx('logo')}>
@@ -173,6 +178,7 @@ function Header() {
               <div className={cx('current-user')}>
                 <button className={cx('action-btn')}>
                   <CartIcon onClick={handleCart} />
+                  <span className={cx('quantity')}>{cartProductsQuantity}</span>
                 </button>
                 <Tippy content="Favourite" placement="bottom" trigger="click" delay={[0, 200]}>
                   <button className={cx('action-btn')}>
