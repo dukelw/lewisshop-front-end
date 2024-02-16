@@ -124,7 +124,7 @@ function ShopHeader() {
   return (
     <header className={cx('wrapper')}>
       {/* Logo */}
-      <Link to={config.routes.home} className={cx('logo-link')}>
+      <Link to={config.routes.shopHome} className={cx('logo-link')}>
         <div className={cx('logo')}>
           <LogoIcon />
         </div>
