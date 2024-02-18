@@ -507,7 +507,7 @@ export const getDiscountsOfShopsByUser = async (accessToken, userID, shopIDs, di
   try {
     const res = await axiosJWT.post(
       `${REACT_APP_BASE_URL}discount/codes-of-shops`,
-      { discount_shop_ids: shopIDs },
+      { discount_shop_ids: shopIDs, user_id: userID },
       {
         headers: { authorization: `${accessToken}`, user: userID },
       },

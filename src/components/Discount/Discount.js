@@ -42,7 +42,6 @@ function Discount() {
 
   const handleDetailClick = (discount) => {
     // Call findProducts with the discount's product IDs
-    console.log('Clicked discount: ' + discount);
     findProductsByID(discount.discount_product_ids, dispatch, axios);
   };
 
