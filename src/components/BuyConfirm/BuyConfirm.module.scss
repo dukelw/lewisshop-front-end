@@ -1,0 +1,44 @@
+.inner {
+  font-size: 1.6rem;
+  color: var(--black);
+  padding: 16px 20px;
+}
+
+.heading {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.body {
+  font-size: 1.8rem;
+  font-weight: 300;
+  margin-top: auto;
+}
+
+.button {
+  font-size: 1.6rem;
+  padding: 8px 20px;
+  border-radius: 25px;
+
+  ~ .button {
+    margin-left: 12px;
+  }
+}
+
+.label,
+.text,
+.price {
+  font-size: 1.5rem;
+  text-align: right;
+  margin-bottom: 4px;
+}
+
+.label {
+  text-align: left;
+}

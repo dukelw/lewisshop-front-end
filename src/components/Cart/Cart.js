@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import CartShop from '../CartShop';
 import { ArrowLeftIcon } from '../Icons/index';
 import Button from '../Button';
+import OrderModal from '../OrderModal';
 import DiscountModal from '../DiscountModal';
 import { createAxios } from '~/createAxios';
 import styles from './Cart.module.scss';
@@ -29,6 +30,12 @@ function Cart() {
   const discountCodes = currentDiscount?.metadata;
   const [selectedDiscount, setSelectedDiscount] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const checkoutData = {
+    subtotal: checkoutOrder?.totalPrice,
+    feeShip: checkoutOrder?.feeShip,
+    discount: checkoutOrder?.totalDiscount,
+    total: checkoutOrder?.totalCheckout,
+  };
 
   const handleSelectDiscount = (code, discountID, shopID) => {
     const discountableCart =
@@ -219,9 +226,11 @@ function Cart() {
                   <p className={cx('money')}>{checkoutOrder?.totalCheckout}</p>
                 </div>
                 <div className={cx('price')}>
-                  <Button className={cx('btn')} primary large>
-                    Safe to checkout
-                  </Button>
+                  <OrderModal data={checkoutData}>
+                    <Button className={cx('btn')} primary large>
+                      Safe to checkout
+                    </Button>
+                  </OrderModal>
                 </div>
               </div>
             </div>

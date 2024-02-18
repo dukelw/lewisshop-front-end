@@ -95,6 +95,7 @@ import {
 } from './discountSlice';
 import { showToast } from './toastSlice';
 import { addToastsFailed, addToastsStart, addToastsSuccess, removeExpiredToasts } from './multiToastSlice';
+import { momoPaymentFailed, momoPaymentStart, momoPaymentSuccess } from './paymentSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -573,5 +574,21 @@ export const addToast = async (toastData, dispatch) => {
     }, 1500);
   } catch (error) {
     dispatch(addToastsFailed());
+  }
+};
+
+export const momoPayment = async (accessToken, userID, amount, dispatch, navigate, axiosJWT) => {
+  dispatch(momoPaymentStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}payment/momo`, amount, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    dispatch(momoPaymentSuccess(res.data));
+    // Mở liên kết trong tab mới
+    console.log(res.data);
+    window.open(res.data.metadata.payUrl, '_blank');
+    navigate('/thanks');
+  } catch (error) {
+    dispatch(momoPaymentFailed());
   }
 };
