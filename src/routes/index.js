@@ -27,6 +27,8 @@ import ShopCreateDiscount from '~/pages/ShopCreateDiscount';
 import ShopRestoreDiscount from '~/pages/ShopRestoreDiscount';
 import Cart from '~/pages/Cart';
 import Discount from '~/pages/Discount';
+import Payment from '~/pages/Payment';
+import HeaderNoLogo from '~/layouts/HeaderNoLogo';
 
 const publicRoutes = [
   { path: config.routes.home, component: Home },
@@ -53,6 +55,8 @@ const privateRoutes = [
   { type: 'shop', path: config.routes.shopCreateDiscount, component: ShopCreateDiscount, layout: ShopDefaultLayout },
   { type: 'shop', path: config.routes.shopRestoreDiscount, component: ShopRestoreDiscount, layout: ShopDefaultLayout },
   { type: 'user', path: config.routes.userCart, component: Cart, layout: HeaderAndFooter },
+  { type: 'user', path: config.routes.payment, component: Payment, layout: HeaderNoLogo },
+  { type: 'user', path: config.routes.thanks, component: Payment, layout: HeaderNoLogo },
 ];
 
 export { publicRoutes, privateRoutes };

@@ -20,6 +20,8 @@ const routes = {
   shopHome: '/shop/',
   userCart: '/cart',
   shopDiscounts: '/discounts',
+  payment: '/payment/:method',
+  thanks: '/thanks',
 };
 
 export default routes;

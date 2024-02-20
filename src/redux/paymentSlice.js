@@ -3,31 +3,27 @@ import { createSlice } from '@reduxjs/toolkit';
 const paymentSlice = createSlice({
   name: 'payment',
   initialState: {
-    momo: {
+    method: {
       data: null,
-      isFetching: false,
-      error: false,
-    },
-    cod: {
       isFetching: false,
       error: false,
     },
   },
   reducers: {
-    momoPaymentStart: (state) => {
-      state.momo.isFetching = true;
+    paymentStart: (state) => {
+      state.method.isFetching = true;
     },
-    momoPaymentSuccess: (state, action) => {
-      state.momo.data = action.payload;
-      state.momo.isFetching = false;
+    paymentSuccess: (state, action) => {
+      state.method.data = action.payload;
+    state.method.isFetching = false;
     },
-    momoPaymentFailed: (state) => {
-      state.momo.isFetching = false;
-      state.momo.error = true;
+    paymentFailed: (state) => {
+      state.method.isFetching = false;
+      state.method.error = true;
     },
   },
 });
 
-export const { momoPaymentStart, momoPaymentSuccess, momoPaymentFailed } = paymentSlice.actions;
+export const { paymentStart, paymentSuccess, paymentFailed } = paymentSlice.actions;
 
 export default paymentSlice.reducer;

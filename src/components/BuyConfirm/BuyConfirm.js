@@ -7,7 +7,7 @@ import Modal from 'react-bootstrap/Modal';
 import styles from './BuyConfirm.module.scss';
 import { createAxios } from '~/createAxios';
 import { useNavigate } from 'react-router-dom';
-import { momoPayment } from '~/redux/apiRequest';
+import { payment } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
@@ -24,9 +24,10 @@ function DeleteConfirm({ children, paymentData, userData }) {
   const handleShow = () => setShow(true);
   const handleBuy = () => {
     if (userData.paymentMethod === 'momo') {
-      momoPayment(accessToken, userID, { amount: paymentData.total }, dispatch, navigate, axiosJWT);
+      payment(accessToken, userID, { amount: paymentData.total }, dispatch, navigate, axiosJWT);
+      navigate('/payment/momo');
     } else if (userData.paymentMethod === 'zalo') {
-      
+      navigate('/payment/zalo-pay');
     } else if (userData.paymentMethod === 'cod') {
       navigate('/thanks');
     }
