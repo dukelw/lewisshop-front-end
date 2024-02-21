@@ -34,8 +34,8 @@ function DeleteConfirm({ children, paymentData, userData }) {
         myBank: 'MB',
         accountID: '0002120926563',
       };
-      const orderId = currentUser?.metadata.user._id + new Date().getTime();
-      const orderContent = 'Transaction' + orderId;
+      const orderId = currentUser?.metadata.user.name;
+      const orderContent = 'Transaction' + orderId + '1';
       const qrCodeUrl = `https://img.vietqr.io/image/${myInfo.myBank}-${myInfo.accountID}-qr_only.png?amount=${paymentData.total}&addInfo=${orderContent}&accountName=LE%20PHAN%20THE%20VI`;
       const metadata = {
         partnerCode: 'Banking',

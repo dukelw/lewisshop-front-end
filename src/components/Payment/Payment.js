@@ -2,14 +2,50 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import QRCode from '~/components/QRCode';
 import styles from './Payment.module.scss';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function Payment() {
+  let isSuccess = false;
+  let intervalID = 0;
+  const navigate = useNavigate();
   const { method } = useParams();
   const currenPayment = useSelector((state) => state?.payment.method.data);
   const payment = currenPayment?.metadata || [];
+
+  const checkPaidByBanking = async (amount, content) => {
+    if (isSuccess) {
+      return;
+    } else {
+      try {
+        const response = await fetch(
+          'https://script.google.com/macros/s/AKfycbwvvW7i5Ny3NHbA3cTOOkEoEccJxe44fLDwPysVb8SfawJyY4SFqic7RD3tiXIcnfDUpw/exec',
+        );
+        const data = await response.json();
+        const latestPaid = data.data[data.data.length - 1];
+        const latestPrice = latestPaid['Giá trị'];
+        const latestContent = latestPaid['Mô tả'];
+        if (latestPrice >= amount && latestContent.includes(content)) {
+          isSuccess = true;
+          navigate('/thanks');
+          clearInterval(intervalID);
+        } else {
+          console.log('Failed');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  if (method === 'banking' && !isSuccess) {
+    setTimeout(() => {
+      intervalID = setInterval(() => {
+        checkPaidByBanking(payment.amount, payment.orderContent);
+      }, 2000);
+    }, 10000);
+  }
 
   return (
     <div className={cx('wrapper')}>
