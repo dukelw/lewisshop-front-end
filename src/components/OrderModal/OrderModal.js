@@ -161,6 +161,33 @@ function OrderModal({ children, data = {} }) {
                     <Form.Check
                       className={cx('check')}
                       type="radio"
+                      id="bank"
+                      label={
+                        <div className={cx('radio')}>
+                          <img
+                            src="https://www.shutterstock.com/image-vector/digital-banking-pixel-perfect-linear-600nw-2169814509.jpg"
+                            alt="Banking"
+                            width="50"
+                            height="50"
+                          />
+                          <div className={cx('top')}>
+                            <span className={cx('name')}>Internet Banking</span>
+                            <p className={cx('description')}>
+                              Lorem ipsum dolor sit amet consectetur adipisicing elit. In repudiandae minima harum nihil
+                              nisi at voluptatibus totam pariatur laboriosam quos, eligendi est cupiditate optio
+                              consequuntur id neque velit vel aliquid?
+                            </p>
+                          </div>
+                        </div>
+                      }
+                      name="paymentMethod"
+                      value="bank"
+                      checked={formData.paymentMethod === 'bank'}
+                      onChange={handlePaymentChange}
+                    />
+                    <Form.Check
+                      className={cx('check')}
+                      type="radio"
                       id="momo"
                       label={
                         <div className={cx('radio')}>

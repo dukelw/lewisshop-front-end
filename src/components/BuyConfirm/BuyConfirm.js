@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import Button from 'react-bootstrap/Button';
@@ -8,6 +8,7 @@ import styles from './BuyConfirm.module.scss';
 import { createAxios } from '~/createAxios';
 import { useNavigate } from 'react-router-dom';
 import { payment } from '~/redux/apiRequest';
+import { paymentSuccess } from '~/redux/paymentSlice';
 
 const cx = classNames.bind(styles);
 
@@ -28,6 +29,29 @@ function DeleteConfirm({ children, paymentData, userData }) {
       navigate('/payment/momo');
     } else if (userData.paymentMethod === 'zalo') {
       navigate('/payment/zalo-pay');
+    } else if (userData.paymentMethod === 'bank') {
+      const myInfo = {
+        myBank: 'MB',
+        accountID: '0002120926563',
+      };
+      const orderId = currentUser?.metadata.user._id + new Date().getTime();
+      const orderContent = 'Transaction' + orderId;
+      const qrCodeUrl = `https://img.vietqr.io/image/${myInfo.myBank}-${myInfo.accountID}-qr_only.png?amount=${paymentData.total}&addInfo=${orderContent}&accountName=LE%20PHAN%20THE%20VI`;
+      const metadata = {
+        partnerCode: 'Banking',
+        orderId,
+        requestId: orderId,
+        amount: paymentData.total,
+        responseTime: '',
+        message: 'Thành công.',
+        resultCode: 0,
+        payUrl: '',
+        deeplink: '',
+        qrCodeUrl,
+        orderContent,
+      };
+      dispatch(paymentSuccess({ metadata }));
+      navigate('/payment/banking');
     } else if (userData.paymentMethod === 'cod') {
       navigate('/thanks');
     }
