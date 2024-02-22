@@ -21,7 +21,7 @@ const routes = {
   userCart: '/cart',
   shopDiscounts: '/discounts',
   payment: '/payment/:method',
-  thanks: '/thanks',
+  purchases: '/purchases',
 };
 
 export default routes;

@@ -411,6 +411,7 @@ export const getCartQuantity = async (accessToken, userID, dispatch, axiosJWT) =
 export const searchProducts = async (keySearch, dispatch, axiosJWT) => {
   dispatch(searchProductStart());
   try {
+    if (keySearch === '') return;
     const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/search/${keySearch}`);
     dispatch(searchProductSuccess(res.data));
   } catch (error) {

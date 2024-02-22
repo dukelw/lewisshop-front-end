@@ -525,8 +525,8 @@ export const FavouriteIcon = ({ width = '2rem', height = '2rem', className }) =>
   <FontAwesomeIcon icon={faHeart} className={className} style={{ width, height }} />
 );
 
-export const NotificationIcon = ({ width = '2rem', height = '2rem', className }) => (
-  <FontAwesomeIcon icon={faMessage} className={className} style={{ width, height }} />
+export const NotificationIcon = ({ width = '2rem', height = '2rem', className, padding = '8px' }) => (
+  <FontAwesomeIcon icon={faMessage} className={className} style={{ width, height, padding }} />
 );
 
 export const SearchIcon = ({ width = '2rem', height = '2rem', className, display = 'block' }) => (

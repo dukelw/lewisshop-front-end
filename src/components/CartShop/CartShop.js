@@ -37,7 +37,7 @@ function CartShop() {
           <h3 className={cx('name')}>{shop_name}</h3>
           {products.map((product) => (
             <CartItem key={product.product_id} product={product}>
-              {product.product_name}
+              {product?.product_name}
             </CartItem>
           ))}
           <div className={cx('price')}>

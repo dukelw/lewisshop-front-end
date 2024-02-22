@@ -123,8 +123,8 @@ function Header() {
   const userMenu = [
     {
       icon: <ProfileIcon />,
-      title: 'View profile',
-      to: '/@nva',
+      title: 'Your order',
+      to: '/purchases',
     },
     {
       icon: <CoinIcon />,

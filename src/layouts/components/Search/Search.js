@@ -16,9 +16,6 @@ import ProductItem from '~/components/ProductItem';
 const cx = classNames.bind(styles);
 
 function Search() {
-  // const currentUser = useSelector((state) => state.authUser.signin.currentUser);
-  // const accessToken = currentUser?.metadata.tokens.accessToken;
-  // const userID = currentUser?.metadata.user._id;
   const currentSearchResult = useSelector((state) => state?.products.search.matchedProducts);
   const dispatch = useDispatch();
   const searchResult = currentSearchResult?.metadata || [];
