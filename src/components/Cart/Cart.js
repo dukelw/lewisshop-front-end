@@ -120,6 +120,9 @@ function Cart() {
               price: product.product_price,
               quantity: product.quantity,
               product_id: product.product_id,
+              thumb: product.product_thumb,
+              description: product.product_description,
+              name: product.product_name,
             },
           ],
         });

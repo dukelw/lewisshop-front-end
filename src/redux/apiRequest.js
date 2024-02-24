@@ -69,7 +69,14 @@ import {
   findShopSuccess,
   findShopFailed,
 } from './shopSlice';
-import { checkoutFailed, checkoutStart, checkoutSuccess } from './orderSlice';
+import {
+  checkoutFailed,
+  checkoutStart,
+  checkoutSuccess,
+  findOrdersFailed,
+  findOrdersStart,
+  findOrdersSuccess,
+} from './orderSlice';
 import {
   createDiscountFailed,
   createDiscountStart,
@@ -476,6 +483,22 @@ export const checkout = async (accessToken, userID, data, dispatch, axiosJWT) =>
     dispatch(checkoutSuccess(res.data));
   } catch (error) {
     dispatch(checkoutFailed());
+  }
+};
+
+export const getAllOrders = async (accessToken, userID, dispatch, axiosJWT) => {
+  dispatch(findOrdersStart());
+  try {
+    const res = await axiosJWT.post(
+      `${REACT_APP_BASE_URL}order/all`,
+      { user_id: userID },
+      {
+        headers: { authorization: `${accessToken}`, user: userID },
+      },
+    );
+    dispatch(findOrdersSuccess(res.data));
+  } catch (error) {
+    dispatch(findOrdersFailed());
   }
 };
 

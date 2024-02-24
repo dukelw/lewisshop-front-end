@@ -1,10 +1,12 @@
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
 import className from 'classnames/bind';
-import { useDispatch, useSelector, useNavigate } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './Purchase.module.scss';
 import { DongIcon, MoneyBillIcon, NotificationIcon, UserIcon } from '../Icons';
-import CartShop from '../CartShop';
 import { createAxios } from '~/createAxios';
+import { useEffect } from 'react';
+import { getAllOrders } from '~/redux/apiRequest';
+import PurchaseHistory from '../PurchaseHistory';
 
 const cx = className.bind(styles);
 
@@ -12,9 +14,15 @@ function Purchase() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state?.authUser.signin?.currentUser);
   const accessToken = currentUser?.metadata.tokens.accessToken;
+  const userID = currentUser?.metadata.user._id;
   const userName = currentUser?.metadata.user.name;
   const userAvatar = currentUser?.metadata.user.thumb;
   const axiosJWT = createAxios(currentUser);
+
+  useEffect(() => {
+    getAllOrders(accessToken, userID, dispatch, axiosJWT);
+  }, []);
+
   return (
     <Container className={cx('wrapper')}>
       <Row>
@@ -46,24 +54,24 @@ function Purchase() {
           </ul>
         </Col>
         <Col md={10}>
-          <Tabs defaultActiveKey="all" id="fill-tab-example" className="mb-3" fill>
-            <Tab eventKey="all" title="All">
-              <CartShop />
+          <Tabs defaultActiveKey="all" id="justify-tab-example" className="mb-3" fill>
+            <Tab tabClassName={cx('tab')} eventKey="all" title="All">
+              <PurchaseHistory />
             </Tab>
-            <Tab eventKey="waiting-to-pay" title="Waiting to pay">
-              <CartShop />
+            <Tab tabClassName={cx('tab')} eventKey="waiting-to-pay" title="Waiting to pay">
+              <PurchaseHistory />
             </Tab>
-            <Tab eventKey="shipping" title="Shipping">
-              <CartShop />
+            <Tab tabClassName={cx('tab')} eventKey="shipping" title="Shipping">
+              <PurchaseHistory />
             </Tab>
-            <Tab eventKey="waiting-to-delivery" title="Waiting to delivery">
-              <CartShop />
+            <Tab tabClassName={cx('tab')} eventKey="waiting-to-delivery" title="Waiting to delivery">
+              <PurchaseHistory />
             </Tab>
-            <Tab eventKey="completed" title="Completed">
-              <CartShop />
+            <Tab tabClassName={cx('tab')} eventKey="completed" title="Completed">
+              <PurchaseHistory />
             </Tab>
-            <Tab eventKey="canceled" title="Canceled">
-              <CartShop />
+            <Tab tabClassName={cx('tab')} eventKey="canceled" title="Canceled">
+              <PurchaseHistory />
             </Tab>
           </Tabs>
         </Col>

@@ -17,6 +17,7 @@
     object-fit: cover;
     border-radius: 50%;
     margin-right: 8px;
+    border: 1px solid var(--white);
   }
 
   .name {
@@ -34,6 +35,13 @@
     align-items: flex-start;
     justify-content: center;
     padding: 8px 0;
+
+    .edit {
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+    }
   }
 }
 
@@ -45,5 +53,29 @@
     justify-content: flex-start;
     align-items: center;
     margin-top: 4px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: var(--pink);
+      color: var(--white);
+    }
+  }
+}
+
+.tab {
+  border-radius: 0 !important;
+  color: var(--black);
+
+  &:hover {
+    color: var(--pink);
+  }
+}
+
+// Use :global to override the default Bootstrap CSS
+:global {
+  .nav-link.active {
+    border: 2px solid var(--pink) !important;
+    font-weight: bold !important;
+    border-bottom: 0 !important;
   }
 }
