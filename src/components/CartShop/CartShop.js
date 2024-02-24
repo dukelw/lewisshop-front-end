@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Container, Row, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,7 +10,7 @@ import { checkout } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
-function CartShop() {
+function CartShop({ allCart, handleAllCart }) {
   const currentCart = useSelector((state) => state.authUser.getCart.cart);
   const cartID = currentCart?.metadata._id;
   const currentUser = useSelector((state) => state.authUser.signin.currentUser);
@@ -35,6 +35,28 @@ function CartShop() {
   });
 
   const [shopCheckboxes, setShopCheckboxes] = useState({});
+
+  useEffect(() => {
+    const numberOfShops = [];
+    const updatedCheckboxes = {};
+    Object.keys(productGroups).forEach((shopId) => {
+      updatedCheckboxes[shopId] = allCart;
+      numberOfShops.push(shopId);
+    });
+    setShopCheckboxes(updatedCheckboxes);
+    let checkoutCart = JSON.parse(localStorage.getItem('checkoutCart'));
+    const checkedShops = checkoutCart?.shop_order_ids.filter((order) => order.item_products.length > 0);
+
+    // Because setChecked all always make checked similar to it, then we need to re-checked those products which is checked before (For example: All is checked, then 1 and 2 are checked, but when 1 is unchecked, we expect 2 still to be checked and all is unchecked, the code below catch this event by comparing shop number of products and before checked products, then active the checkbox of the products which is appropriate)
+    if (numberOfShops?.length > checkedShops?.length) {
+      checkedShops.map((shop) => {
+        setShopCheckboxes((prevBoxes) => ({
+          ...prevBoxes,
+          [shop.shop_id]: true,
+        }));
+      });
+    }
+  }, [allCart]);
 
   const handleShopCheckboxChange = (event, shopId) => {
     const isChecked = event.target.checked;
@@ -82,7 +104,6 @@ function CartShop() {
           item_products,
         });
       } else {
-        console.log('Hello');
         const item_products = [];
         cartProducts.map((product) => {
           if (product.shop_id === shopId) {
@@ -103,6 +124,7 @@ function CartShop() {
     }
 
     localStorage.setItem('checkoutCart', JSON.stringify(checkoutCart));
+    handleAllCart(isChecked, productGroups);
     checkout(accessToken, userID, checkoutCart, dispatch, axiosJWT);
   };
 

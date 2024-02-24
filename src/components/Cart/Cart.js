@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 import { useSelector, useDispatch } from 'react-redux';
 import CartShop from '../CartShop';
@@ -11,6 +11,7 @@ import DiscountModal from '../DiscountModal';
 import { createAxios } from '~/createAxios';
 import styles from './Cart.module.scss';
 import { checkout, getDiscountsOfShopsByUser } from '~/redux/apiRequest';
+import { checkoutFailed } from '~/redux/orderSlice';
 
 const cx = classNames.bind(styles);
 
@@ -35,6 +36,37 @@ function Cart() {
     feeShip: checkoutOrder?.feeShip,
     discount: checkoutOrder?.totalDiscount,
     total: checkoutOrder?.totalCheckout,
+  };
+
+  const [checked, setChecked] = useState(false);
+  const handleCheckout = () => {
+    setChecked(!checked);
+    if (!checked) {
+      const checkoutCart = convertData(cartProducts, cartID, cartUserID);
+      localStorage.setItem('checkoutCart', JSON.stringify(checkoutCart));
+      checkout(accessToken, userID, checkoutCart, dispatch, axiosJWT);
+    } else {
+      localStorage.removeItem('checkoutCart');
+      dispatch(checkoutFailed());
+    }
+  };
+
+  const handleAllCart = (isChecked, productGroups) => {
+    if (!isChecked) {
+      setChecked(false);
+      return;
+    } else {
+      const numberOfShops = [];
+      Object.keys(productGroups).forEach((shopId) => {
+        numberOfShops.push(shopId);
+      });
+      let checkoutCart = JSON.parse(localStorage.getItem('checkoutCart'));
+      const checkedShops = checkoutCart?.shop_order_ids.filter((order) => order.item_products.length > 0);
+      console.log('checkedShops', checkedShops);
+      console.log('numberOfShops', numberOfShops);
+      const isCheckedAll = numberOfShops.length === checkedShops.length;
+      setChecked(isCheckedAll);
+    }
   };
 
   const handleSelectDiscount = (code, discountID, shopID) => {
@@ -132,9 +164,17 @@ function Cart() {
   }
 
   useEffect(() => {
-    // const checkoutCart = convertData(cartProducts, cartID, cartUserID);
     getDiscountsOfShopsByUser(accessToken, userID, currentShops, dispatch, axiosJWT);
-    // checkout(accessToken, userID, checkoutCart, dispatch, axiosJWT);
+    const handleBeforeUnload = (event) => {
+      localStorage.removeItem('checkoutCart');
+      dispatch(checkoutFailed());
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
   }, [currentCart]);
 
   return (
@@ -176,7 +216,15 @@ function Cart() {
                 </Col>
               </Row>
               <Row>
-                <CartShop></CartShop>
+                <Form.Check
+                  className={cx('name')}
+                  type="checkbox"
+                  id={`allCheckbox`}
+                  label={`All`}
+                  checked={checked}
+                  onChange={(e) => handleCheckout()}
+                />
+                <CartShop allCart={checked} handleAllCart={handleAllCart}></CartShop>
               </Row>
             </Container>
           </Col>
