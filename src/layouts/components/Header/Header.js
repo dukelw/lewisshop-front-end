@@ -118,6 +118,7 @@ function Header() {
 
   useEffect(() => {
     getCartQuantity(accessToken, userID, dispatch, axiosJWT);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const userMenu = [

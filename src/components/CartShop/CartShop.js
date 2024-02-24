@@ -49,6 +49,7 @@ function CartShop({ allCart, handleAllCart }) {
 
     // Because setChecked all always make checked similar to it, then we need to re-checked those products which is checked before (For example: All is checked, then 1 and 2 are checked, but when 1 is unchecked, we expect 2 still to be checked and all is unchecked, the code below catch this event by comparing shop number of products and before checked products, then active the checkbox of the products which is appropriate)
     if (numberOfShops?.length > checkedShops?.length) {
+      // eslint-disable-next-line array-callback-return
       checkedShops.map((shop) => {
         setShopCheckboxes((prevBoxes) => ({
           ...prevBoxes,
@@ -56,6 +57,7 @@ function CartShop({ allCart, handleAllCart }) {
         }));
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allCart]);
 
   const handleShopCheckboxChange = (event, shopId) => {

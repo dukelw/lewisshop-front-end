@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
@@ -108,6 +109,7 @@ function CartItem({ product, isAll, isShopCheckAll }) {
 
     // Because setChecked all always make checked similar to it, then we need to re-checked those products which is checked before (For example: All is checked, then 1 and 2 are checked, but when 1 is unchecked, we expect 2 still to be checked and all is unchecked, the code below catch this event by comparing shop number of products and before checked products, then active the checkbox of the products which is appropriate)
     if (productsOfShop?.length > checkedProducts?.length) {
+      // eslint-disable-next-line array-callback-return
       checkedProducts?.map((pro) => {
         if (pro.product_id === product.product_id) {
           setChecked(true);

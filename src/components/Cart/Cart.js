@@ -72,6 +72,7 @@ function Cart() {
   const handleSelectDiscount = (code, discountID, shopID) => {
     const discountableCart =
       JSON.parse(localStorage.getItem('discountableCart')) || convertData(cartProducts, cartID, cartUserID);
+    // eslint-disable-next-line array-callback-return
     discountableCart.shop_order_ids.map((shop) => {
       if (shop.shop_id === shopID) {
         // When discounts of the shop have not been used yet
@@ -175,6 +176,7 @@ function Cart() {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentCart]);
 
   return (
