@@ -132,9 +132,9 @@ function Cart() {
   }
 
   useEffect(() => {
-    const checkoutCart = convertData(cartProducts, cartID, cartUserID);
+    // const checkoutCart = convertData(cartProducts, cartID, cartUserID);
     getDiscountsOfShopsByUser(accessToken, userID, currentShops, dispatch, axiosJWT);
-    checkout(accessToken, userID, checkoutCart, dispatch, axiosJWT);
+    // checkout(accessToken, userID, checkoutCart, dispatch, axiosJWT);
   }, [currentCart]);
 
   return (
@@ -159,7 +159,7 @@ function Cart() {
           <Col className={cx('left')} md={8}>
             <Container>
               <Row>
-                <Col className={cx('title')} md={4}>
+                <Col className={cx('title')} md={5}>
                   Product
                 </Col>
                 <Col className={cx('title')} md={2}>
@@ -171,7 +171,7 @@ function Cart() {
                 <Col className={cx('title')} md={2}>
                   Total
                 </Col>
-                <Col className={cx('title')} md={2}>
+                <Col className={cx('title')} md={1}>
                   Selection
                 </Col>
               </Row>
@@ -199,11 +199,11 @@ function Cart() {
                 <div className={cx('review')}>
                   <div className={cx('price')}>
                     <p className={cx('title')}>Subtotal</p>
-                    <p className={cx('money')}>{checkoutOrder?.totalPrice}</p>
+                    <p className={cx('money')}>{checkoutOrder?.totalPrice || 0}</p>
                   </div>
                   <div className={cx('other-price')}>
                     <p className={cx('other-title')}>Shipping</p>
-                    <p className={cx('other-money')}>{checkoutOrder?.feeShip}</p>
+                    <p className={cx('other-money')}>{checkoutOrder?.feeShip || 0}</p>
                   </div>
                 </div>
                 {selectedDiscount.length > 0 && (
@@ -222,11 +222,11 @@ function Cart() {
                 )}
                 <div className={cx('price')}>
                   <p className={cx('title')}>Discount</p>
-                  <p className={cx('money')}>{checkoutOrder?.totalDiscount}</p>
+                  <p className={cx('money')}>{checkoutOrder?.totalDiscount || 0}</p>
                 </div>
                 <div className={cx('price')}>
                   <p className={cx('title')}>Total</p>
-                  <p className={cx('money')}>{checkoutOrder?.totalCheckout}</p>
+                  <p className={cx('money')}>{checkoutOrder?.totalCheckout || 0}</p>
                 </div>
                 <div className={cx('price')}>
                   <OrderModal data={checkoutData}>

@@ -97,7 +97,7 @@ function Header() {
   const currentUser = useSelector((state) => state.authUser.signin.currentUser);
   const accessToken = currentUser?.metadata.tokens.accessToken;
   const currentCart = useSelector((state) => state?.authUser.getCart.cart);
-  const cartProductsQuantity = currentCart?.metadata.cart_count_products;
+  const cartProductsQuantity = currentCart?.metadata?.cart_count_products || 0;
   const userID = currentUser?.metadata.user._id;
   const dispatch = useDispatch();
   const navigate = useNavigate();
