@@ -38,7 +38,7 @@ function Cart() {
     total: checkoutOrder?.totalCheckout,
   };
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const handleCheckout = () => {
     setChecked(!checked);
     if (!checked) {
@@ -62,8 +62,6 @@ function Cart() {
       });
       let checkoutCart = JSON.parse(localStorage.getItem('checkoutCart'));
       const checkedShops = checkoutCart?.shop_order_ids.filter((order) => order.item_products.length > 0);
-      console.log('checkedShops', checkedShops);
-      console.log('numberOfShops', numberOfShops);
       const isCheckedAll = numberOfShops.length === checkedShops.length;
       setChecked(isCheckedAll);
     }
@@ -165,11 +163,16 @@ function Cart() {
   }
 
   useEffect(() => {
+    const checkoutCart = convertData(cartProducts, cartID, cartUserID);
+    checkout(accessToken, userID, checkoutCart, dispatch, axiosJWT);
     getDiscountsOfShopsByUser(accessToken, userID, currentShops, dispatch, axiosJWT);
     const handleBeforeUnload = (event) => {
       localStorage.removeItem('checkoutCart');
       dispatch(checkoutFailed());
     };
+
+    console.log('current checkoutCart: ' + currentCheckout);
+    console.log('discount codes: ' + discountCodes);
 
     window.addEventListener('beforeunload', handleBeforeUnload);
 
