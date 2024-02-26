@@ -70,6 +70,9 @@ import {
   findShopFailed,
 } from './shopSlice';
 import {
+  cancelOrderFailed,
+  cancelOrderStart,
+  cancelOrderSuccess,
   checkoutFailed,
   checkoutStart,
   checkoutSuccess,
@@ -502,6 +505,43 @@ export const getAllOrders = async (accessToken, userID, dispatch, axiosJWT) => {
     dispatch(findOrdersSuccess(res.data));
   } catch (error) {
     dispatch(findOrdersFailed());
+  }
+};
+
+export const getAllOrdersByStatus = async (accessToken, userID, status, dispatch, axiosJWT) => {
+  dispatch(findOrdersStart());
+  try {
+    const res = await axiosJWT.post(
+      `${REACT_APP_BASE_URL}order/find-status`,
+      { user_id: userID, order_status: status },
+      {
+        headers: { authorization: `${accessToken}`, user: userID },
+      },
+    );
+    dispatch(findOrdersSuccess(res.data));
+  } catch (error) {
+    dispatch(findOrdersFailed());
+  }
+};
+
+export const cancelOrder = async (accessToken, userID, orderID, status, dispatch, axiosJWT) => {
+  dispatch(cancelOrderStart());
+  try {
+    const res = await axiosJWT.post(
+      `${REACT_APP_BASE_URL}order/cancel`,
+      { user_id: userID, order_id: orderID },
+      {
+        headers: { authorization: `${accessToken}`, user: userID },
+      },
+    );
+    dispatch(cancelOrderSuccess(res.data));
+    if (status === 'all') {
+      getAllOrders(accessToken, userID, dispatch, axiosJWT);
+    } else if (status === 'pending') {
+      getAllOrdersByStatus(accessToken, userID, status, dispatch, axiosJWT);
+    }
+  } catch (error) {
+    dispatch(cancelOrderFailed());
   }
 };
 

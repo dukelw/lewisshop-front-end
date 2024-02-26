@@ -1,26 +1,57 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { Container, Row, Col } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './PurchaseHistory.module.scss';
 import PurchaseItem from '../PurchaseItem';
 import moment from 'moment-timezone';
 import STATUS from '~/constants/status';
+import Button from '../Button';
+import { createAxios } from '~/createAxios';
+import { cancelOrder } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
-function PurchaseHistory() {
+function PurchaseHistory({ status }) {
   const currentOrders = useSelector((state) => state?.order.orders.allOrder);
+  const currentUser = useSelector((state) => state.authUser.signin.currentUser);
+  const accessToken = currentUser?.metadata.tokens.accessToken;
+  const userID = currentUser?.metadata.user._id;
+  const dispatch = useDispatch();
+  const axiosJWT = createAxios(currentUser);
   const orders = currentOrders?.metadata;
-  console.log(orders);
   const productGroups = [];
 
-  orders.forEach((order) => {
-    order.order_products.forEach((product) => {
-      // Trích xuất thông tin sản phẩm từ mỗi mục
+  const handleCancel = (orderID) => {
+    cancelOrder(accessToken, userID, orderID, status, dispatch, axiosJWT);
+  };
+
+  const handleFeedback = (orderID) => {
+    console.log(orderID);
+  };
+
+  const handleOrder = (orderID) => {
+    console.log(orderID);
+  };
+
+  let text = 'Cancel';
+  let onClickFunction = handleCancel;
+
+  if (status === 'delivering' || status === 'confirming') {
+    text = 'Waiting';
+    onClickFunction = null;
+  } else if (status === 'shipped') {
+    text = 'Feedback';
+    onClickFunction = handleFeedback;
+  } else if (status === 'canceled') {
+    text = 'Reorder';
+    onClickFunction = handleOrder;
+  }
+
+  orders?.forEach((order) => {
+    order.order_products?.forEach((product) => {
       const { shop_id, rawPrice, appliedDiscountPrice, ...otherProductInfo } = product;
 
-      // Thêm thông tin sản phẩm vào mảng productGroups
       productGroups.push({
         shop_id,
         rawPrice,
@@ -29,9 +60,6 @@ function PurchaseHistory() {
       });
     });
   });
-
-  // In ra kết quả lưu trữ trong productGroups
-  console.log(productGroups);
 
   return orders?.map((order, index) => {
     return (
@@ -104,6 +132,13 @@ function PurchaseHistory() {
             </Col>
           </Row>
         </Container>
+        <div className={cx('actions')}>
+          {onClickFunction && (
+            <Button onClick={(e) => onClickFunction(order._id)} className={cx('btn')} primary>
+              {text}
+            </Button>
+          )}
+        </div>
       </Container>
     );
   });

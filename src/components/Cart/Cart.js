@@ -44,7 +44,8 @@ function Cart() {
     }
   };
 
-  const handleAllCart = (isChecked, productGroups) => {
+  const handleAllCart = (isChecked, productGroups, shopID) => {
+    setSelectedDiscount([]);
     if (!isChecked) {
       setChecked(false);
       return;
@@ -62,7 +63,7 @@ function Cart() {
 
   const handleSelectDiscount = (code, discountID, shopID) => {
     const discountableCart =
-      JSON.parse(localStorage.getItem('discountableCart')) || convertData(cartProducts, cartID, cartUserID);
+      JSON.parse(localStorage.getItem('discountableCart')) || JSON.parse(localStorage.getItem('checkoutCart'));
     // eslint-disable-next-line array-callback-return
     discountableCart.shop_order_ids.map((shop) => {
       if (shop.shop_id === shopID) {
@@ -162,6 +163,7 @@ function Cart() {
     getDiscountsOfShopsByUser(accessToken, userID, currentShops, dispatch, axiosJWT);
     const handleBeforeUnload = (event) => {
       localStorage.removeItem('checkoutCart');
+      localStorage.removeItem('discountableCart');
       dispatch(checkoutFailed());
     };
 

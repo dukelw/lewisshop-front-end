@@ -1,6 +1,7 @@
 .wrapper {
   width: var(--default-layout-width);
   margin-top: 80px;
+  min-height: 100vh;
 }
 
 .user-info {

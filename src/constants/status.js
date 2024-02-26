@@ -13,7 +13,7 @@ const STATUS = {
     icon: <TruckIcon />,
     text: 'Delivering',
   },
-  confirmed: {
+  confirming: {
     icon: <ClipboardCheckIcon />,
     text: 'Confirmed',
   },

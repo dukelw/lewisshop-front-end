@@ -18,6 +18,10 @@ const orderSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    cancelOrder: {
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     checkoutStart: (state) => {
@@ -56,6 +60,16 @@ const orderSlice = createSlice({
       state.createOrder.newOrder = null;
       state.createOrder.error = true;
     },
+    cancelOrderStart: (state) => {
+      state.cancelOrder.isFetching = true;
+    },
+    cancelOrderSuccess: (state) => {
+      state.cancelOrder.isFetching = false;
+    },
+    cancelOrderFailed: (state) => {
+      state.cancelOrder.isFetching = false;
+      state.cancelOrder.error = true;
+    },
   },
 });
 
@@ -69,6 +83,9 @@ export const {
   createOrderStart,
   createOrderSuccess,
   createOrderFailed,
+  cancelOrderStart,
+  cancelOrderSuccess,
+  cancelOrderFailed,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

@@ -126,7 +126,8 @@ function CartShop({ allCart, handleAllCart }) {
     }
 
     localStorage.setItem('checkoutCart', JSON.stringify(checkoutCart));
-    handleAllCart(isChecked, productGroups);
+    localStorage.setItem('discountableCart', JSON.stringify(checkoutCart));
+    handleAllCart(isChecked, productGroups, shopId);
     checkout(accessToken, userID, checkoutCart, dispatch, axiosJWT);
   };
 

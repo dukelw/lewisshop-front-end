@@ -44,3 +44,17 @@
   font-size: 1.8rem;
   font-weight: 600;
 }
+
+.actions {
+  margin-top: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+
+  .btn {
+    &:hover {
+      color: var(--white);
+    }
+  }
+}
