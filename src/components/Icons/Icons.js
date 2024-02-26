@@ -4,9 +4,12 @@ import {
   faAdd,
   faArrowLeft,
   faBarcode,
+  faCancel,
+  faCheck,
   faCircleCheck,
   faCircleInfo,
   faCircleXmark,
+  faClipboardCheck,
   faDongSign,
   faEye,
   faEyeSlash,
@@ -27,12 +30,14 @@ import {
   faShop,
   faShoppingCart,
   faSort,
+  faSpinner,
   faSquareMinus,
   faStar as faStartSolid,
   faSubtract,
   faTimeline,
   faTrashCan,
   faTriangleExclamation,
+  faTruck,
   faUser,
   faUserXmark,
   faUsers,
@@ -40,6 +45,60 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faMintbit, faProductHunt, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClockFour, faStar as faStarRegular, faBookmark } from '@fortawesome/free-regular-svg-icons';
+<i class="fa-solid fa-clipboard-check"></i>;
+
+export const ClipboardCheckIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faClipboardCheck}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const TruckIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faTruck}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const CancelIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faCancel}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const CheckIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faCheck}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const SpinnerIcon = ({ width = '2rem', height = '2rem', className, color, padding = '8px', onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faSpinner}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
 
 export const LayerGroupIcon = ({
   width = '2rem',

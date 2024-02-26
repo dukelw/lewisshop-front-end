@@ -26,10 +26,10 @@ function PurchaseItem({ product }) {
       <Row className={cx('container')}>
         <Col className={cx('field')} md={4}>
           <div className={cx('info')}>
-            <img className={cx('img')} src={product.product_thumb} alt="Product" />
+            <img className={cx('img')} src={product.thumb} alt="Product" />
             <div className={cx('text')}>
-              <p className={cx('name')}>{product.product_name}</p>
-              <p className={cx('description')}>{product.product_description}</p>
+              <p className={cx('name')}>{product.name}</p>
+              <p className={cx('description')}>{product.description}</p>
             </div>
           </div>
         </Col>

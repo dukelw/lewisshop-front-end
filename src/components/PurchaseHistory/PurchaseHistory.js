@@ -1,66 +1,112 @@
 import React from 'react';
 import classNames from 'classnames/bind';
-import { Container, Row } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import styles from './PurchaseHistory.module.scss';
 import PurchaseItem from '../PurchaseItem';
+import moment from 'moment-timezone';
+import STATUS from '~/constants/status';
 
 const cx = classNames.bind(styles);
 
 function PurchaseHistory() {
   const currentOrders = useSelector((state) => state?.order.orders.allOrder);
-  const orderProducts = currentOrders?.metadata;
+  const orders = currentOrders?.metadata;
+  console.log(orders);
   const productGroups = [];
-  let Purchase = [];
 
-  function classify(orderDate, groups) {
-    const ShopElements = Object.keys(groups).map((shopId) => {
-      const { shop_name, products } = groups[shopId];
+  orders.forEach((order) => {
+    order.order_products.forEach((product) => {
+      // Trích xuất thông tin sản phẩm từ mỗi mục
+      const { shop_id, rawPrice, appliedDiscountPrice, ...otherProductInfo } = product;
 
-      console.log(shop_name, products);
-
-      return (
-        <Container className={cx('shop')} key={shopId}>
-          <Row>
-            <h3 className={cx('name')}>{shop_name}</h3>
-            {products.map((product) => (
-              <PurchaseItem key={product.product_id} product={product}>
-                {product?.product_name}
-              </PurchaseItem>
-            ))}
-          </Row>
-        </Container>
-      );
+      // Thêm thông tin sản phẩm vào mảng productGroups
+      productGroups.push({
+        shop_id,
+        rawPrice,
+        appliedDiscountPrice,
+        ...otherProductInfo,
+      });
     });
-
-    return (
-      <>
-        <p className={cx('date')}>{orderDate}</p>
-        {ShopElements}
-      </>
-    );
-  }
-
-  orderProducts?.forEach((order) => {
-    const products = order.order_products;
-    products.forEach((product) => {
-      if (!productGroups[product.shop_id]) {
-        productGroups[product.shop_id] = {
-          shop_name: product.shop_name,
-          products: [],
-        };
-      }
-      productGroups[product.shop_id].products.push(...product.item_products);
-    });
-    console.log('Product groups: ', productGroups);
-    Purchase.push(classify(order.createdAt, productGroups));
   });
 
-  return Purchase.map((Order, index) => (
-    <Container key={index} className={cx('order')}>
-      {Order}
-    </Container>
-  ));
+  // In ra kết quả lưu trữ trong productGroups
+  console.log(productGroups);
+
+  return orders?.map((order, index) => {
+    return (
+      <Container className={cx('wrapper')} key={index}>
+        <div className={cx('info')}>
+          <p className={cx('time')}>
+            Order {moment(order.createdAt).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss')}
+          </p>
+          <p className={cx('status')}>
+            {STATUS[order.order_status].icon} <span>{STATUS[order.order_status].text}</span>
+          </p>
+        </div>
+        <Row>
+          <Col className={cx('title')} md={4}>
+            Product
+          </Col>
+          <Col className={cx('title')} md={2}>
+            Unit Price
+          </Col>
+          <Col className={cx('title')} md={2}>
+            Quantity
+          </Col>
+          <Col className={cx('title')} md={2}>
+            Total
+          </Col>
+          <Col className={cx('title')} md={2}>
+            Selection
+          </Col>
+        </Row>
+        {order.order_products?.map((shop, id) => (
+          <div key={id}>
+            <p className={cx('shop')}>{shop.shop_name}</p>
+            {shop.item_products?.map((product, i) => (
+              <PurchaseItem key={i} product={product} />
+            ))}
+          </div>
+        ))}
+        <Container>
+          <Row className={cx('title')}>Payment</Row>
+          <Row>
+            <Col md={6} className={cx('label')}>
+              Subtotal
+            </Col>
+            <Col md={6} className={cx('price')}>
+              {order?.order_checkout?.totalPrice}
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6} className={cx('label')}>
+              Shipping
+            </Col>
+            <Col md={6} className={cx('price')}>
+              {order?.order_checkout?.feeShip}
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6} className={cx('label')}>
+              Discount
+            </Col>
+            <Col md={6} className={cx('price')}>
+              {order?.order_checkout?.totalDiscount}
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6} className={cx('label')}>
+              Total
+            </Col>
+            <Col md={6} className={cx('price')}>
+              {order?.order_checkout?.totalCheckout}
+            </Col>
+          </Row>
+        </Container>
+      </Container>
+    );
+  });
 }
 
 export default PurchaseHistory;
