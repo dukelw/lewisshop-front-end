@@ -1,36 +1,42 @@
 .wrapper {
-  position: absolute;
-  top: 22%;
-  left: 72%;
-  transform: translate(-50%, -50%);
-  width: 800px;
-  height: 500px;
-  padding: 60px;
-  background-color: var(--white);
-  box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
+  height: 100vh;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.inner {
+  margin: auto;
+  min-width: 1000px;
 }
 
 .header,
 .body {
   width: 100%;
-  max-height: 400px;
   overflow: scroll;
+  max-height: 600px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .list {
   text-decoration: none;
 }
 
-h1 {
+.title {
   text-transform: capitalize;
   font-size: 3rem;
-  font-weight: 100;
   font-weight: 700;
+  margin-left: 20px;
+}
+
+.description {
+  font-size: 1.6rem;
+  margin-left: 20px;
 }
 
 h2 {

@@ -1,17 +1,20 @@
 import React from 'react';
 import classNames from 'classnames/bind';
+import { Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import styles from './DiscountModal.module.scss';
-import { XMarkIcon } from '../Icons';
 import Button from '../Button';
 
 const cx = classNames.bind(styles);
 
 const DiscountModal = ({
+  children,
   discountCodes = [],
   onSelectDiscount = () => {},
-  handleDisplay = () => {},
   currentCheckout = [],
+  isDisplay = false,
+  hide,
+  className,
 }) => {
   const currentUser = useSelector((state) => state?.authUser.signin?.currentUser);
   const userID = currentUser?.metadata.user._id;
@@ -39,7 +42,7 @@ const DiscountModal = ({
     };
   });
 
-  const inValidDiscounts = currentCheckout?.metadata.shop_order_ids?.map((shop) => {
+  const inValidDiscounts = currentCheckout?.metadata?.shop_order_ids?.map((shop) => {
     const totalPrice = shop.item_products.reduce((acc, curr) => {
       return acc + curr.price * curr.quantity;
     }, 0);
@@ -55,49 +58,72 @@ const DiscountModal = ({
     };
   });
 
+  const classes = cx('', {
+    [className]: className,
+  });
+
   return (
-    <div className={cx('wrapper')}>
-      <div className={cx('header')}>
-        <h1>Choose a discount code</h1>
-        <XMarkIcon onClick={handleDisplay}></XMarkIcon>
-      </div>
-      <div className={cx('body')}>
-        <ul className={cx('list')}>
-          {discountCodes?.map((data, index) => (
-            <li className={cx('item')} key={data?.shop_id}>
-              <h2>{data.shop_name}</h2>
-              {validDiscounts[index]?.shop_discounts?.map((discount) => {
-                if (discount !== '[]') {
-                  return (
-                    <div key={discount._id} className={cx('discount')}>
-                      <div className={'text'}>
-                        <p className={cx('code')}>{discount.code}</p>
-                        <p className={cx('name')}>{discount.name}</p>
-                      </div>
-                      <Button primary onClick={() => onSelectDiscount(discount?.code, discount?._id, data?.shop_id)}>
-                        Use
-                      </Button>
-                    </div>
-                  );
-                }
-              })}
-              {inValidDiscounts[index]?.shop_discounts?.map((discount) => {
-                return (
-                  <div key={discount._id} className={cx('discount')}>
-                    <div className={'text'}>
-                      <p className={cx('code')}>{discount.code}</p>
-                      <p className={cx('name')}>{discount.name}</p>
-                    </div>
-                    <Button disabled onClick={() => onSelectDiscount(discount?.code, discount?._id, data?.shop_id)}>
-                      Min: {discount.minimum}
-                    </Button>
-                  </div>
-                );
-              })}
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className={classes}>
+      {React.cloneElement(children)}
+      <Modal
+        show={isDisplay}
+        onHide={hide}
+        aria-labelledby="example-custom-modal-styling-title"
+        dialogClassName={cx('wrapper')}
+        contentClassName={cx('inner')}
+      >
+        <Modal.Header className={cx('header')} closeButton>
+          <Modal.Title className={cx('heading')}>
+            <h1 className={cx('title')}>Choose a discount code</h1>
+            <span className={cx('description')}>You can choose 1 code of each shop</span>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className={cx('body')}>
+          <ul className={cx('list')}>
+            {discountCodes
+              ? discountCodes?.map((data, index) => (
+                  <li className={cx('item')} key={data?.shop_id}>
+                    <h2>{data.shop_name}</h2>
+                    {validDiscounts &&
+                      validDiscounts[index]?.shop_discounts?.map((discount) => {
+                        return (
+                          <div key={discount._id} className={cx('discount')}>
+                            <div className={'text'}>
+                              <p className={cx('code')}>{discount.code}</p>
+                              <p className={cx('name')}>{discount.name}</p>
+                            </div>
+                            <Button
+                              primary
+                              onClick={() => onSelectDiscount(discount?.code, discount?._id, data?.shop_id)}
+                            >
+                              Use
+                            </Button>
+                          </div>
+                        );
+                      })}
+                    {inValidDiscounts &&
+                      inValidDiscounts[index]?.shop_discounts?.map((discount) => {
+                        return (
+                          <div key={discount._id} className={cx('discount')}>
+                            <div className={'text'}>
+                              <p className={cx('code')}>{discount.code}</p>
+                              <p className={cx('name')}>{discount.name}</p>
+                            </div>
+                            <Button
+                              disabled
+                              onClick={() => onSelectDiscount(discount?.code, discount?._id, data?.shop_id)}
+                            >
+                              Min: {discount.minimum}
+                            </Button>
+                          </div>
+                        );
+                      })}
+                  </li>
+                ))
+              : ''}
+          </ul>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

@@ -29,7 +29,12 @@ function Checkout({ data = {} }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Add logic to handle form submission
+    const discountableCart = JSON.parse(localStorage.getItem('discountableCart'));
+    const orderData = {
+      ...discountableCart,
+      user_address: formData.address,
+      user_payment: formData.paymentMethod,
+    };
   };
 
   return (

@@ -17,6 +17,8 @@ const cx = classNames.bind(styles);
 function Cart() {
   const currentCart = useSelector((state) => state?.authUser.getCart.cart);
   const cartProducts = currentCart?.metadata.cart_products;
+  const currentDiscount = useSelector((state) => state?.discount.discounts.foundDiscounts);
+  const discountCodes = currentDiscount?.metadata;
   const cartUserID = currentCart?.metadata.cart_user_id;
   const cartID = currentCart?.metadata._id;
   const currentUser = useSelector((state) => state.authUser.signin.currentUser);
@@ -26,8 +28,6 @@ function Cart() {
   const axiosJWT = createAxios(currentUser);
   const currentCheckout = useSelector((state) => state?.order.checkout.checkoutResult);
   const checkoutOrder = currentCheckout?.metadata.checkout_order;
-  const currentDiscount = useSelector((state) => state?.discount.discounts.foundDiscounts);
-  const discountCodes = currentDiscount?.metadata;
   const [selectedDiscount, setSelectedDiscount] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -164,9 +164,6 @@ function Cart() {
       dispatch(checkoutFailed());
     };
 
-    console.log('current checkoutCart: ' + currentCheckout);
-    console.log('discount codes: ' + discountCodes);
-
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
@@ -177,14 +174,6 @@ function Cart() {
 
   return (
     <div className={cx('wrapper')}>
-      {modalVisible && (
-        <DiscountModal
-          discountCodes={discountCodes}
-          onSelectDiscount={handleSelectDiscount}
-          handleDisplay={handleEnterCodeClick}
-          currentCheckout={currentCheckout}
-        />
-      )}
       <h1 className={cx('header')}>Shopping Cart</h1>
       <Link className={cx('sub-header')} to={'/products'}>
         <h2 className={cx('sub-header')}>
@@ -233,9 +222,18 @@ function Cart() {
                   Do you have a voucher? <span>(Optional)</span>
                 </p>
                 <div className={cx('actions')}>
-                  <Button onClick={handleEnterCodeClick} className={cx('btn')} outline large>
-                    Enter the code
-                  </Button>
+                  <DiscountModal
+                    discountCodes={discountCodes}
+                    onSelectDiscount={handleSelectDiscount}
+                    currentCheckout={currentCheckout}
+                    isDisplay={modalVisible}
+                    hide={handleEnterCodeClick}
+                    className={cx('discount-modal')}
+                  >
+                    <Button onClick={handleEnterCodeClick} className={cx('discount-btn')} outline large>
+                      Enter the code
+                    </Button>
+                  </DiscountModal>
                   <Button onClick={handleRedeem} className={cx('btn')} primary large>
                     Redeem
                   </Button>
@@ -244,7 +242,7 @@ function Cart() {
               <div className={cx('bottom')}>
                 <div className={cx('review')}>
                   <div className={cx('price')}>
-                    <p className={cx('title')}>Subtotal</p>
+                    <p className={cx('money-title')}>Subtotal</p>
                     <p className={cx('money')}>{checkoutOrder?.totalPrice || 0}</p>
                   </div>
                   <div className={cx('other-price')}>
@@ -254,7 +252,7 @@ function Cart() {
                 </div>
                 {selectedDiscount.length > 0 && (
                   <div className={cx('price')}>
-                    <p className={cx('title')}>Selected Discount Code</p>
+                    <p className={cx('money-title')}>Selected Discount Code</p>
                     <p className={cx('money')}>
                       {selectedDiscount.map((discount, index) => {
                         return (
@@ -267,11 +265,11 @@ function Cart() {
                   </div>
                 )}
                 <div className={cx('price')}>
-                  <p className={cx('title')}>Discount</p>
+                  <p className={cx('money-title')}>Discount</p>
                   <p className={cx('money')}>{checkoutOrder?.totalDiscount || 0}</p>
                 </div>
                 <div className={cx('price')}>
-                  <p className={cx('title')}>Total</p>
+                  <p className={cx('money-title')}>Total</p>
                   <p className={cx('money')}>{checkoutOrder?.totalCheckout || 0}</p>
                 </div>
                 <div className={cx('price')}>
