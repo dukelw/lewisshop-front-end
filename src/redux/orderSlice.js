@@ -13,6 +13,11 @@ const orderSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    createOrder: {
+      newOrder: null,
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     checkoutStart: (state) => {
@@ -39,10 +44,31 @@ const orderSlice = createSlice({
       state.orders.allOrder = null;
       state.orders.error = true;
     },
+    createOrderStart: (state) => {
+      state.createOrder.isFetching = true;
+    },
+    createOrderSuccess: (state, action) => {
+      state.createOrder.isFetching = false;
+      state.createOrder.newOrder = action.payload;
+    },
+    createOrderFailed: (state) => {
+      state.createOrder.isFetching = false;
+      state.createOrder.newOrder = null;
+      state.createOrder.error = true;
+    },
   },
 });
 
-export const { checkoutStart, checkoutSuccess, checkoutFailed, findOrdersStart, findOrdersSuccess, findOrdersFailed } =
-  orderSlice.actions;
+export const {
+  checkoutStart,
+  checkoutSuccess,
+  checkoutFailed,
+  findOrdersStart,
+  findOrdersSuccess,
+  findOrdersFailed,
+  createOrderStart,
+  createOrderSuccess,
+  createOrderFailed,
+} = orderSlice.actions;
 
 export default orderSlice.reducer;

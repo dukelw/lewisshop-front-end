@@ -157,6 +157,7 @@ function Cart() {
 
   useEffect(() => {
     const checkoutCart = convertData(cartProducts, cartID, cartUserID);
+    localStorage.setItem('checkoutCart', JSON.stringify(checkoutCart));
     checkout(accessToken, userID, checkoutCart, dispatch, axiosJWT);
     getDiscountsOfShopsByUser(accessToken, userID, currentShops, dispatch, axiosJWT);
     const handleBeforeUnload = (event) => {

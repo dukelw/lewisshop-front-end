@@ -8,6 +8,16 @@ import Button from '../Button';
 const cx = classNames.bind(styles);
 
 function Checkout({ data = {} }) {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const PAYMENT_METHOD = {
+    bank: 'Internet Banking',
+    momo: 'Momo',
+    zalo: 'Zalo Pay',
+    cod: 'Cash On Delivery',
+  };
+  const [orderData, setOrderData] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     tel: '',
@@ -29,12 +39,16 @@ function Checkout({ data = {} }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const discountableCart = JSON.parse(localStorage.getItem('discountableCart'));
-    const orderData = {
+    handleShow();
+    const discountableCart =
+      JSON.parse(localStorage.getItem('discountableCart')) || JSON.parse(localStorage.getItem('checkoutCart'));
+    const newOrderData = {
       ...discountableCart,
       user_address: formData.address,
-      user_payment: formData.paymentMethod,
+      user_payment: PAYMENT_METHOD[formData.paymentMethod],
     };
+    setOrderData(newOrderData);
+    console.log('Order data at checkout: ', newOrderData);
   };
 
   return (
@@ -233,7 +247,14 @@ function Checkout({ data = {} }) {
                   </Form>
                 </Row>
                 <Row>
-                  <BuyConfirm paymentData={data} userData={formData}>
+                  <BuyConfirm
+                    handleClose={handleClose}
+                    handleShow={handleShow}
+                    isShow={show}
+                    paymentData={data}
+                    userData={formData}
+                    orderData={orderData}
+                  >
                     <Button large className={cx('submit')} primary onClick={handleSubmit}>
                       Pay
                     </Button>

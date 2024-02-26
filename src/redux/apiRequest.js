@@ -73,6 +73,9 @@ import {
   checkoutFailed,
   checkoutStart,
   checkoutSuccess,
+  createOrderFailed,
+  createOrderStart,
+  createOrderSuccess,
   findOrdersFailed,
   findOrdersStart,
   findOrdersSuccess,
@@ -499,6 +502,19 @@ export const getAllOrders = async (accessToken, userID, dispatch, axiosJWT) => {
     dispatch(findOrdersSuccess(res.data));
   } catch (error) {
     dispatch(findOrdersFailed());
+  }
+};
+
+export const order = async (accessToken, userID, data, dispatch, axiosJWT) => {
+  dispatch(createOrderStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}order`, data, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    dispatch(createOrderSuccess(res.data));
+    localStorage.removeItem('discountableCart');
+  } catch (error) {
+    dispatch(createOrderFailed());
   }
 };
 

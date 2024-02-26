@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import Button from 'react-bootstrap/Button';
@@ -7,23 +7,20 @@ import Modal from 'react-bootstrap/Modal';
 import styles from './BuyConfirm.module.scss';
 import { createAxios } from '~/createAxios';
 import { useNavigate } from 'react-router-dom';
-import { payment } from '~/redux/apiRequest';
+import { order, payment } from '~/redux/apiRequest';
 import { paymentSuccess } from '~/redux/paymentSlice';
 
 const cx = classNames.bind(styles);
 
-function BuyConfirm({ children, paymentData, userData }) {
+function BuyConfirm({ children, paymentData, userData, orderData, handleClose, handleShow, isShow }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state?.authUser.signin?.currentUser);
   const accessToken = currentUser?.metadata.tokens.accessToken;
   const userID = currentUser?.metadata.user._id;
   const axiosJWT = createAxios(currentUser);
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const handleBuy = () => {
+    order(accessToken, userID, orderData, dispatch, axiosJWT);
     if (userData.paymentMethod === 'momo') {
       payment(accessToken, userID, { amount: paymentData.total }, dispatch, navigate, axiosJWT);
       navigate('/payment/momo');
@@ -60,9 +57,9 @@ function BuyConfirm({ children, paymentData, userData }) {
 
   return (
     <>
-      {React.cloneElement(children, { onClick: () => handleShow() })}
+      {React.cloneElement(children)}
 
-      <Modal contentClassName={cx('inner')} show={show} onHide={handleClose}>
+      <Modal contentClassName={cx('inner')} show={isShow} onHide={(e) => handleClose()}>
         <Modal.Header closeButton>
           <Modal.Title className={cx('heading')}>
             Are you sure to pay this bill? If everything is alright, click "Continue"
