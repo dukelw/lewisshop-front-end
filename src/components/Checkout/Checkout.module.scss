@@ -1,11 +1,7 @@
 .modal {
-  max-width: unset !important;
-  padding: 20px 32px !important;
-  width: 70%;
-  transform: translate(-50%, -50%);
+  margin-top: 20px;
   padding: 60px;
   background-color: var(--white);
-  box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
 }
 
 .inner {

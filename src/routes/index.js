@@ -30,6 +30,7 @@ import Discount from '~/pages/Discount';
 import Payment from '~/pages/Payment';
 import HeaderNoLogo from '~/layouts/HeaderNoLogo';
 import Purchase from '~/pages/Purchase';
+import Checkout from '~/pages/Checkout';
 
 const publicRoutes = [
   { path: config.routes.home, component: Home },
@@ -58,6 +59,7 @@ const privateRoutes = [
   { type: 'user', path: config.routes.userCart, component: Cart, layout: HeaderAndFooter },
   { type: 'user', path: config.routes.payment, component: Payment, layout: HeaderNoLogo },
   { type: 'user', path: config.routes.purchases, component: Purchase, layout: HeaderNoLogo },
+  { type: 'user', path: config.routes.checkout, component: Checkout, layout: HeaderNoLogo },
 ];
 
 export { publicRoutes, privateRoutes };

@@ -22,6 +22,7 @@ const routes = {
   shopDiscounts: '/discounts',
   payment: '/payment/:method',
   purchases: '/purchases',
+  checkout: '/checkout',
 };
 
 export default routes;

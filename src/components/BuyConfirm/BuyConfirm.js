@@ -12,7 +12,7 @@ import { paymentSuccess } from '~/redux/paymentSlice';
 
 const cx = classNames.bind(styles);
 
-function DeleteConfirm({ children, paymentData, userData }) {
+function BuyConfirm({ children, paymentData, userData }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state?.authUser.signin?.currentUser);
@@ -163,4 +163,4 @@ function DeleteConfirm({ children, paymentData, userData }) {
   );
 }
 
-export default DeleteConfirm;
+export default BuyConfirm;
