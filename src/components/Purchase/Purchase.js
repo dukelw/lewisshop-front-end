@@ -67,11 +67,11 @@ function Purchase() {
             <Tab tabClassName={cx('tab')} eventKey="all" title="All">
               <PurchaseHistory status={'all'} />
             </Tab>
-            <Tab tabClassName={cx('tab')} eventKey="confirming" title="Waiting shop onfirmation">
-              <PurchaseHistory status={'confirming'} />
-            </Tab>
             <Tab tabClassName={cx('tab')} eventKey="pending" title="Waiting to pay">
               <PurchaseHistory status={'pending'} />
+            </Tab>
+            <Tab tabClassName={cx('tab')} eventKey="confirming" title="Waiting shop confirmation">
+              <PurchaseHistory status={'confirming'} />
             </Tab>
             <Tab tabClassName={cx('tab')} eventKey="delivering" title="Waiting to delivery">
               <PurchaseHistory status={'delivering'} />
