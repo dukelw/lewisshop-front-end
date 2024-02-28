@@ -13,6 +13,7 @@ const routes = {
   userSignup: '/user/signup',
   shopDraft: '/shop/draft',
   shopPublished: '/shop/published',
+  shopOrders: '/shop/orders',
   shopCreateProduct: '/shop/create/product',
   shopCreateDiscount: '/shop/create/discount',
   shopRestoreDiscount: '/shop/restore/discount',

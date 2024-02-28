@@ -32,7 +32,7 @@ function OffCanvas({ Icon = ListIcon, content = 'All', className }) {
     },
     {
       title: 'All orders',
-      to: '/orders',
+      to: '/shop/orders',
     },
     {
       title: 'Add new products',

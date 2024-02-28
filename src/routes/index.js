@@ -31,6 +31,7 @@ import Payment from '~/pages/Payment';
 import HeaderNoLogo from '~/layouts/HeaderNoLogo';
 import Purchase from '~/pages/Purchase';
 import Checkout from '~/pages/Checkout';
+import ShopOrder from '~/pages/ShopOrder';
 
 const publicRoutes = [
   { path: config.routes.home, component: Home },
@@ -53,6 +54,7 @@ const privateRoutes = [
   { type: 'shop', path: config.routes.shopDraft, component: ShopDraft, layout: ShopDefaultLayout },
   { type: 'shop', path: config.routes.shopPublished, component: ShopPublished, layout: ShopDefaultLayout },
   { type: 'shop', path: config.routes.shopCreateProduct, component: ShopCreateProduct, layout: ShopDefaultLayout },
+  { type: 'shop', path: config.routes.shopOrders, component: ShopOrder, layout: ShopDefaultLayout },
   { type: 'shop', path: config.routes.shopEditProduct, component: ShopEditProduct, layout: ShopDefaultLayout },
   { type: 'shop', path: config.routes.shopCreateDiscount, component: ShopCreateDiscount, layout: ShopDefaultLayout },
   { type: 'shop', path: config.routes.shopRestoreDiscount, component: ShopRestoreDiscount, layout: ShopDefaultLayout },

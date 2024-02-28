@@ -22,6 +22,16 @@ const orderSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    findOrder: {
+      foundOrder: null,
+      isFetching: false,
+      error: false,
+    },
+    updateOrderStatus: {
+      updatedStatus: null,
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     checkoutStart: (state) => {
@@ -70,6 +80,30 @@ const orderSlice = createSlice({
       state.cancelOrder.isFetching = false;
       state.cancelOrder.error = true;
     },
+    findOrdersByShopStart: (state) => {
+      state.findOrder.isFetching = true;
+    },
+    findOrdersByShopSuccess: (state, action) => {
+      state.findOrder.isFetching = false;
+      state.findOrder.foundOrder = action.payload;
+    },
+    findOrdersByShopFailed: (state) => {
+      state.findOrder.isFetching = false;
+      state.findOrder.foundOrder = null;
+      state.findOrder.error = true;
+    },
+    updateOrderStatusStart: (state) => {
+      state.updateOrderStatus.isFetching = true;
+    },
+    updateOrderStatusSuccess: (state, action) => {
+      state.updateOrderStatus.isFetching = false;
+      state.updateOrderStatus.updatedStatus = action.payload;
+    },
+    updateOrderStatusFailed: (state) => {
+      state.updateOrderStatus.isFetching = false;
+      state.updateOrderStatus.updatedStatus = null;
+      state.updateOrderStatus.error = true;
+    },
   },
 });
 
@@ -86,6 +120,12 @@ export const {
   cancelOrderStart,
   cancelOrderSuccess,
   cancelOrderFailed,
+  findOrdersByShopStart,
+  findOrdersByShopSuccess,
+  findOrdersByShopFailed,
+  updateOrderStatusStart,
+  updateOrderStatusFailed,
+  updateOrderStatusSuccess,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;
