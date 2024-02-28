@@ -32,6 +32,9 @@ import {
   updateCartStart,
   updateCartSuccess,
   updateCartFailure,
+  findUserStart,
+  findUserSuccess,
+  findUserFailure,
 } from './authUserSlice';
 import {
   addRecentProduct,
@@ -634,6 +637,22 @@ export const getDiscountsOfShopsByUser = async (accessToken, userID, shopIDs, di
     dispatch(findDiscountsSuccess(res.data));
   } catch (error) {
     dispatch(findDiscountsFailed());
+  }
+};
+
+export const findUser = async (accessToken, shopID, userID, dispatch, axiosJWT) => {
+  dispatch(findUserStart());
+  try {
+    const res = await axiosJWT.post(
+      `${REACT_APP_BASE_URL}user/find`,
+      { user_id: userID },
+      {
+        headers: { authorization: `${accessToken}`, user: shopID },
+      },
+    );
+    dispatch(findUserSuccess(res.data));
+  } catch (error) {
+    dispatch(findUserFailure());
   }
 };
 

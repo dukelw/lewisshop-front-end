@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAdd,
+  faAddressBook,
   faArrowLeft,
   faBarcode,
   faCancel,
@@ -10,6 +11,7 @@ import {
   faCircleInfo,
   faCircleXmark,
   faClipboardCheck,
+  faCreditCard,
   faDongSign,
   faEye,
   faEyeSlash,
@@ -46,6 +48,40 @@ import {
 import { faFacebook, faInstagram, faMintbit, faProductHunt, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClockFour, faStar as faStarRegular, faBookmark } from '@fortawesome/free-regular-svg-icons';
 <i class="fa-solid fa-clipboard-check"></i>;
+
+export const AddressBookIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faAddressBook}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const CreditCardIcon = ({
+  width = '2rem',
+  height = '2rem',
+  className,
+  color,
+  padding = '8px',
+  onClick,
+  style,
+}) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faCreditCard}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
 
 export const ClipboardCheckIcon = ({
   width = '2rem',

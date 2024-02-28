@@ -37,6 +37,11 @@ const authUserSlide = createSlice({
       isFetching: false,
       error: false,
     },
+    findUser: {
+      foundUser: null,
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     userSigninStart: (state) => {
@@ -124,6 +129,18 @@ const authUserSlide = createSlice({
       state.updateCart.isFetching = false;
       state.updateCart.error = true;
     },
+    findUserStart: (state) => {
+      state.findUser.isFetching = true;
+    },
+    findUserSuccess: (state, action) => {
+      state.findUser.isFetching = false;
+      state.findUser.foundUser = action.payload;
+      state.findUser.error = false;
+    },
+    findUserFailure: (state) => {
+      state.findUser.isFetching = false;
+      state.findUser.error = true;
+    },
   },
 });
 
@@ -149,5 +166,8 @@ export const {
   updateCartStart,
   updateCartSuccess,
   updateCartFailure,
+  findUserStart,
+  findUserSuccess,
+  findUserFailure,
 } = authUserSlide.actions;
 export default authUserSlide.reducer;

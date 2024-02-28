@@ -1,31 +1,18 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment-timezone';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Row, Col, Container, Card } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 import styles from './Order.module.scss';
 import Button from '../Button';
-import DiscountInfoModal from '../DiscountInfoModal';
-import DiscountEditModal from '../DiscountEditModal';
-import {
-  DongIcon,
-  LayerGroupIcon,
-  ProductHuntIcon,
-  MoneyBillIcon,
-  PercentIcon,
-  PlusIcon,
-  TrashCanIcon,
-  BarCodeIcon,
-  LandMineOnIcon,
-  EyeIcon,
-  SquareMinusIcon,
-} from '../Icons';
+import { ProductHuntIcon, PercentIcon, LandMineOnIcon, CreditCardIcon, AddressBookIcon } from '../Icons';
 import { createAxios } from '~/createAxios';
-import { findProductsByID, getOrdersByShop, updateOrderStatus } from '~/redux/apiRequest';
+import { getOrdersByShop, updateOrderStatus, findUser } from '~/redux/apiRequest';
 import DeleteConfirm from '../DeleteConfirm';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import OrderInfoModal from '../OrderInfoModal';
 
 const cx = classNames.bind(styles);
 
@@ -42,7 +29,7 @@ function Discount() {
 
   const handleDetailClick = (order) => {
     // Call findProducts with the order's product IDs
-    findProductsByID(order.order_product_ids, dispatch, axios);
+    findUser(accessToken, shopID, order.order_user_id, dispatch, axios);
   };
 
   const handleProductDetail = (productID, shopID, productType) => {
@@ -106,7 +93,7 @@ function Discount() {
                 </div>
                 <div className={cx('group')}>
                   <p className={cx('title')}>
-                    <LayerGroupIcon /> Payment
+                    <CreditCardIcon /> Payment
                   </p>
                   <p className={cx('text')}>
                     {order.order_type === 'percentage' ? <PercentIcon className={cx('type')} /> : order.order_payment}
@@ -114,7 +101,7 @@ function Discount() {
                 </div>
                 <div className={cx('group')}>
                   <p className={cx('title')}>
-                    <BarCodeIcon />
+                    <AddressBookIcon />
                     Address
                   </p>
                   <p className={cx('text', 'text-limit')}>{order.order_shipping}</p>
@@ -142,11 +129,15 @@ function Discount() {
               </Card.Body>
               <Card.Footer className={cx('footer')}>
                 {!deleteMode ? (
-                  <DiscountInfoModal data={order} onDetailClick={handleDetailClick}>
+                  <OrderInfoModal
+                    data={order}
+                    code={order.order_products[0].shop_discounts}
+                    onDetailClick={handleDetailClick}
+                  >
                     <Button outline rounded>
                       Detail
                     </Button>
-                  </DiscountInfoModal>
+                  </OrderInfoModal>
                 ) : (
                   <DeleteConfirm order_code={order.order_code}>
                     <Button outline rounded>
