@@ -48,6 +48,9 @@ import {
   findRelateProductStart,
   findRelateProductSuccess,
   getProductsFailed,
+  getProductsNoLimitFailed,
+  getProductsNoLimitStart,
+  getProductsNoLimitSuccess,
   getProductsStart,
   getProductsSuccess,
   resetRecentProduct,
@@ -209,13 +212,23 @@ export const getAllProductOfShop = async (accessToken, shopID, dispatch, axiosJW
   }
 };
 
-export const getAllProduct = async (dispatch) => {
+export const getAllProduct = async (pagination, dispatch) => {
   dispatch(getProductsStart());
   try {
-    const res = await axios.get(`${REACT_APP_BASE_URL}product`);
+    const res = await axios.get(`${REACT_APP_BASE_URL}product?page=${pagination}`);
     dispatch(getProductsSuccess(res.data));
   } catch (error) {
     dispatch(getProductsFailed());
+  }
+};
+
+export const getAllProductNoLimit = async (dispatch) => {
+  dispatch(getProductsNoLimitStart());
+  try {
+    const res = await axios.get(`${REACT_APP_BASE_URL}product/all-product-no-limit`);
+    dispatch(getProductsNoLimitSuccess(res.data));
+  } catch (error) {
+    dispatch(getProductsNoLimitFailed());
   }
 };
 

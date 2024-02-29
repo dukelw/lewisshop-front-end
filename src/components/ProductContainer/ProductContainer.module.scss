@@ -52,3 +52,27 @@
   font-size: 4rem;
   margin-bottom: 40px;
 }
+
+.pagination-link {
+  padding: 12px 20px;
+  border: 1px solid var(--grey);
+  color: var(--black);
+
+  &:hover {
+    border: 1px solid var(--black);
+    color: var(--white);
+    background-color: var(--black);
+  }
+
+  &:active {
+    outline: unset;
+    border: unset;
+  }
+}
+
+:global {
+  .pagination .page-item.active .page-link {
+    background-color: var(--pink);
+    border-color: var(--pink);
+  }
+}
