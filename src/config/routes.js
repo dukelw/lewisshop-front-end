@@ -22,7 +22,7 @@ const routes = {
   userCart: '/cart',
   shopDiscounts: '/discounts',
   payment: '/payment/:method',
-  purchases: '/purchases',
+  lobby: '/user/lobby',
   checkout: '/checkout',
 };
 

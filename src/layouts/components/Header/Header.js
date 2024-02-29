@@ -124,8 +124,8 @@ function Header() {
   const userMenu = [
     {
       icon: <ProfileIcon />,
-      title: 'Your order',
-      to: '/purchases',
+      title: 'Your account',
+      to: '/user/lobby',
     },
     {
       icon: <CoinIcon />,

@@ -32,6 +32,7 @@ import HeaderNoLogo from '~/layouts/HeaderNoLogo';
 import Purchase from '~/pages/Purchase';
 import Checkout from '~/pages/Checkout';
 import ShopOrder from '~/pages/ShopOrder';
+import UserLobby from '~/components/UserLobby';
 
 const publicRoutes = [
   { path: config.routes.home, component: Home },
@@ -60,7 +61,7 @@ const privateRoutes = [
   { type: 'shop', path: config.routes.shopRestoreDiscount, component: ShopRestoreDiscount, layout: ShopDefaultLayout },
   { type: 'user', path: config.routes.userCart, component: Cart, layout: HeaderAndFooter },
   { type: 'user', path: config.routes.payment, component: Payment, layout: HeaderNoLogo },
-  { type: 'user', path: config.routes.purchases, component: Purchase, layout: HeaderNoLogo },
+  { type: 'user', path: config.routes.lobby, component: UserLobby, layout: HeaderNoLogo },
   { type: 'user', path: config.routes.checkout, component: Checkout, layout: HeaderNoLogo },
 ];
 
