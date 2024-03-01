@@ -1,0 +1,82 @@
+.wrapper {
+  width: var(--default-layout-width);
+  margin-top: 80px;
+  min-height: 100vh;
+}
+
+.user-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--black);
+  border-radius: 6px;
+  color: var(--white);
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 8px;
+    border: 1px solid var(--white);
+  }
+
+  .name {
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .edit {
+    font-size: 1.4rem;
+  }
+
+  .infor {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 8px 0;
+
+    .edit {
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+.options {
+  list-style: none;
+
+  .item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 4px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: var(--pink);
+      color: var(--white);
+    }
+  }
+}
+
+.tab {
+  border-radius: 0 !important;
+  color: var(--black);
+
+  &:hover {
+    color: var(--pink);
+  }
+}
+
+// Use :global to override the default Bootstrap CSS
+:global {
+  .nav-link.active {
+    border: 2px solid var(--pink) !important;
+    font-weight: bold !important;
+    border-bottom: 0 !important;
+  }
+}

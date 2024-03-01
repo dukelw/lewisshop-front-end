@@ -6,6 +6,9 @@ import { DongIcon, MoneyBillIcon, NotificationIcon, UserIcon } from '../Icons';
 import { createAxios } from '~/createAxios';
 import { useEffect, useState } from 'react';
 import Purchase from '../Purchase';
+import Notification from '../Notification';
+import Account from '../Account';
+import DiscountDisplay from '../DiscountDisplay';
 
 const cx = className.bind(styles);
 
@@ -71,7 +74,19 @@ function UserLobby() {
             </li>
           </ul>
         </Col>
-        <Col md={10}>{mainContent === 'purchase' ? <Purchase /> : ''}</Col>
+        <Col md={10}>
+          {mainContent === 'purchase' ? (
+            <Purchase />
+          ) : mainContent === 'account' ? (
+            <Account />
+          ) : mainContent === 'noti' ? (
+            <Notification />
+          ) : mainContent === 'voucher' ? (
+            <DiscountDisplay />
+          ) : (
+            ''
+          )}
+        </Col>
       </Row>
     </Container>
   );
