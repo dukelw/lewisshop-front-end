@@ -1,4 +1,4 @@
-import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import className from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './UserLobby.module.scss';

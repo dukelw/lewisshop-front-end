@@ -5,7 +5,7 @@ import ProductContainer from '~/components/ProductContainer';
 
 function Home() {
   const dispatch = useDispatch();
-  const product = useSelector((state) => state.products.products.allProducts);
+  const product = useSelector((state) => state?.products.products.allProducts);
   const data = product?.metadata || [];
   const [currentPage, setCurrentPage] = useState(1);
 

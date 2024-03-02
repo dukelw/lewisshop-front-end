@@ -18,7 +18,7 @@ const cx = classNames.bind(styles);
 function ProductContainer({ data, part, handlePageClick, currentPage }) {
   const dispatch = useDispatch();
   const currentProducts = useSelector((state) => state?.products.allProducts.products);
-  const numberOfProducts = currentProducts.metadata.length;
+  const numberOfProducts = currentProducts?.metadata.length;
   useState(() => {
     getAllProductNoLimit(dispatch);
   }, []);
