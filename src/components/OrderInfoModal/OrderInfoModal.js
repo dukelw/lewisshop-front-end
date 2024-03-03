@@ -51,7 +51,6 @@ function DiscountInfoModal({ children, data, code, onDetailClick }) {
         <Modal.Header className={cx('heading')} closeButton>
           <Modal.Title className={cx('header')} id="example-custom-modal-styling-title">
             Order {moment(data.createdAt).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss')}
-            {/* <p className={cx('description')}>{data.discount_description}</p> */}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

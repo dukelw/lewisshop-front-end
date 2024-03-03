@@ -1,22 +1,38 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+import moment from 'moment-timezone';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import className from 'classnames/bind';
 import { useDropzone } from 'react-dropzone';
 import styles from './Update.module.scss';
 import { createAxios } from '~/createAxios';
 import Button from '~/components/Button';
+import { findUser, updateUserInformation } from '~/redux/apiRequest';
 
 const cx = className.bind(styles);
 
 function AccountUpdate() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state?.authUser.signin?.currentUser);
+  const userID = currentUser?.metadata.user?._id;
   const accessToken = currentUser?.metadata.tokens.accessToken;
-  const user = currentUser?.metadata.user;
+  const userInfo = useSelector((state) => state?.authUser.findUser?.foundUser);
+  const user = userInfo?.metadata.user;
   const axiosJWT = createAxios(currentUser);
   const [file, setFile] = useState('');
-  const [uploadedImageUrl, setUploadedImageUrl] = useState(user.thumb || null);
+  const [editMode, setEditMode] = useState(false);
+
+  useEffect(() => {
+    findUser(accessToken, userID, userID, dispatch, axiosJWT);
+  }, []);
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
+  const [uploadedImageUrl, setUploadedImageUrl] = useState(user?.thumb || null);
 
   const onDrop = (acceptedFiles) => {
     const uploadedFile = acceptedFiles[0];
@@ -36,17 +52,19 @@ function AccountUpdate() {
   };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const birthday = moment(user?.birthday).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss');
+  const [year, month, day] = birthday.split(' ')[0].split('-');
   const initialState = {
-    name: user.name,
-    email: user.email,
-    thumb: user.thumb,
-    bank_account_number: user.bank_account_number,
-    address: user.address,
-    phone_number: user.phone_number,
-    gender: user.gender,
-    day: '1',
-    month: '1',
-    year: '2012',
+    name: user?.name,
+    email: user?.email,
+    thumb: user?.thumb,
+    bank_account_number: user?.bank_account_number,
+    address: user?.address,
+    phone_number: user?.phone_number,
+    gender: user?.gender,
+    day,
+    month,
+    year,
   };
 
   const [formData, setFormData] = useState(initialState);
@@ -58,6 +76,15 @@ function AccountUpdate() {
       ...formData,
       [name]: newValue,
     });
+  };
+
+  const handleChangeInfo = () => {
+    const convertedFormData = {
+      ...formData,
+      birthday: `${formData.month}/${formData.day}/${formData.year}`,
+    };
+    updateUserInformation(accessToken, user?._id, convertedFormData, dispatch, axiosJWT);
+    setEditMode(false);
   };
 
   const handleDay = (event) => {
@@ -84,21 +111,31 @@ function AccountUpdate() {
     });
   };
 
-  useEffect(() => {
-    console.log('Form data: ', formData);
-  }, [formData]);
-
   return (
     <Container className={cx('wrapper')}>
-      <Row>
-        
-      </Row>
+      <div className={cx('mode')}>
+        <h1 className={cx('header')}>Your information</h1>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={editMode}
+              onChange={toggleEditMode}
+              sx={{
+                '& .MuiSwitch-switchBase': { color: '#fff !important' },
+                '& .Mui-checked': { color: '#111010 !important' },
+                '& .Mui-checked + .MuiSwitch-track': { backgroundColor: '#979797 !important' },
+              }}
+            />
+          }
+          label={<span style={{ fontSize: '16px', fontWeight: '600', fontFamily: 'ProximaNova' }}>Edit</span>}
+        />
+      </div>
       <Row>
         <Col md={10}>
           <Form.Group className={cx('form-group')} controlId="name">
             <Form.Label className={cx('form-label')}>Name</Form.Label>
             <Form.Control
-              disabled={true}
+              disabled={!editMode}
               value={formData.name}
               className={cx('form-control')}
               type="text"
@@ -109,6 +146,7 @@ function AccountUpdate() {
           <Form.Group className={cx('form-group')} controlId="email">
             <Form.Label className={cx('form-label')}>Email</Form.Label>
             <Form.Control
+              disabled={!editMode}
               value={formData.email}
               className={cx('form-control')}
               type="text"
@@ -119,6 +157,7 @@ function AccountUpdate() {
           <Form.Group className={cx('form-group')} controlId="phone_number">
             <Form.Label className={cx('form-label')}>Phone number</Form.Label>
             <Form.Control
+              disabled={!editMode}
               value={formData.phone_number}
               className={cx('form-control')}
               type="text"
@@ -132,32 +171,32 @@ function AccountUpdate() {
               <div key={`inline-${type}`} className="mb-3">
                 <Form.Check
                   inline
-                  value="male"
+                  value="Male"
                   label="Male"
                   name="gender"
                   type={type}
                   id={`inline-${type}-1`}
-                  checked={formData.gender === 'male'}
+                  checked={formData.gender === 'Male'}
                   onChange={handleInputChange}
                 />
                 <Form.Check
                   inline
-                  value="female"
+                  value="Female"
                   label="Female"
                   name="gender"
                   type={type}
                   id={`inline-${type}-2`}
-                  checked={formData.gender === 'female'}
+                  checked={formData.gender === 'Female'}
                   onChange={handleInputChange}
                 />
                 <Form.Check
                   inline
-                  value="other"
+                  value="Other"
                   label="Other"
                   name="gender"
                   type={type}
                   id={`inline-${type}-3`}
-                  checked={formData.gender === 'other'}
+                  checked={formData.gender === 'Other'}
                   onChange={handleInputChange}
                 />
               </div>
@@ -168,6 +207,7 @@ function AccountUpdate() {
               <Form.Group>
                 <Form.Label>Day</Form.Label>
                 <Form.Control
+                  disabled={!editMode}
                   className={cx('form-control')}
                   as="select"
                   name="day"
@@ -187,6 +227,7 @@ function AccountUpdate() {
               <Form.Group>
                 <Form.Label>Month</Form.Label>
                 <Form.Control
+                  disabled={!editMode}
                   className={cx('form-control')}
                   as="select"
                   name="month"
@@ -206,6 +247,7 @@ function AccountUpdate() {
               <Form.Group>
                 <Form.Label>Year</Form.Label>
                 <Form.Control
+                  disabled={!editMode}
                   className={cx('form-control')}
                   as="select"
                   name="year"
@@ -226,7 +268,7 @@ function AccountUpdate() {
           </Row>
           <Row>
             <Col className={cx('save')} md={12}>
-              <Button className={cx('save-btn')} primary large rounded>
+              <Button onClick={handleChangeInfo} className={cx('save-btn')} primary large rounded>
                 Save changes
               </Button>
             </Col>
@@ -234,7 +276,7 @@ function AccountUpdate() {
         </Col>
         <Col md={2} className={cx('avatar-zone')}>
           <div className={cx('user')}>
-            <img className={cx('avatar')} src={uploadedImageUrl || user.thumb} alt="Avatar"></img>
+            <img className={cx('avatar')} src={uploadedImageUrl || user?.thumb} alt="Avatar"></img>
           </div>
           <Form.Group className={cx('upload')} controlId="avatar">
             <div {...getRootProps()} style={{ cursor: 'pointer' }}>

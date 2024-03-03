@@ -121,6 +121,7 @@ import {
 import { showToast } from './toastSlice';
 import { addToastsFailed, addToastsStart, addToastsSuccess, removeExpiredToasts } from './multiToastSlice';
 import { paymentFailed, paymentStart, paymentSuccess } from './paymentSlice';
+import { updateInfoFailure, updateInfoStart } from './userSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -268,6 +269,20 @@ export const updateDiscount = async (accessToken, shopID, discount, dispatch, na
     addToast({ message: 'Edit discount successfully', type: 'success', show: true }, dispatch);
   } catch (error) {
     dispatch(editDiscountFailed());
+  }
+};
+
+export const updateUserInformation = async (accessToken, userID, data, dispatch, axiosJWT) => {
+  dispatch(updateInfoStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}user/update`, data, {
+      headers: { authorization: `${accessToken}`, user: `${userID}` },
+    });
+    dispatch(updateInfoStart(res.data));
+    addToast({ message: 'Update information successfully', type: 'success', show: true }, dispatch);
+    findUser(accessToken, userID, userID, dispatch, axiosJWT);
+  } catch (error) {
+    dispatch(updateInfoFailure());
   }
 };
 

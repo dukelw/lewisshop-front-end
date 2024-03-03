@@ -16,7 +16,7 @@ import OrderInfoModal from '../OrderInfoModal';
 
 const cx = classNames.bind(styles);
 
-function Discount() {
+function Order() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentShop = useSelector((state) => state?.authShop.signin?.currentShop);
@@ -56,18 +56,6 @@ function Discount() {
 
   return (
     <Container className={cx('wrapper')}>
-      {/* <div className={cx('fixed')}>
-        <Button className={cx('fixed-btn')} onClick={(e) => setDeleteMode(!deleteMode)} rounded outline>
-          {deleteMode ? <EyeIcon className={cx('fixed-icon')} /> : <SquareMinusIcon className={cx('fixed-icon')} />}
-        </Button>
-        <Button onClick={handleGoToAdd} className={cx('fixed-btn')} rounded outline>
-          <PlusIcon className={cx('fixed-icon')}></PlusIcon>
-        </Button>
-        <Button onClick={handleGoToTrash} className={cx('fixed-btn')} rounded outline>
-          <TrashCanIcon className={cx('fixed-icon')}></TrashCanIcon>
-          <span className={cx('quantity')}>{deletedDiscounts.length}</span>
-        </Button>
-      </div> */}
       <p className={cx('part')}>{orders.length > 0 ? 'All Orders' : <div>You do not have any order!</div>}</p>
       <Row>
         {orders.map((order, index) => (
@@ -158,4 +146,4 @@ function Discount() {
   );
 }
 
-export default Discount;
+export default Order;

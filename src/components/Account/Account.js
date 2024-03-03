@@ -21,7 +21,6 @@ function Account() {
     <Tabs defaultActiveKey="info" id="justify-tab-example" className="mb-3" fill>
       <Tab tabClassName={cx('tab')} eventKey="info" title="Your information">
         <Container>
-          <Row>Edit</Row>
           <Row>
             <Update />
           </Row>

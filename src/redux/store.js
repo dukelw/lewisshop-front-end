@@ -8,6 +8,7 @@ import discountReducer from './discountSlice';
 import toastReducer from './toastSlice';
 import paymentReducer from './paymentSlice';
 import multiToastReducer from './multiToastSlice';
+import userReducer from './userSlice';
 
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   toast: toastReducer,
   multiToast: multiToastReducer,
   payment: paymentReducer,
+  user: userReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
