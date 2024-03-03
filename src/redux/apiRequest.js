@@ -121,7 +121,8 @@ import {
 import { showToast } from './toastSlice';
 import { addToastsFailed, addToastsStart, addToastsSuccess, removeExpiredToasts } from './multiToastSlice';
 import { paymentFailed, paymentStart, paymentSuccess } from './paymentSlice';
-import { updateInfoFailure, updateInfoStart } from './userSlice';
+import { updateInfoFailure, updateInfoStart, updateInfoSuccess } from './userSlice';
+import { uploadImageFailure, uploadImageStart, uploadImageSuccess } from './uploadSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -278,11 +279,28 @@ export const updateUserInformation = async (accessToken, userID, data, dispatch,
     const res = await axiosJWT.post(`${REACT_APP_BASE_URL}user/update`, data, {
       headers: { authorization: `${accessToken}`, user: `${userID}` },
     });
-    dispatch(updateInfoStart(res.data));
+    dispatch(updateInfoSuccess(res.data));
     addToast({ message: 'Update information successfully', type: 'success', show: true }, dispatch);
     findUser(accessToken, userID, userID, dispatch, axiosJWT);
   } catch (error) {
     dispatch(updateInfoFailure());
+  }
+};
+
+export const uploadImage = async (file, dispatch, axiosJWT) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  dispatch(uploadImageStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}upload/thumb`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    dispatch(uploadImageSuccess(res.data));
+    return res.data;
+  } catch (error) {
+    dispatch(uploadImageFailure());
   }
 };
 

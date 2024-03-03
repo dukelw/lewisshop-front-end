@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import moment from 'moment-timezone';
+import axios from 'axios';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import className from 'classnames/bind';
@@ -9,7 +10,7 @@ import { useDropzone } from 'react-dropzone';
 import styles from './Update.module.scss';
 import { createAxios } from '~/createAxios';
 import Button from '~/components/Button';
-import { findUser, updateUserInformation } from '~/redux/apiRequest';
+import { findUser, updateUserInformation, uploadImage } from '~/redux/apiRequest';
 
 const cx = className.bind(styles);
 
@@ -20,6 +21,8 @@ function AccountUpdate() {
   const accessToken = currentUser?.metadata.tokens.accessToken;
   const userInfo = useSelector((state) => state?.authUser.findUser?.foundUser);
   const user = userInfo?.metadata.user;
+  const currentUploadImage = useSelector((state) => state?.upload.uploadImage?.uploadedImage);
+  const cloudinaryImage = currentUploadImage?.metadata.img_url;
   const axiosJWT = createAxios(currentUser);
   const [file, setFile] = useState('');
   const [editMode, setEditMode] = useState(false);
@@ -40,6 +43,7 @@ function AccountUpdate() {
 
     // Upload image to server (if needed)
     // Here you can upload the image file to your server and get the URL
+    uploadImage(uploadedFile, dispatch, axios);
     // For demonstration purposes, I'll set the URL to a temporary value
     const imageUrl = URL.createObjectURL(uploadedFile);
     setUploadedImageUrl(imageUrl);
@@ -82,6 +86,7 @@ function AccountUpdate() {
     const convertedFormData = {
       ...formData,
       birthday: `${formData.month}/${formData.day}/${formData.year}`,
+      thumb: cloudinaryImage,
     };
     updateUserInformation(accessToken, user?._id, convertedFormData, dispatch, axiosJWT);
     setEditMode(false);
