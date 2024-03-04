@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import moment from 'moment-timezone';
+import LinearProgress from '@mui/material/LinearProgress';
 import axios from 'axios';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -25,6 +26,7 @@ function AccountUpdate() {
   const cloudinaryImage = currentUploadImage?.metadata.img_url;
   const axiosJWT = createAxios(currentUser);
   const [file, setFile] = useState('');
+  const [uploadProgress, setUploadProgress] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
@@ -37,14 +39,19 @@ function AccountUpdate() {
 
   const [uploadedImageUrl, setUploadedImageUrl] = useState(user?.thumb || null);
 
-  const onDrop = (acceptedFiles) => {
+  const onDrop = async (acceptedFiles) => {
     const uploadedFile = acceptedFiles[0];
     setFile(uploadedFile);
 
-    // Upload image to server (if needed)
-    // Here you can upload the image file to your server and get the URL
-    uploadImage(uploadedFile, dispatch, axios);
-    // For demonstration purposes, I'll set the URL to a temporary value
+    // Progress when start
+    setUploadProgress(true);
+
+    // Upload image to Cloudinary
+    await uploadImage(uploadedFile, 'lewishop/user', dispatch, axios);
+
+    // Progress when end
+    setUploadProgress(false);
+
     const imageUrl = URL.createObjectURL(uploadedFile);
     setUploadedImageUrl(imageUrl);
 
@@ -291,6 +298,17 @@ function AccountUpdate() {
               </Button>
             </div>
           </Form.Group>
+          {uploadProgress && (
+            <LinearProgress
+              style={{ marginTop: '20px', width: '80%', backgroundColor: '#f48fb1' }}
+              sx={{
+                '& .MuiLinearProgress-bar': {
+                  // The static part is backgroundColor below
+                  backgroundColor: '#f50057', // The running part
+                },
+              }}
+            />
+          )}
         </Col>
       </Row>
     </Container>

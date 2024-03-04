@@ -287,9 +287,10 @@ export const updateUserInformation = async (accessToken, userID, data, dispatch,
   }
 };
 
-export const uploadImage = async (file, dispatch, axiosJWT) => {
+export const uploadImage = async (file, folderName, dispatch, axiosJWT) => {
   const formData = new FormData();
   formData.append('file', file);
+  formData.append('folderName', folderName);
   dispatch(uploadImageStart());
   try {
     const res = await axiosJWT.post(`${REACT_APP_BASE_URL}upload/thumb`, formData, {
