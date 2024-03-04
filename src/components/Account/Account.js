@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Tabs, Tab, Container, Row, Col, Form } from 'react-bootstrap';
 import styles from './Account.module.scss';
 import { createAxios } from '~/createAxios';
-import { useEffect, useState } from 'react';
-import { getAllOrders, getAllOrdersByStatus } from '~/redux/apiRequest';
+import { useState } from 'react';
 import Update from './Mode/Update';
+import Bank from './Bank';
 
 const cx = className.bind(styles);
 
@@ -26,7 +26,13 @@ function Account() {
           </Row>
         </Container>
       </Tab>
-      <Tab tabClassName={cx('tab')} eventKey="bank" title="Bank"></Tab>
+      <Tab tabClassName={cx('tab')} eventKey="bank" title="Bank">
+        <Container>
+          <Row>
+            <Bank />
+          </Row>
+        </Container>
+      </Tab>
       <Tab tabClassName={cx('tab')} eventKey="address" title="Address"></Tab>
       <Tab tabClassName={cx('tab')} eventKey="password" title="Change password"></Tab>
       <Tab tabClassName={cx('tab')} eventKey="notification" title="Notification Setting"></Tab>
