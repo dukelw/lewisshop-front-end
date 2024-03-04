@@ -22,8 +22,6 @@ function AccountUpdate() {
   const accessToken = currentUser?.metadata.tokens.accessToken;
   const userInfo = useSelector((state) => state?.authUser.findUser?.foundUser);
   const user = userInfo?.metadata.user;
-  const currentUploadImage = useSelector((state) => state?.upload.uploadImage?.uploadedImage);
-  const cloudinaryImage = currentUploadImage?.metadata.img_url;
   const axiosJWT = createAxios(currentUser);
   const [file, setFile] = useState('');
   const [uploadProgress, setUploadProgress] = useState(false);
@@ -42,15 +40,6 @@ function AccountUpdate() {
   const onDrop = async (acceptedFiles) => {
     const uploadedFile = acceptedFiles[0];
     setFile(uploadedFile);
-
-    // Progress when start
-    setUploadProgress(true);
-
-    // Upload image to Cloudinary
-    await uploadImage(uploadedFile, 'lewishop/user', dispatch, axios);
-
-    // Progress when end
-    setUploadProgress(false);
 
     const imageUrl = URL.createObjectURL(uploadedFile);
     setUploadedImageUrl(imageUrl);
@@ -89,13 +78,23 @@ function AccountUpdate() {
     });
   };
 
-  const handleChangeInfo = () => {
+  const handleChangeInfo = async () => {
+    // Progress when start
+    setUploadProgress(true);
+
+    // Upload image to Cloudinary
+    const image = await uploadImage(file, `lewishop/user/${userID}`, dispatch, axios);
+    const cloudinaryImage = image?.metadata.img_url;
+
+    // Progress when end
+    setUploadProgress(false);
+
     const convertedFormData = {
       ...formData,
       birthday: `${formData.month}/${formData.day}/${formData.year}`,
       thumb: cloudinaryImage,
     };
-    updateUserInformation(accessToken, user?._id, convertedFormData, dispatch, axiosJWT);
+    await updateUserInformation(accessToken, user?._id, convertedFormData, dispatch, axiosJWT);
     setEditMode(false);
   };
 
@@ -182,6 +181,7 @@ function AccountUpdate() {
             {['radio'].map((type) => (
               <div key={`inline-${type}`} className="mb-3">
                 <Form.Check
+                  disabled={!editMode}
                   inline
                   value="Male"
                   label="Male"
@@ -192,6 +192,7 @@ function AccountUpdate() {
                   onChange={handleInputChange}
                 />
                 <Form.Check
+                  disabled={!editMode}
                   inline
                   value="Female"
                   label="Female"
@@ -202,6 +203,7 @@ function AccountUpdate() {
                   onChange={handleInputChange}
                 />
                 <Form.Check
+                  disabled={!editMode}
                   inline
                   value="Other"
                   label="Other"
