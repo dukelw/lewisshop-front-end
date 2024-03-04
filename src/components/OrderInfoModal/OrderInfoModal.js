@@ -19,7 +19,7 @@ import {
 
 const cx = classNames.bind(styles);
 
-function DiscountInfoModal({ children, data, code, onDetailClick }) {
+function OrderInfoModal({ children, data, code, onDetailClick }) {
   const currentShop = useSelector((state) => state?.authShop.signin?.currentShop);
   const shopID = currentShop?.metadata.shop._id;
   const foundUser = useSelector((state) => state?.authUser.findUser.foundUser);
@@ -156,4 +156,4 @@ function DiscountInfoModal({ children, data, code, onDetailClick }) {
   );
 }
 
-export default DiscountInfoModal;
+export default OrderInfoModal;

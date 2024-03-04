@@ -37,9 +37,9 @@ function UserLobby() {
       <Row>
         <Col md={2}>
           <div className={cx('user-info')}>
-            <img className={cx('avatar')} src={user.thumb} alt="User Avatar" />
+            <img className={cx('avatar')} src={user?.thumb} alt="User Avatar" />
             <div className={cx('infor')}>
-              <p className={cx('name')}>{user.name}</p>
+              <p className={cx('name')}>{user?.name}</p>
               <span className={cx('edit')}>Edit information</span>
             </div>
           </div>

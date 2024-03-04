@@ -6,6 +6,7 @@ import { createAxios } from '~/createAxios';
 import { useState } from 'react';
 import Update from './Mode/Update';
 import Bank from './Bank';
+import Address from './Address';
 
 const cx = className.bind(styles);
 
@@ -33,7 +34,9 @@ function Account() {
           </Row>
         </Container>
       </Tab>
-      <Tab tabClassName={cx('tab')} eventKey="address" title="Address"></Tab>
+      <Tab tabClassName={cx('tab')} eventKey="address" title="Address">
+        <Address />
+      </Tab>
       <Tab tabClassName={cx('tab')} eventKey="password" title="Change password"></Tab>
       <Tab tabClassName={cx('tab')} eventKey="notification" title="Notification Setting"></Tab>
     </Tabs>

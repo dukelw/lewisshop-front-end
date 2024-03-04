@@ -121,7 +121,17 @@ import {
 import { showToast } from './toastSlice';
 import { addToastsFailed, addToastsStart, addToastsSuccess, removeExpiredToasts } from './multiToastSlice';
 import { paymentFailed, paymentStart, paymentSuccess } from './paymentSlice';
-import { updateInfoFailure, updateInfoStart, updateInfoSuccess } from './userSlice';
+import {
+  addAddressFailure,
+  addAddressStart,
+  addAddressSuccess,
+  updateAddressFailure,
+  updateAddressStart,
+  updateAddressSuccess,
+  updateInfoFailure,
+  updateInfoStart,
+  updateInfoSuccess,
+} from './userSlice';
 import { uploadImageFailure, uploadImageStart, uploadImageSuccess } from './uploadSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -284,6 +294,45 @@ export const updateUserInformation = async (accessToken, userID, data, dispatch,
     findUser(accessToken, userID, userID, dispatch, axiosJWT);
   } catch (error) {
     dispatch(updateInfoFailure());
+  }
+};
+
+export const updateUserAddress = async (accessToken, userID, data, dispatch, axiosJWT) => {
+  dispatch(updateAddressStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}user/update-address`, data, {
+      headers: { authorization: `${accessToken}`, user: `${userID}` },
+    });
+    dispatch(updateAddressSuccess(res.data));
+    findUser(accessToken, userID, userID, dispatch, axiosJWT);
+  } catch (error) {
+    dispatch(updateAddressFailure());
+  }
+};
+
+export const updateUserAddressDefault = async (accessToken, userID, data, dispatch, axiosJWT) => {
+  dispatch(updateAddressStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}user/update-address-default`, data, {
+      headers: { authorization: `${accessToken}`, user: `${userID}` },
+    });
+    dispatch(updateAddressSuccess(res.data));
+    findUser(accessToken, userID, userID, dispatch, axiosJWT);
+  } catch (error) {
+    dispatch(updateAddressFailure());
+  }
+};
+
+export const addNewAddress = async (accessToken, userID, data, dispatch, axiosJWT) => {
+  dispatch(addAddressStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}user/add-address`, data, {
+      headers: { authorization: `${accessToken}`, user: `${userID}` },
+    });
+    dispatch(addAddressSuccess(res.data));
+    findUser(accessToken, userID, userID, dispatch, axiosJWT);
+  } catch (error) {
+    dispatch(addAddressFailure());
   }
 };
 
