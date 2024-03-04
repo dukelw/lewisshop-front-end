@@ -40,7 +40,7 @@ function UserLobby() {
             <img className={cx('avatar')} src={user?.thumb} alt="User Avatar" />
             <div className={cx('infor')}>
               <p className={cx('name')}>{user?.name}</p>
-              <span className={cx('edit')}>Edit information</span>
+              <span className={cx('edit')}>{user?.email}</span>
             </div>
           </div>
           <ul className={cx('options')}>

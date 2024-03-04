@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Row, Col, Form } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import moment from 'moment-timezone';
 import LinearProgress from '@mui/material/LinearProgress';
 import axios from 'axios';
@@ -31,7 +31,18 @@ function AccountUpdate() {
     findUser(accessToken, userID, userID, dispatch, axiosJWT);
   }, []);
 
+  useEffect(() => {
+    if (editMode && nameRef.current) {
+      nameRef.current.focus();
+    }
+  }, [editMode]);
+
+  const nameRef = useRef(null);
+
   const toggleEditMode = () => {
+    if (editMode) {
+      nameRef.current.focus();
+    }
     setEditMode(!editMode);
   };
 
@@ -152,6 +163,7 @@ function AccountUpdate() {
               type="text"
               name="name"
               onChange={handleInputChange}
+              ref={nameRef}
             />
           </Form.Group>
           <Form.Group className={cx('form-group')} controlId="email">
