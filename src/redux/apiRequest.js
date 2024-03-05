@@ -136,6 +136,14 @@ import {
   updateInfoSuccess,
 } from './userSlice';
 import { uploadImageFailure, uploadImageStart, uploadImageSuccess } from './uploadSlice';
+import {
+  createCommentFailure,
+  createCommentStart,
+  createCommentSuccess,
+  findCommentFailure,
+  findCommentStart,
+  findCommentSuccess,
+} from './commentSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -500,6 +508,29 @@ export const findShopByID = async (shopID, dispatch, axiosJWT) => {
     dispatch(findShopSuccess(res.data));
   } catch (error) {
     dispatch(findShopFailed());
+  }
+};
+
+export const findCommentOfProduct = async (productID, page, dispatch, axiosJWT) => {
+  dispatch(findCommentStart());
+  try {
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}comment/product?product_id=${productID}&page=${page}`);
+    dispatch(findCommentSuccess(res.data));
+  } catch (error) {
+    dispatch(findCommentFailure());
+  }
+};
+
+export const createComment = async (accessToken, userID, page, data, dispatch, axiosJWT) => {
+  dispatch(createCommentStart());
+  try {
+    await axiosJWT.post(`${REACT_APP_BASE_URL}comment`, data, {
+      headers: { authorization: `${accessToken}`, user: `${userID}` },
+    });
+    dispatch(createCommentSuccess());
+    findCommentOfProduct(data.product_id, page, dispatch, axiosJWT);
+  } catch (error) {
+    dispatch(createCommentFailure());
   }
 };
 

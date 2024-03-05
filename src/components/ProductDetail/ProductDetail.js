@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ProductCard from '../ProductCard';
 import styles from './ProductDetail.module.scss';
-import { addToast } from '~/redux/apiRequest';
+import { addToast, findCommentOfProduct } from '~/redux/apiRequest';
 import Button from '../Button';
 import { SubtractIcon, AddIcon } from '../Icons';
 import { FavouriteIcon } from '../Icons';
@@ -14,6 +14,7 @@ import { addProductToCart } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
 import axios from 'axios';
 import DropdownSelect from '../DropdownSelect';
+import CommentList from '../CommentList';
 import { findProductByID, findRelateProduct, findShopByID, getUpdatedCart } from '~/redux/apiRequest';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -30,6 +31,8 @@ function ProductDetail() {
   const dispatch = useDispatch();
   const currentProduct = useSelector((state) => state?.products.product.foundProduct);
   const relate = useSelector((state) => state?.products.relateProduct.relatedProducts);
+  const currentComment = useSelector((state) => state?.comment.find.foundComment);
+  const comments = currentComment?.metadata;
   const originalRecentProducts = useSelector((state) => state?.products.recentProduct.recentProducts);
   const relatedProducts = relate?.metadata;
   const productShop = useSelector((state) => state?.shop.shop.foundShop);
@@ -45,6 +48,8 @@ function ProductDetail() {
         (t) => t.metadata._id === value.metadata._id, // check duplicates by _id
       ),
   );
+
+  console.log(comments);
 
   const [quantity, setQuantity] = useState(1);
 
@@ -96,6 +101,7 @@ function ProductDetail() {
     findProductByID(productID, dispatch, axios);
     findShopByID(shopID, dispatch, axios);
     findRelateProduct(productType, dispatch, axios);
+    findCommentOfProduct(productID, 1, dispatch, axios);
   }, [product_slug]);
 
   return (
@@ -147,7 +153,10 @@ function ProductDetail() {
       </div>
       <Link to={shop?._id}>
         <div className={cx('shop')}>
-          <p className={cx('invite')}>Go to the shop for more products</p>
+          <div className={cx('invite')}>
+            <h1 className={cx('description')}>"{shop?.description}"</h1>
+            <span>Go to the shop for more products</span>
+          </div>
           <div className={cx('shop-avt')} style={{ backgroundImage: `url('${shop?.thumb}')` }}></div>
           <div className={cx('shop-info')}>
             <p className={cx('shop-name')}>{shop?.name}</p>
@@ -162,6 +171,9 @@ function ProductDetail() {
         <p className={cx('comment', 'text')} onClick={(e) => setDisplay('comment')}>
           Comment
         </p>
+      </div>
+      <div className={cx('render')}>
+        <CommentList comments={comments} product_id={productID} />{' '}
       </div>
       <div className={cx('relate')}>
         <p className={cx('title')}>Relate Products</p>

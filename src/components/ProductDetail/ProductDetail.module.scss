@@ -98,6 +98,10 @@
   }
 }
 
+.render {
+  margin: 0 360px;
+}
+
 .assurance {
   font-family: Poppins;
   font-size: 1.8rem;
@@ -148,9 +152,16 @@
   }
 
   .invite {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     font-size: 2rem;
     margin: 0;
     margin-right: 40px;
+  }
+
+  .description {
+    font-weight: 600;
   }
 }
 

@@ -10,6 +10,7 @@ import paymentReducer from './paymentSlice';
 import multiToastReducer from './multiToastSlice';
 import userReducer from './userSlice';
 import uploadReducer from './uploadSlice';
+import commentReducer from './commentSlice';
 
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   payment: paymentReducer,
   user: userReducer,
   upload: uploadReducer,
+  comment: commentReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
