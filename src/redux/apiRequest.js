@@ -125,6 +125,9 @@ import {
   addAddressFailure,
   addAddressStart,
   addAddressSuccess,
+  changePasswordFailure,
+  changePasswordStart,
+  changePasswordSuccess,
   updateAddressFailure,
   updateAddressStart,
   updateAddressSuccess,
@@ -320,6 +323,19 @@ export const updateUserAddressDefault = async (accessToken, userID, data, dispat
     findUser(accessToken, userID, userID, dispatch, axiosJWT);
   } catch (error) {
     dispatch(updateAddressFailure());
+  }
+};
+
+export const changePassword = async (accessToken, userID, data, dispatch, navigate, axiosJWT) => {
+  dispatch(changePasswordStart());
+  try {
+    await axiosJWT.post(`${REACT_APP_BASE_URL}user/change-password`, data, {
+      headers: { authorization: `${accessToken}`, user: `${userID}` },
+    });
+    dispatch(changePasswordSuccess());
+    userLogout(accessToken, userID, dispatch, navigate, axiosJWT);
+  } catch (error) {
+    dispatch(changePasswordFailure());
   }
 };
 

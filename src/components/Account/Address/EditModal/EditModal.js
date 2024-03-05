@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import Switch from '@mui/material/Switch';
 import { useSelector, useDispatch } from 'react-redux';
 import FormControlLabel from '@mui/material/FormControlLabel';

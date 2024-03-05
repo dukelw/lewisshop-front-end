@@ -18,6 +18,10 @@ const userSlide = createSlice({
       isFetching: false,
       error: false,
     },
+    changePassword: {
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     updateInfoStart: (state) => {
@@ -56,6 +60,17 @@ const userSlide = createSlice({
       state.addAddress.isFetching = false;
       state.addAddress.error = true;
     },
+    changePasswordStart: (state) => {
+      state.changePassword.isFetching = true;
+    },
+    changePasswordSuccess: (state) => {
+      state.changePassword.isFetching = false;
+      state.changePassword.error = false;
+    },
+    changePasswordFailure: (state) => {
+      state.changePassword.isFetching = false;
+      state.changePassword.error = true;
+    },
   },
 });
 
@@ -69,5 +84,8 @@ export const {
   addAddressStart,
   addAddressSuccess,
   addAddressFailure,
+  changePasswordStart,
+  changePasswordSuccess,
+  changePasswordFailure,
 } = userSlide.actions;
 export default userSlide.reducer;

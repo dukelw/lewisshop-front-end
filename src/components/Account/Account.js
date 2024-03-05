@@ -1,12 +1,13 @@
 import className from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
-import { Tabs, Tab, Container, Row, Col, Form } from 'react-bootstrap';
+import { Tabs, Tab, Container, Row } from 'react-bootstrap';
 import styles from './Account.module.scss';
 import { createAxios } from '~/createAxios';
 import { useState } from 'react';
 import Update from './Mode/Update';
 import Bank from './Bank';
 import Address from './Address';
+import Password from './Password';
 
 const cx = className.bind(styles);
 
@@ -37,7 +38,9 @@ function Account() {
       <Tab tabClassName={cx('tab')} eventKey="address" title="Address">
         <Address />
       </Tab>
-      <Tab tabClassName={cx('tab')} eventKey="password" title="Change password"></Tab>
+      <Tab tabClassName={cx('tab')} eventKey="password" title="Change password">
+        <Password />
+      </Tab>
       <Tab tabClassName={cx('tab')} eventKey="notification" title="Notification Setting"></Tab>
     </Tabs>
   );
