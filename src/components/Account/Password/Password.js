@@ -110,7 +110,7 @@ function Password() {
         />
       </div>
       <Row>
-        <Col md={10}>
+        <Col md={12}>
           <Form.Group className={cx('form-group')} controlId="password">
             <Form.Label className={cx('form-label')}>Password</Form.Label>
             <Form.Control

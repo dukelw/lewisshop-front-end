@@ -17,6 +17,7 @@ const cx = classNames.bind(styles);
 function Cart() {
   const currentCart = useSelector((state) => state?.authUser.getCart.cart);
   const cartProducts = currentCart?.metadata.cart_products;
+  const cartProductsQuantity = currentCart?.metadata?.cart_count_products || 0;
   const currentDiscount = useSelector((state) => state?.discount.discounts.foundDiscounts);
   const discountCodes = currentDiscount?.metadata;
   const cartUserID = currentCart?.metadata.cart_user_id;
@@ -185,107 +186,116 @@ function Cart() {
         </h2>
       </Link>
       <Container>
-        <Row>
-          <Col className={cx('left')} md={8}>
-            <Container>
-              <Row>
-                <Col className={cx('title')} md={5}>
-                  Product
-                </Col>
-                <Col className={cx('title')} md={2}>
-                  Unit Price
-                </Col>
-                <Col className={cx('title')} md={2}>
-                  Quantity
-                </Col>
-                <Col className={cx('title')} md={2}>
-                  Total
-                </Col>
-                <Col className={cx('title')} md={1}>
-                  Selection
-                </Col>
-              </Row>
-              <Row>
-                <Form.Check
-                  className={cx('name')}
-                  type="checkbox"
-                  id={`allCheckbox`}
-                  label={`All`}
-                  checked={checked}
-                  onChange={(e) => handleCheckout()}
-                />
-                <CartShop allCart={checked} handleAllCart={handleAllCart}></CartShop>
-              </Row>
-            </Container>
-          </Col>
-          <Col md={4}>
-            <div className={cx('checkout')}>
-              <div className={cx('top')}>
-                <p className={cx('title')}>
-                  Do you have a voucher? <span>(Optional)</span>
-                </p>
-                <div className={cx('actions')}>
-                  <DiscountModal
-                    discountCodes={discountCodes}
-                    onSelectDiscount={handleSelectDiscount}
-                    currentCheckout={currentCheckout}
-                    isDisplay={modalVisible}
-                    hide={handleEnterCodeClick}
-                    className={cx('discount-modal')}
-                  >
-                    <Button onClick={handleEnterCodeClick} className={cx('discount-btn')} outline large>
-                      Enter the code
+        {cartProductsQuantity !== 0 ? (
+          <Row>
+            <Col className={cx('left')} md={8}>
+              <Container>
+                <Row>
+                  <Col className={cx('title')} md={5}>
+                    Product
+                  </Col>
+                  <Col className={cx('title')} md={2}>
+                    Unit Price
+                  </Col>
+                  <Col className={cx('title')} md={2}>
+                    Quantity
+                  </Col>
+                  <Col className={cx('title')} md={2}>
+                    Total
+                  </Col>
+                  <Col className={cx('title')} md={1}>
+                    Selection
+                  </Col>
+                </Row>
+                <Row>
+                  <Form.Check
+                    className={cx('name')}
+                    type="checkbox"
+                    id={`allCheckbox`}
+                    label={`All`}
+                    checked={checked}
+                    onChange={(e) => handleCheckout()}
+                  />
+                  <CartShop allCart={checked} handleAllCart={handleAllCart}></CartShop>
+                </Row>
+              </Container>
+            </Col>
+            <Col md={4}>
+              <div className={cx('checkout')}>
+                <div className={cx('top')}>
+                  <p className={cx('title')}>
+                    Do you have a voucher? <span>(Optional)</span>
+                  </p>
+                  <div className={cx('actions')}>
+                    <DiscountModal
+                      discountCodes={discountCodes}
+                      onSelectDiscount={handleSelectDiscount}
+                      currentCheckout={currentCheckout}
+                      isDisplay={modalVisible}
+                      hide={handleEnterCodeClick}
+                      className={cx('discount-modal')}
+                    >
+                      <Button onClick={handleEnterCodeClick} className={cx('discount-btn')} outline large>
+                        Enter the code
+                      </Button>
+                    </DiscountModal>
+                    <Button onClick={handleRedeem} className={cx('btn')} primary large>
+                      Redeem
                     </Button>
-                  </DiscountModal>
-                  <Button onClick={handleRedeem} className={cx('btn')} primary large>
-                    Redeem
-                  </Button>
+                  </div>
+                </div>
+                <div className={cx('bottom')}>
+                  <div className={cx('review')}>
+                    <div className={cx('price')}>
+                      <p className={cx('money-title')}>Subtotal</p>
+                      <p className={cx('money')}>{checkoutOrder?.totalPrice || 0}</p>
+                    </div>
+                    <div className={cx('other-price')}>
+                      <p className={cx('other-title')}>Shipping</p>
+                      <p className={cx('other-money')}>{checkoutOrder?.feeShip || 0}</p>
+                    </div>
+                  </div>
+                  {selectedDiscount.length > 0 && (
+                    <div className={cx('price')}>
+                      <p className={cx('money-title')}>Selected Discount Code</p>
+                      <p className={cx('money')}>
+                        {selectedDiscount.map((discount, index) => {
+                          return (
+                            <span key={index}>
+                              {discount.code} <br />
+                            </span>
+                          );
+                        })}
+                      </p>
+                    </div>
+                  )}
+                  <div className={cx('price')}>
+                    <p className={cx('money-title')}>Discount</p>
+                    <p className={cx('money')}>{checkoutOrder?.totalDiscount || 0}</p>
+                  </div>
+                  <div className={cx('price')}>
+                    <p className={cx('money-title')}>Total</p>
+                    <p className={cx('money')}>{checkoutOrder?.totalCheckout || 0}</p>
+                  </div>
+                  <div className={cx('price')}>
+                    <Link className={cx('link')} to={'/checkout'}>
+                      <Button className={cx('btn')} primary large>
+                        Safe to checkout
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
-              <div className={cx('bottom')}>
-                <div className={cx('review')}>
-                  <div className={cx('price')}>
-                    <p className={cx('money-title')}>Subtotal</p>
-                    <p className={cx('money')}>{checkoutOrder?.totalPrice || 0}</p>
-                  </div>
-                  <div className={cx('other-price')}>
-                    <p className={cx('other-title')}>Shipping</p>
-                    <p className={cx('other-money')}>{checkoutOrder?.feeShip || 0}</p>
-                  </div>
-                </div>
-                {selectedDiscount.length > 0 && (
-                  <div className={cx('price')}>
-                    <p className={cx('money-title')}>Selected Discount Code</p>
-                    <p className={cx('money')}>
-                      {selectedDiscount.map((discount, index) => {
-                        return (
-                          <span key={index}>
-                            {discount.code} <br />
-                          </span>
-                        );
-                      })}
-                    </p>
-                  </div>
-                )}
-                <div className={cx('price')}>
-                  <p className={cx('money-title')}>Discount</p>
-                  <p className={cx('money')}>{checkoutOrder?.totalDiscount || 0}</p>
-                </div>
-                <div className={cx('price')}>
-                  <p className={cx('money-title')}>Total</p>
-                  <p className={cx('money')}>{checkoutOrder?.totalCheckout || 0}</p>
-                </div>
-                <div className={cx('price')}>
-                  <Link className={cx('link')} to={'/checkout'}>
-                    <Button className={cx('btn')} primary large>
-                      Safe to checkout
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </Col>
-        </Row>
+            </Col>
+          </Row>
+        ) : (
+          <p className={cx('empty')}>
+            You do not have any products in your cart!{' '}
+            <Link className={cx('redirect')} to={'/products'}>
+              Go to find the first one?
+            </Link>
+          </p>
+        )}
       </Container>
     </div>
   );

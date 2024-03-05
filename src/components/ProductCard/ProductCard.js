@@ -4,7 +4,7 @@ import styles from './ProductCard.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import StarRating from '../HeartRating';
 import { DongIcon } from '../Icons';
-import { addProductToCart, addToast } from '~/redux/apiRequest';
+import { addProductToCart, getUpdatedCart, addToast } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ function ProductCard({ data }) {
   const axiosJWT = createAxios(currentUser);
   const navigate = useNavigate();
   let toast = { message: '', type: 'success', show: true };
-  const handleAddToCart = (event, productID, shopID) => {
+  const handleAddToCart = async (event, productID, shopID) => {
     event.preventDefault();
     if (!currentUser) {
       toast.message = 'Please sign in first!';
@@ -37,7 +37,7 @@ function ProductCard({ data }) {
           quantity: 1,
         },
       };
-      addProductToCart(accessToken, userID, products, dispatch, axiosJWT);
+      await addProductToCart(accessToken, userID, products, dispatch, axiosJWT);
       if (addToCart?.statusCode === 200) {
         toast.message = addToCart.message;
       } else if (!addToCart?.statusCode) {
@@ -47,6 +47,7 @@ function ProductCard({ data }) {
         toast.type = 'error';
       }
       addToast(toast, dispatch);
+      getUpdatedCart(accessToken, userID, dispatch, axiosJWT);
     }
   };
 

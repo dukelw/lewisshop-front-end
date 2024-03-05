@@ -12,7 +12,7 @@ function Bank() {
       <Row>
         <Col md={12}>
           <div className={cx('top')}>
-            <h2 className={cx('header')}>Credit/Debit Card</h2>
+            <h2 className={cx('header')}>Credit/Debit card</h2>
             <Button primary>Add your card</Button>
           </div>
           <div className={cx('bottom')}>
@@ -23,7 +23,7 @@ function Bank() {
       <Row>
         <Col md={12}>
           <div className={cx('top')}>
-            <h2 className={cx('header')}>Credit/Debit Card</h2>
+            <h2 className={cx('header')}>Credit/Debit card</h2>
             <Button primary>Add your card</Button>
           </div>
           <div className={cx('bottom')}>
