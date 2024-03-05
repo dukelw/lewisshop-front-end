@@ -7,14 +7,14 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import ProductCard from '../ProductCard';
 import styles from './ProductDetail.module.scss';
 import { addToast } from '~/redux/apiRequest';
-import QuantitySelect from '../QuantitySelect';
 import Button from '../Button';
+import { SubtractIcon, AddIcon } from '../Icons';
 import { FavouriteIcon } from '../Icons';
 import { addProductToCart } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
 import axios from 'axios';
 import DropdownSelect from '../DropdownSelect';
-import { findProductByID, findRelateProduct, findShopByID } from '~/redux/apiRequest';
+import { findProductByID, findRelateProduct, findShopByID, getUpdatedCart } from '~/redux/apiRequest';
 import { useDispatch, useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
@@ -46,8 +46,18 @@ function ProductDetail() {
       ),
   );
 
+  const [quantity, setQuantity] = useState(1);
+
+  const handleUp = (e) => {
+    setQuantity((pre) => pre + 1);
+  };
+
+  const handleDown = (e) => {
+    setQuantity((pre) => pre - 1);
+  };
+
   let toast = { message: '', type: 'success', show: true };
-  const handleAddToCart = (event, productID, shopID) => {
+  const handleAddToCart = async (event, productID, shopID) => {
     event.preventDefault();
     if (!currentUser) {
       toast.message = 'Please sign in first!';
@@ -62,10 +72,11 @@ function ProductDetail() {
         product: {
           product_id: productID,
           shop_id: shopID,
-          quantity: 1,
+          quantity,
         },
       };
-      addProductToCart(accessToken, userID, products, dispatch, axiosJWT);
+      await addProductToCart(accessToken, userID, products, dispatch, axiosJWT);
+      getUpdatedCart(accessToken, userID, dispatch, axiosJWT);
       if (addToCart?.statusCode === 200) {
         toast.message = addToCart.message;
       } else if (!addToCart?.statusCode) {
@@ -105,7 +116,11 @@ function ProductDetail() {
           </div>
 
           <div className={cx('actions')}>
-            <QuantitySelect outline large className={cx('action')}></QuantitySelect>
+            <div className={cx('product_quantity')}>
+              <SubtractIcon className={cx('icon')} onClick={(e) => handleDown(e)}></SubtractIcon>
+              <p className={cx('quantity')}>{quantity}</p>
+              <AddIcon className={cx('icon')} onClick={(e) => handleUp(e)}></AddIcon>
+            </div>
             <Button
               onClick={(e) => handleAddToCart(e, productID, shopID)}
               className={cx('action', 'add')}

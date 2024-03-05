@@ -210,3 +210,22 @@
   margin-right: auto;
   margin-bottom: 20px;
 }
+
+.product_quantity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #616161;
+
+  .quantity {
+    margin: 0 20px;
+    user-select: none;
+  }
+
+  .icon {
+    &:hover {
+      opacity: 0.8;
+      cursor: pointer;
+    }
+  }
+}
