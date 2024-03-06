@@ -209,18 +209,11 @@ function ShopHeader() {
           )}
           <Menu items={currentShop ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
             {currentShop ? (
-              <HeadlessTippy
-                placement="top"
-                render={(attrs) => (
-                  <span className={cx('user-name')} {...attrs}>
-                    {currentShop.metadata.shop.name}
-                  </span>
-                )}
-              >
+              <HeadlessTippy placement="top">
                 <Image
                   className={cx('user-avatar')}
-                  src="https://i.pinimg.com/originals/ac/0b/3b/ac0b3b4f2f7c1a89e045b2f186d6f7e1.jpg"
-                  alt="Nguyen Van A"
+                  src={currentShop?.metadata.shop.thumb}
+                  alt={currentShop?.metadata.shop.name}
                   fallback="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/5577ddc3-7a38-4931-8d27-eba1cd94be70/dewdki6-8b9dfaa0-3980-42cb-882c-87abd7cc21b7.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzU1NzdkZGMzLTdhMzgtNDkzMS04ZDI3LWViYTFjZDk0YmU3MFwvZGV3ZGtpNi04YjlkZmFhMC0zOTgwLTQyY2ItODgyYy04N2FiZDdjYzIxYjcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.cRkFHWQdZOmHE3GJuwFIeMyRc6tloD_NVkow2hKLHs4"
                 />
               </HeadlessTippy>

@@ -12,6 +12,7 @@ function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyCom
   const currentUser = useSelector((state) => state?.authUser.signin.currentUser);
   const accessToken = currentUser?.metadata.tokens.accessToken;
   const userID = currentUser?.metadata.user._id;
+  const userThumb = currentUser?.metadata.user.thumb;
   const dispatch = useDispatch();
   const axiosJWT = createAxios(currentUser);
   const [reply, setReply] = useState(false);
@@ -24,6 +25,7 @@ function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyCom
     const data = {
       product_id: commentInfo.comment_product_id,
       user_id: userID,
+      user_thumb: userThumb,
       user_name: currentUser?.metadata.user.name,
       parent_name: commentInfo.comment_user_name,
       content,
@@ -49,15 +51,9 @@ function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyCom
   return (
     <div className={cx('wrapper', comment_parent_id ? 'children' : '')}>
       <div className={cx('parent')}>
-        <img
-          className={cx('avatar')}
-          src="https://store.bbcosplay.com/news/2023/03/25/loat-cosplay-makima-chainsaw-man-vo-cung-quyen-ru-sau-day.jpg"
-          alt="Avatar"
-        />
+        <img className={cx('avatar')} src={comment.comment_user_thumb} alt="Avatar" />
         <div className={cx('content')}>
-          {(seeMore || !comment_parent_id) && (
-            <span className={cx('name')}>{comment.comment_user_name || 'Lewis'}</span>
-          )}
+          {(seeMore || !comment_parent_id) && <span className={cx('name')}>{comment.comment_user_name}</span>}
           {!comment_parent_id && (
             <Container>
               <p className={cx('comment')}>{comment.comment_content}</p>
@@ -117,11 +113,7 @@ function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyCom
           replyComment?.map((reply, index) => (
             <div key={index} className={cx('reply-comment')}>
               <div className={cx('parent')}>
-                <img
-                  className={cx('avatar')}
-                  src="https://store.bbcosplay.com/news/2023/03/25/loat-cosplay-makima-chainsaw-man-vo-cung-quyen-ru-sau-day.jpg"
-                  alt="Avatar"
-                />
+                <img className={cx('avatar')} src={reply.comment_user_thumb} alt="Avatar" />
                 <div className={cx('content')}>
                   <span className={cx('name')}>{reply.comment_user_name || 'Lewis'}</span>
                   <Container>

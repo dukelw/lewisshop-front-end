@@ -45,6 +45,7 @@ const CommentList = ({ comments, product_id }) => {
       product_id,
       user_id: userID,
       user_name: currentUser?.metadata.user.name,
+      user_thumb: currentUser?.metadata.user.thumb,
       content,
       parent_comment_id: null,
     };

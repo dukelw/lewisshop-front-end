@@ -29,6 +29,10 @@
 
   .edit {
     font-size: 1.4rem;
+    white-space: nowrap; /* Ngăn văn bản từ việc xuống dòng */
+    overflow: hidden; /* Ẩn phần văn bản vượt qua kích thước của phần tử cha */
+    text-overflow: ellipsis; /* Hiển thị dấu ... khi văn bản vượt quá kích thước */
+    max-width: 100px; /* Đặt chiều rộng tối đa cho văn bản */
   }
 
   .infor {

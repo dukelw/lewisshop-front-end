@@ -5,7 +5,6 @@ import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
-import config from '~/config';
 import Image from '~/components/Image';
 import ToastMessageContainer from '~/components/ToastMessageContainer';
 import Menu from '~/components/Popper/Menu';
@@ -13,7 +12,6 @@ import styles from './NoLogo.module.scss';
 import {
   AuthenIcon,
   ShopIcon,
-  LogoIcon,
   UserIcon,
   ListIcon,
   FavouriteIcon,
@@ -101,7 +99,7 @@ function Header() {
   const currentUser = useSelector((state) => state.authUser.signin.currentUser);
   const accessToken = currentUser?.metadata.tokens.accessToken;
   const currentCart = useSelector((state) => state?.authUser.getCart.cart);
-  const cartProductsQuantity = currentCart?.metadata.cart_count_products;
+  const cartProductsQuantity = currentCart?.metadata?.cart_count_products || 0;
   const userID = currentUser?.metadata.user._id;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -128,7 +126,7 @@ function Header() {
     {
       icon: <ProfileIcon />,
       title: 'View profile',
-      to: '/@nva',
+      to: '/user/lobby',
     },
     {
       icon: <CoinIcon />,
@@ -239,18 +237,11 @@ function Header() {
           )}
           <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
             {currentUser ? (
-              <HeadlessTippy
-                placement="top"
-                render={(attrs) => (
-                  <span className={cx('user-name')} {...attrs}>
-                    {currentUser.metadata.user.name}
-                  </span>
-                )}
-              >
+              <HeadlessTippy placement="top">
                 <Image
                   className={cx('user-avatar')}
-                  src="https://i.pinimg.com/originals/ac/0b/3b/ac0b3b4f2f7c1a89e045b2f186d6f7e1.jpg"
-                  alt="Nguyen Van A"
+                  src={currentUser?.metadata.user.thumb}
+                  alt={currentUser?.metadata.user.name}
                   fallback="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/5577ddc3-7a38-4931-8d27-eba1cd94be70/dewdki6-8b9dfaa0-3980-42cb-882c-87abd7cc21b7.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzU1NzdkZGMzLTdhMzgtNDkzMS04ZDI3LWViYTFjZDk0YmU3MFwvZGV3ZGtpNi04YjlkZmFhMC0zOTgwLTQyY2ItODgyYy04N2FiZDdjYzIxYjcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.cRkFHWQdZOmHE3GJuwFIeMyRc6tloD_NVkow2hKLHs4"
                 />
               </HeadlessTippy>
