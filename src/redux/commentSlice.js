@@ -13,6 +13,15 @@ const commentSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    delete: {
+      isFetching: false,
+      error: false,
+    },
+    findReply: {
+      foundComment: null,
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     findCommentStart: (state) => {
@@ -39,6 +48,29 @@ const commentSlice = createSlice({
       state.create.isFetching = false;
       state.create.error = true;
     },
+    deleteCommentStart: (state) => {
+      state.delete.isFetching = true;
+    },
+    deleteCommentSuccess: (state) => {
+      state.delete.isFetching = false;
+      state.delete.error = false;
+    },
+    deleteCommentFailure: (state) => {
+      state.delete.isFetching = false;
+      state.delete.error = true;
+    },
+    findReplyCommentStart: (state) => {
+      state.findReply.isFetching = true;
+    },
+    findReplyCommentSuccess: (state, action) => {
+      state.findReply.isFetching = false;
+      state.findReply.foundComment = action.payload;
+      state.findReply.error = false;
+    },
+    findReplyCommentFailure: (state) => {
+      state.findReply.isFetching = false;
+      state.findReply.error = true;
+    },
   },
 });
 
@@ -49,5 +81,11 @@ export const {
   createCommentStart,
   createCommentSuccess,
   createCommentFailure,
+  deleteCommentStart,
+  deleteCommentSuccess,
+  deleteCommentFailure,
+  findReplyCommentStart,
+  findReplyCommentSuccess,
+  findReplyCommentFailure,
 } = commentSlice.actions;
 export default commentSlice.reducer;

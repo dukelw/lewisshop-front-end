@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import Comment from '../Comment/Comment';
 import styles from './CommentList.module.scss';
-import { createComment } from '~/redux/apiRequest';
+import { createComment, findReplyComment } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
 
 const cx = classNames.bind(styles);
@@ -12,18 +12,24 @@ const cx = classNames.bind(styles);
 const CommentList = ({ comments, product_id }) => {
   const currentUser = useSelector((state) => state.authUser.signin.currentUser);
   const accessToken = currentUser?.metadata.tokens.accessToken;
+  const currentRelpy = useSelector((state) => state?.comment.findReply.foundComment);
+  const replyComment = currentRelpy?.metadata;
   const userID = currentUser?.metadata.user._id;
   const dispatch = useDispatch();
   const axiosJWT = createAxios(currentUser);
   const [seeMore, setSeeMore] = useState(false);
 
-  const handleShowMore = () => {
-    setSeeMore(!seeMore);
+  const handleShowMore = async (comment) => {
+    await findReplyComment(comment.comment_product_id, comment._id, 1, dispatch, axiosJWT);
+    setSeeMore((prevSeeMore) => ({
+      ...prevSeeMore,
+      [comment._id]: !prevSeeMore[comment._id],
+    }));
   };
 
   const [content, setContent] = useState('');
 
-  const handleCreateComment = () => {
+  const handleCreateComment = async () => {
     const data = {
       product_id,
       user_id: userID,
@@ -31,8 +37,8 @@ const CommentList = ({ comments, product_id }) => {
       content,
       parent_comment_id: null,
     };
-
-    createComment(accessToken, userID, 1, data, dispatch, axiosJWT);
+    setContent('');
+    await createComment(accessToken, userID, 1, data, dispatch, axiosJWT);
   };
 
   return (
@@ -46,11 +52,14 @@ const CommentList = ({ comments, product_id }) => {
             onChange={(e) => setContent(e.target.value)}
             className={cx('form-control')}
             name="commentReply"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleCreateComment();
+              }
+            }}
           />
         </Form.Group>
-        <p onClick={handleCreateComment} className={cx('confirm')}>
-          Oke
-        </p>
       </div>
       {comments?.map((comment, index) => (
         <div className={cx('wrapper')} key={index}>
@@ -59,8 +68,9 @@ const CommentList = ({ comments, product_id }) => {
               <Comment
                 comment={comment}
                 comment_parent_id={comment.comment_parent_id}
-                seeMore={seeMore}
+                seeMore={seeMore[comment._id]}
                 handleShowMore={handleShowMore}
+                replyComment={replyComment}
               />
             </div>
           )}

@@ -3,13 +3,50 @@
   flex-direction: column;
   align-items: flex-start;
   border-radius: 6px;
-  padding: 16px;
-  box-shadow: 2px 1px 1px 2px rgba(0, 0, 0, 0.2);
 
   &.children {
     margin-left: 40px;
     margin-top: 10px;
   }
+
+  .child,
+  .parent {
+    display: flex;
+    width: 100%;
+  }
+
+  .parent {
+    box-shadow: 2px 1px 1px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 12px;
+  }
+
+  .child {
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+
+    .username {
+      color: var(--pink);
+      font-weight: 600;
+    }
+  }
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.content {
+  flex: 1;
+  margin-left: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .reply {
@@ -48,6 +85,7 @@
 .name {
   font-size: 1.8rem;
   font-weight: 600;
+  margin-left: 8px;
 }
 
 .comment {
@@ -60,7 +98,7 @@
 
 .action {
   background-color: var(--black);
-  padding: 4px 8px;
+  padding: 4px 0px;
   border-radius: 6px;
   color: var(--white);
   user-select: none;

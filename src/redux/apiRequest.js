@@ -140,9 +140,14 @@ import {
   createCommentFailure,
   createCommentStart,
   createCommentSuccess,
+  deleteCommentFailure,
+  deleteCommentStart,
+  deleteCommentSuccess,
   findCommentFailure,
   findCommentStart,
   findCommentSuccess,
+  findReplyCommentStart,
+  findReplyCommentSuccess,
 } from './commentSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -521,6 +526,18 @@ export const findCommentOfProduct = async (productID, page, dispatch, axiosJWT) 
   }
 };
 
+export const findReplyComment = async (productID, parentID, page, dispatch, axiosJWT) => {
+  dispatch(findReplyCommentStart());
+  try {
+    const res = await axiosJWT.get(
+      `${REACT_APP_BASE_URL}comment?parent_comment_id=${parentID}&product_id=${productID}&page=${page}`,
+    );
+    dispatch(findReplyCommentSuccess(res.data));
+  } catch (error) {
+    dispatch(findRelateProductFailed());
+  }
+};
+
 export const createComment = async (accessToken, userID, page, data, dispatch, axiosJWT) => {
   dispatch(createCommentStart());
   try {
@@ -641,6 +658,23 @@ export const deleteProductInCartByID = async (accessToken, userID, data, dispatc
     dispatch(getCartSuccess(response.data));
   } catch (error) {
     dispatch(deleteFromCartFailure());
+  }
+};
+
+export const deleteComment = async (accessToken, userID, page, data, dispatch, axiosJWT) => {
+  dispatch(deleteCommentStart());
+  try {
+    await axiosJWT.delete(`${REACT_APP_BASE_URL}comment`, {
+      data: data,
+      headers: {
+        authorization: accessToken,
+        user: userID,
+      },
+    });
+    dispatch(deleteCommentSuccess());
+    findCommentOfProduct(data.product_id, page, dispatch, axiosJWT);
+  } catch (error) {
+    dispatch(deleteCommentFailure());
   }
 };
 
