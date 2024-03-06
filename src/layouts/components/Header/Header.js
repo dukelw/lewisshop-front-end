@@ -53,8 +53,8 @@ const NAVIGATION_ITEMS = [
     to: '/products',
   },
   {
-    title: 'Discount codes',
-    to: '/discount-codes',
+    title: 'Vouchers',
+    to: '/voucher',
   },
   {
     title: 'Customer services',

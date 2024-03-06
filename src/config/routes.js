@@ -24,6 +24,7 @@ const routes = {
   payment: '/payment/:method',
   lobby: '/user/lobby',
   checkout: '/checkout',
+  voucher: '/voucher',
 };
 
 export default routes;

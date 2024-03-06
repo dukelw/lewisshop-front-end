@@ -33,6 +33,7 @@ import Purchase from '~/pages/Purchase';
 import Checkout from '~/pages/Checkout';
 import ShopOrder from '~/pages/ShopOrder';
 import UserLobby from '~/components/UserLobby';
+import Voucher from '~/pages/Voucher';
 
 const publicRoutes = [
   { path: config.routes.home, component: Home },
@@ -48,6 +49,7 @@ const publicRoutes = [
   { path: config.routes.userSignin, component: UserSignin, layout: null },
   { path: config.routes.userSignup, component: UserSignup, layout: null },
   { path: config.routes.shopHome, component: ShopHome, layout: ShopDefaultLayout },
+  { path: config.routes.voucher, component: Voucher, layout: HeaderAndFooter },
 ];
 
 const privateRoutes = [

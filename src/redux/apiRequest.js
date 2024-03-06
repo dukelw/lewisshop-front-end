@@ -74,6 +74,9 @@ import {
   findShopStart,
   findShopSuccess,
   findShopFailed,
+  findAllShopsStart,
+  findAllShopsFailed,
+  findAllShopsSuccess,
 } from './shopSlice';
 import {
   cancelOrderFailed,
@@ -213,6 +216,19 @@ export const getAllDraftsOfShop = async (accessToken, shopID, dispatch, axiosJWT
     dispatch(getProductsSuccess(res.data));
   } catch (error) {
     dispatch(getProductsFailed());
+  }
+};
+
+export const getAllShops = async (accessToken, userID, dispatch, axiosJWT) => {
+  dispatch(findAllShopsStart());
+  try {
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}shop/all`, {
+      headers: { authorization: `${accessToken}`, user: `${userID}` },
+    });
+    dispatch(findAllShopsSuccess(res.data));
+    return res.data;
+  } catch (error) {
+    dispatch(findAllShopsFailed());
   }
 };
 
@@ -797,6 +813,7 @@ export const getDiscountsOfShopByUser = async (accessToken, userID, shopID, disp
       headers: { authorization: `${accessToken}`, user: userID },
     });
     dispatch(findDiscountsSuccess(res.data));
+    return res.data;
   } catch (error) {
     dispatch(findDiscountsFailed());
   }
