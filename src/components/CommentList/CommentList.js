@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form } from 'react-bootstrap';
@@ -10,7 +10,7 @@ import { createAxios } from '~/createAxios';
 const cx = classNames.bind(styles);
 
 const CommentList = ({ comments, product_id }) => {
-  const currentUser = useSelector((state) => state.authUser.signin.currentUser);
+  const currentUser = useSelector((state) => state?.authUser.signin.currentUser);
   const accessToken = currentUser?.metadata.tokens.accessToken;
   const currentRelpy = useSelector((state) => state?.comment.findReply.foundComment);
   const replyComment = currentRelpy?.metadata;
@@ -18,6 +18,17 @@ const CommentList = ({ comments, product_id }) => {
   const dispatch = useDispatch();
   const axiosJWT = createAxios(currentUser);
   const [seeMore, setSeeMore] = useState(false);
+  const [replyCount, setReplyCount] = useState('');
+
+  useEffect(() => {
+    comments.map(async (comment) => {
+      const count = await findReplyComment(comment.comment_product_id, comment._id, 1, dispatch, axiosJWT);
+      setReplyCount((prevReplyCount) => ({
+        ...prevReplyCount,
+        [comment._id]: count?.metadata.length,
+      }));
+    });
+  }, [comments]);
 
   const handleShowMore = async (comment) => {
     await findReplyComment(comment.comment_product_id, comment._id, 1, dispatch, axiosJWT);
@@ -61,21 +72,24 @@ const CommentList = ({ comments, product_id }) => {
           />
         </Form.Group>
       </div>
-      {comments?.map((comment, index) => (
-        <div className={cx('wrapper')} key={index}>
-          {(seeMore || !comment.comment_parent_id) && (
-            <div className={cx('inner')}>
-              <Comment
-                comment={comment}
-                comment_parent_id={comment.comment_parent_id}
-                seeMore={seeMore[comment._id]}
-                handleShowMore={handleShowMore}
-                replyComment={replyComment}
-              />
-            </div>
-          )}
-        </div>
-      ))}
+      {comments?.map((comment, index) => {
+        return (
+          <div className={cx('wrapper')} key={index}>
+            {(seeMore || !comment.comment_parent_id) && (
+              <div className={cx('inner')}>
+                <Comment
+                  comment={comment}
+                  comment_parent_id={comment.comment_parent_id}
+                  seeMore={seeMore[comment._id]}
+                  handleShowMore={handleShowMore}
+                  replyComment={replyComment}
+                  replyCount={replyCount[comment._id]}
+                />
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 };

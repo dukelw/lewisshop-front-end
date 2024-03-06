@@ -533,6 +533,7 @@ export const findReplyComment = async (productID, parentID, page, dispatch, axio
       `${REACT_APP_BASE_URL}comment?parent_comment_id=${parentID}&product_id=${productID}&page=${page}`,
     );
     dispatch(findReplyCommentSuccess(res.data));
+    return res.data;
   } catch (error) {
     dispatch(findRelateProductFailed());
   }

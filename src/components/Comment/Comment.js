@@ -8,7 +8,7 @@ import { createAxios } from '~/createAxios';
 
 const cx = classNames.bind(styles);
 
-function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyComment }) {
+function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyComment, replyCount }) {
   const currentUser = useSelector((state) => state?.authUser.signin.currentUser);
   const accessToken = currentUser?.metadata.tokens.accessToken;
   const userID = currentUser?.metadata.user._id;
@@ -25,6 +25,7 @@ function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyCom
       product_id: commentInfo.comment_product_id,
       user_id: userID,
       user_name: currentUser?.metadata.user.name,
+      parent_name: commentInfo.comment_user_name,
       content,
       parent_comment_id: commentInfo._id,
     };
@@ -41,7 +42,6 @@ function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyCom
       comment_id: commentInfo._id,
       product_id: commentInfo.comment_product_id,
     };
-    console.log(commentInfo.comment_product_id);
     await deleteComment(accessToken, userID, 1, data, dispatch, axiosJWT);
     findReplyComment(comment.comment_product_id, comment._id, 1, dispatch, axiosJWT);
   };
@@ -79,11 +79,13 @@ function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyCom
                     handleShowMore(comment);
                   }}
                 >
-                  Show more
+                  {replyCount} replied
                 </Col>
-                <Col md={3} className={cx('action')} onClick={() => handleDeleteComment(comment)}>
-                  Delete
-                </Col>
+                {userID === comment.comment_user_id && (
+                  <Col md={3} className={cx('action')} onClick={() => handleDeleteComment(comment)}>
+                    Delete
+                  </Col>
+                )}
               </Row>
             </Container>
           )}
@@ -124,7 +126,7 @@ function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyCom
                   <span className={cx('name')}>{reply.comment_user_name || 'Lewis'}</span>
                   <Container>
                     <p className={cx('comment')}>
-                      <span className={cx('username')}>@{reply.comment_user_name || 'Duke'} </span>
+                      <span className={cx('username')}>@{reply?.comment_parent_name} </span>
                       {reply.comment_content}
                     </p>
                     <Row className={cx('actions')}>
@@ -139,9 +141,11 @@ function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyCom
                       >
                         Reply
                       </Col>
-                      <Col md={3} className={cx('action')} onClick={() => handleDeleteComment(reply)}>
-                        Delete
-                      </Col>
+                      {userID === reply.comment_user_id && (
+                        <Col md={3} className={cx('action')} onClick={() => handleDeleteComment(reply)}>
+                          Delete
+                        </Col>
+                      )}
                     </Row>
                   </Container>
                 </div>
@@ -159,7 +163,7 @@ function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyCom
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault();
-                          handleCreateComment(comment);
+                          handleCreateComment(reply);
                         }
                       }}
                     />

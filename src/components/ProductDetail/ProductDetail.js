@@ -42,14 +42,8 @@ function ProductDetail() {
   const navigate = useNavigate();
   const [display, setDisplay] = useState('detail');
   const recentProducts = originalRecentProducts.filter(
-    (value, index, self) =>
-      index ===
-      self.findIndex(
-        (t) => t.metadata._id === value.metadata._id, // check duplicates by _id
-      ),
+    (value, index, self) => index === self.findIndex((t) => t.metadata._id === value.metadata._id),
   );
-
-  console.log(comments);
 
   const [quantity, setQuantity] = useState(1);
 
