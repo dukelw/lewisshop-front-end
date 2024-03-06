@@ -18,6 +18,7 @@ import {
   LogoIcon,
   UserIcon,
   ListIcon,
+  ProfileIcon,
   CartIcon,
   LogoutIcon,
   HelpIcon,
@@ -101,6 +102,11 @@ function ShopHeader() {
   };
 
   const userMenu = [
+    {
+      icon: <ProfileIcon />,
+      title: 'Your shop',
+      to: '/shop/lobby',
+    },
     {
       icon: <BookmarkIcon padding="0" />,
       title: 'Marked List',

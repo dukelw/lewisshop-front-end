@@ -18,6 +18,15 @@ const shopSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    updateInfo: {
+      updatedShop: null,
+      isFetching: false,
+      error: false,
+    },
+    changePassword: {
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     createProductStart: (state) => {
@@ -83,6 +92,29 @@ const shopSlice = createSlice({
       state.findAll.isFetching = false;
       state.findAll.error = true;
     },
+    updateShopInfoStart: (state) => {
+      state.updateInfo.isFetching = true;
+    },
+    updateShopInfoSuccess: (state, action) => {
+      state.updateInfo.isFetching = false;
+      state.updateInfo.updatedShop = action.payload;
+      state.updateInfo.error = false;
+    },
+    updateShopInfoFailure: (state) => {
+      state.updateInfo.isFetching = false;
+      state.updateInfo.error = true;
+    },
+    changeShopPasswordStart: (state) => {
+      state.changePassword.isFetching = true;
+    },
+    changeShopPasswordSuccess: (state) => {
+      state.changePassword.isFetching = false;
+      state.changePassword.error = false;
+    },
+    changeShopPasswordFailure: (state) => {
+      state.changePassword.isFetching = false;
+      state.changePassword.error = true;
+    },
   },
 });
 
@@ -105,6 +137,12 @@ export const {
   findAllShopsStart,
   findAllShopsSuccess,
   findAllShopsFailed,
+  updateShopInfoStart,
+  updateShopInfoSuccess,
+  updateShopInfoFailure,
+  changeShopPasswordStart,
+  changeShopPasswordSuccess,
+  changeShopPasswordFailure,
 } = shopSlice.actions;
 
 export default shopSlice.reducer;

@@ -47,9 +47,9 @@ function Voucher() {
   return (
     <div className={cx('wrapper')}>
       <h1 className={cx('heading')}>Usable Voucher</h1>
-      {shops.map(
+      {shops?.map(
         (shop, index) =>
-          voucher[shop._id].length > 0 && (
+          voucher[shop._id]?.length > 0 && (
             <div className={cx('shop')} key={index}>
               <Link to={`/shop/${shop.name}`} className={cx('shop-name')}>
                 {shop.name}

@@ -1,0 +1,101 @@
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-label {
+  font-size: 1.6rem;
+  font-weight: 600;
+  user-select: none;
+}
+
+.form-control {
+  min-height: 40px;
+  font-size: 1.6rem;
+  border: 1px solid var(--grey);
+  box-shadow: none;
+
+  &:focus {
+    border: unset;
+    outline: none;
+  }
+}
+
+.title {
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.apply {
+  display: flex;
+  flex-direction: column;
+}
+
+.submit-col {
+  display: flex;
+  align-items: center;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 20%;
+  font-size: 2.4rem;
+}
+
+.wrapper {
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+  padding: 28px;
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mode {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 50px;
+  min-height: 50px;
+
+  .header {
+    color: var(--black);
+    font-weight: 700;
+    font-size: 4rem;
+    margin-bottom: 20px;
+  }
+
+  .edit {
+    font-size: 1.6rem;
+  }
+}
+
+.avatar-zone {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 12px;
+  }
+
+  .upload {
+    text-align: center;
+  }
+}
+
+.save {
+  text-align: right;
+
+  .save-btn {
+    margin-top: 20px;
+  }
+}

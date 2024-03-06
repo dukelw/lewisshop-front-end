@@ -11,24 +11,24 @@ import { useDropzone } from 'react-dropzone';
 import styles from './Update.module.scss';
 import { createAxios } from '~/createAxios';
 import Button from '~/components/Button';
-import { findUser, updateUserInformation, uploadImage } from '~/redux/apiRequest';
+import { findShopByID, uploadImage, updateShopInformation } from '~/redux/apiRequest';
 
 const cx = className.bind(styles);
 
-function AccountUpdate() {
+function Update() {
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state?.authUser.signin?.currentUser);
-  const userID = currentUser?.metadata.user?._id;
-  const accessToken = currentUser?.metadata.tokens.accessToken;
-  const userInfo = useSelector((state) => state?.authUser.findUser?.foundUser);
-  const user = userInfo?.metadata.user;
-  const axiosJWT = createAxios(currentUser);
+  const currentShop = useSelector((state) => state?.authShop.signin?.currentShop);
+  const shopID = currentShop?.metadata.shop?._id;
+  const accessToken = currentShop?.metadata.tokens.accessToken;
+  const shopInfo = useSelector((state) => state?.shop.shop?.foundShop);
+  const shop = shopInfo?.metadata;
+  const axiosJWT = createAxios(currentShop);
   const [file, setFile] = useState('');
   const [uploadProgress, setUploadProgress] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    findUser(accessToken, userID, userID, dispatch, axiosJWT);
+    findShopByID(shopID, dispatch, axiosJWT);
   }, []);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ function AccountUpdate() {
     setEditMode(!editMode);
   };
 
-  const [uploadedImageUrl, setUploadedImageUrl] = useState(user?.thumb || null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState(shop?.thumb || null);
 
   const onDrop = async (acceptedFiles) => {
     const uploadedFile = acceptedFiles[0];
@@ -63,16 +63,16 @@ function AccountUpdate() {
   };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
-  const birthday = moment(user?.birthday).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss');
+  const birthday = moment(shop?.birthday).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss');
   const [year, month, day] = birthday.split(' ')[0].split('-');
   const initialState = {
-    name: user?.name,
-    email: user?.email,
-    thumb: user?.thumb,
-    bank_account_number: user?.bank_account_number,
-    address: user?.address,
-    phone_number: user?.phone_number,
-    gender: user?.gender,
+    name: shop?.name,
+    email: shop?.email,
+    thumb: shop?.thumb,
+    bank_account_number: shop?.bank_account_number,
+    address: shop?.address,
+    phone_number: shop?.phone_number,
+    gender: shop?.gender,
     day,
     month,
     year,
@@ -94,18 +94,18 @@ function AccountUpdate() {
     setUploadProgress(true);
 
     // Upload image to Cloudinary
-    const image = await uploadImage(file, `lewishop/user/${userID}`, dispatch, axios);
-    const cloudinaryImage = image?.metadata.img_url;
+    const image = await uploadImage(file, `lewishop/shop/${shopID}`, dispatch, axios);
+    const cloudinaryImage = image?.metadata.img_url || shop?.thumb;
 
     // Progress when end
     setUploadProgress(false);
 
     const convertedFormData = {
       ...formData,
-      birthday: `${Number(formData.month)}/${formData.day}/${formData.year}`,
+      birthday: `${formData.month}/${formData.day}/${formData.year}`,
       thumb: cloudinaryImage,
     };
-    await updateUserInformation(accessToken, user?._id, convertedFormData, dispatch, axiosJWT);
+    await updateShopInformation(accessToken, shop?._id, convertedFormData, dispatch, axiosJWT);
     setEditMode(false);
   };
 
@@ -188,46 +188,6 @@ function AccountUpdate() {
               onChange={handleInputChange}
             />
           </Form.Group>
-          <Form.Group>
-            <Form.Label className={cx('form-label')}>Gender</Form.Label>
-            {['radio'].map((type) => (
-              <div key={`inline-${type}`} className="mb-3">
-                <Form.Check
-                  disabled={!editMode}
-                  inline
-                  value="Male"
-                  label="Male"
-                  name="gender"
-                  type={type}
-                  id={`inline-${type}-1`}
-                  checked={formData.gender === 'Male'}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  disabled={!editMode}
-                  inline
-                  value="Female"
-                  label="Female"
-                  name="gender"
-                  type={type}
-                  id={`inline-${type}-2`}
-                  checked={formData.gender === 'Female'}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  disabled={!editMode}
-                  inline
-                  value="Other"
-                  label="Other"
-                  name="gender"
-                  type={type}
-                  id={`inline-${type}-3`}
-                  checked={formData.gender === 'Other'}
-                  onChange={handleInputChange}
-                />
-              </div>
-            ))}
-          </Form.Group>
           <Row>
             <Col md={4}>
               <Form.Group>
@@ -301,8 +261,8 @@ function AccountUpdate() {
           </Row>
         </Col>
         <Col md={2} className={cx('avatar-zone')}>
-          <div className={cx('user')}>
-            <img className={cx('avatar')} src={uploadedImageUrl || user?.thumb} alt="Avatar"></img>
+          <div className={cx('shop')}>
+            <img className={cx('avatar')} src={uploadedImageUrl || shop?.thumb} alt="Avatar"></img>
           </div>
           <Form.Group className={cx('upload')} controlId="avatar">
             <div {...getRootProps()} style={{ cursor: 'pointer' }}>
@@ -329,4 +289,4 @@ function AccountUpdate() {
   );
 }
 
-export default AccountUpdate;
+export default Update;

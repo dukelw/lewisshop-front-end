@@ -77,6 +77,12 @@ import {
   findAllShopsStart,
   findAllShopsFailed,
   findAllShopsSuccess,
+  changeShopPasswordStart,
+  changeShopPasswordSuccess,
+  changeShopPasswordFailure,
+  updateShopInfoStart,
+  updateShopInfoSuccess,
+  updateShopInfoFailure,
 } from './shopSlice';
 import {
   cancelOrderFailed,
@@ -329,6 +335,20 @@ export const updateUserInformation = async (accessToken, userID, data, dispatch,
   }
 };
 
+export const updateShopInformation = async (accessToken, shopID, data, dispatch, axiosJWT) => {
+  dispatch(updateShopInfoStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}shop/update`, data, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(updateShopInfoSuccess(res.data));
+    addToast({ message: 'Update information successfully', type: 'success', show: true }, dispatch);
+    findShopByID(shopID, dispatch, axiosJWT);
+  } catch (error) {
+    dispatch(updateShopInfoFailure());
+  }
+};
+
 export const updateUserAddress = async (accessToken, userID, data, dispatch, axiosJWT) => {
   dispatch(updateAddressStart());
   try {
@@ -365,6 +385,19 @@ export const changePassword = async (accessToken, userID, data, dispatch, naviga
     userLogout(accessToken, userID, dispatch, navigate, axiosJWT);
   } catch (error) {
     dispatch(changePasswordFailure());
+  }
+};
+
+export const changeShopPassword = async (accessToken, shopID, data, dispatch, navigate, axiosJWT) => {
+  dispatch(changeShopPasswordStart());
+  try {
+    await axiosJWT.post(`${REACT_APP_BASE_URL}shop/change-password`, data, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(changeShopPasswordSuccess());
+    logout(accessToken, shopID, dispatch, navigate, axiosJWT);
+  } catch (error) {
+    dispatch(changeShopPasswordFailure());
   }
 };
 

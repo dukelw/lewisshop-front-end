@@ -23,6 +23,7 @@ const routes = {
   shopDiscounts: '/discounts',
   payment: '/payment/:method',
   lobby: '/user/lobby',
+  shop: '/shop/lobby',
   checkout: '/checkout',
   voucher: '/voucher',
 };

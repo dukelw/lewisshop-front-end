@@ -97,6 +97,7 @@ const MENU_ITEMS = [
 
 function Header() {
   const currentUser = useSelector((state) => state.authUser.signin.currentUser);
+  const currentShop = useSelector((state) => state.authShop.signin.currentShop);
   const accessToken = currentUser?.metadata.tokens.accessToken;
   const currentCart = useSelector((state) => state?.authUser.getCart.cart);
   const cartProductsQuantity = currentCart?.metadata?.cart_count_products || 0;
@@ -169,7 +170,7 @@ function Header() {
           })}
         </ul>
         <div className={cx('actions')}>
-          {currentUser ? (
+          {currentUser || currentShop ? (
             <Fragment>
               <div className={cx('current-user')}>
                 <button className={cx('action-btn')}>
@@ -235,7 +236,7 @@ function Header() {
               </HeadlessTippy>
             </>
           )}
-          <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+          <Menu items={currentUser || currentShop ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
             {currentUser ? (
               <HeadlessTippy placement="top">
                 <Image

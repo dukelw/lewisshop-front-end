@@ -1,0 +1,21 @@
+.wrapper {
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+  padding: 28px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bottom {
+  margin-bottom: 40px;
+}
+
+.header {
+  color: var(--black);
+  font-weight: 700;
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
