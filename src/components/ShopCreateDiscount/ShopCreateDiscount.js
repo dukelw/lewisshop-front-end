@@ -153,11 +153,10 @@ const ShopCreateDiscount = ({ isEdit = false, editDiscount = {}, onCloseModal = 
         ]);
       });
     }
-    console.log('Apply product name', applyProduct);
   };
 
   return (
-    <div>
+    <div className={cx('wrapper')}>
       <h1 className={cx('title')}>{isEdit ? 'Edit discount' : 'Create new discount'}</h1>
       <Form onSubmitCapture={(e) => e.preventDefault()} className={cx('form')}>
         <Row>

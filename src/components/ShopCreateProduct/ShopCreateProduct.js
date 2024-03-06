@@ -1,29 +1,51 @@
 import React, { useRef, useState } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
+import { useDropzone } from 'react-dropzone';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import LinearProgress from '@mui/material/LinearProgress';
 import classNames from 'classnames/bind';
 import styles from './ShopCreateProduct.module.scss';
 import Button from '../Button';
-import { createNewProduct } from '~/redux/apiRequest';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { createNewProduct, uploadImage } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
 
 const cx = classNames.bind(styles);
 
 const ShopCreateProduct = () => {
   const shop = useSelector((state) => state.authShop.signin?.currentShop);
+  const shopID = shop?.metadata.shop._id;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosJWT = createAxios(shop);
+  const [file, setFile] = useState('');
+  const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (shop) {
+      // Progress when start
+      setUploadProgress(true);
+
+      // Upload image to Cloudinary
+      const image = await uploadImage(file, `lewishop/shop/product/${shopID}`, dispatch, axios);
+      const cloudinaryImage = image?.metadata.img_url;
+
+      // Progress when end
+      setUploadProgress(false);
+
+      const convertedFormData = {
+        ...formData,
+        product_thumb: cloudinaryImage,
+      };
+
       createNewProduct(
         shop?.metadata.tokens.accessToken,
         shop?.metadata.shop._id,
-        formData,
+        convertedFormData,
         dispatch,
         navigate,
         axiosJWT,
@@ -61,6 +83,22 @@ const ShopCreateProduct = () => {
   };
   const [productCategory, setProductCategory] = useState('');
   const [formData, setFormData] = useState(initialState);
+
+  const onDrop = async (acceptedFiles) => {
+    const uploadedFile = acceptedFiles[0];
+    setFile(uploadedFile);
+
+    const imageUrl = URL.createObjectURL(uploadedFile);
+    setUploadedImageUrl(imageUrl);
+
+    // Cập nhật state formData
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      product_thumb: imageUrl,
+    }));
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const handleCategoryChange = (event) => {
     const category = event.target.value;
@@ -196,11 +234,37 @@ const ShopCreateProduct = () => {
   };
 
   return (
-    <div>
+    <div className={cx('wrapper')}>
       <h1 className={cx('title')}>Create new product</h1>
       <Form className={cx('form')} onSubmit={handleSubmit}>
         <Row>
-          <Col md={12}>
+          <Col md={2}>
+            <Form.Group className={cx('avatar-zone')}>
+              <div className={cx('thumb-preview')}>
+                {uploadedImageUrl && <img className={cx('avatar')} src={uploadedImageUrl} alt="Product Thumb"></img>}
+              </div>
+              <Form.Group className={cx('upload')} controlId="avatar">
+                <div className={cx('btn-container')} {...getRootProps()} style={{ cursor: 'pointer' }}>
+                  <input {...getInputProps()} />
+                  <Button className={cx('btn')} primary rounded>
+                    Upload
+                  </Button>
+                </div>
+              </Form.Group>
+              {uploadProgress && (
+                <LinearProgress
+                  style={{ marginTop: '20px', width: '100%', backgroundColor: '#f48fb1' }}
+                  sx={{
+                    '& .MuiLinearProgress-bar': {
+                      // The static part is backgroundColor below
+                      backgroundColor: '#f50057', // The running part
+                    },
+                  }}
+                />
+              )}
+            </Form.Group>
+          </Col>
+          <Col md={5}>
             <Form.Group className={cx('form-group')} controlId="productCategory">
               <Form.Label className={cx('form-label')}>Category</Form.Label>
               <Form.Control
@@ -216,10 +280,6 @@ const ShopCreateProduct = () => {
                 <option value="Furniture">Furniture</option>
               </Form.Control>
             </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={5}>
             <Form.Group className={cx('form-group')} controlId="product_name">
               <Form.Label className={cx('form-label')}>Name</Form.Label>
               <Form.Control
@@ -254,16 +314,6 @@ const ShopCreateProduct = () => {
             </Form.Group>
           </Col>
           <Col md={5}>
-            <Form.Group className={cx('form-group')} controlId="product_thumb">
-              <Form.Label className={cx('form-label')}>Thumbnail</Form.Label>
-              <Form.Control
-                value={formData.product_thumb}
-                className={cx('form-control')}
-                type="text"
-                name="product_thumb"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
             <Form.Group className={cx('form-group')} controlId="product_price">
               <Form.Label className={cx('form-label')}>Price</Form.Label>
               <Form.Control
@@ -276,6 +326,9 @@ const ShopCreateProduct = () => {
             </Form.Group>
             {renderCategoryFields()}
           </Col>
+        </Row>
+        <Row>
+          <Col md={10}></Col>
           <Col md={2}>
             <Button className={cx('submit-btn')} primary onClick={handleSubmit}>
               Create

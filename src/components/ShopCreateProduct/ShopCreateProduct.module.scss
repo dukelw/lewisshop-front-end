@@ -1,3 +1,7 @@
+.wrapper {
+  margin-top: 40px;
+}
+
 .form-group {
   min-width: 400px;
   margin-bottom: 12px;
@@ -17,6 +21,25 @@
   text-transform: uppercase;
   font-weight: 600;
   margin-bottom: 24px;
+}
+
+.thumb-preview {
+  width: 100%;
+
+  .avatar {
+    margin: 28px 0;
+    max-width: 100%;
+    object-fit: cover;
+  }
+}
+
+.btn-container {
+  text-align: center;
+}
+
+.btn {
+  margin-top: 12px;
+  margin: 0 auto;
 }
 
 .submit-btn {
