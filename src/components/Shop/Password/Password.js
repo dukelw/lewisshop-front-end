@@ -116,7 +116,7 @@ function Password() {
               disabled={true}
               value={'xxxxxx'}
               className={cx('form-control')}
-              type="password"
+            type="password"
               name="password"
             />
           </Form.Group>

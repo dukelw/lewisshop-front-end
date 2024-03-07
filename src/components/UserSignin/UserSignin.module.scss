@@ -1,8 +1,39 @@
+.wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+}
+
+.heading {
+  user-select: none;
+}
+
+.navigate {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .link {
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    border: 1px solid var(--black);
+    padding: 4px 12px;
+
+    span {
+      font-weight: 600;
+    }
+  }
 }
 
 .signin-box {
@@ -107,7 +138,7 @@ body {
       left: 50%;
       color: #fff;
       transform: translate(-50%, -50%);
-      cursor: pointer
+      cursor: pointer;
     }
   }
 

@@ -171,6 +171,7 @@ export const signinShop = async (shop, dispatch, navigate) => {
     navigate('/shop');
   } catch (error) {
     dispatch(signinFailure());
+    addToast({ message: 'Email or password is wrong!', type: 'error', show: true }, dispatch);
   }
 };
 
@@ -197,6 +198,7 @@ export const signinUser = async (user, dispatch, navigate) => {
     navigate('/');
   } catch (error) {
     dispatch(userSigninFailure());
+    addToast({ message: 'Email or password is wrong!', type: 'error', show: true }, dispatch);
   }
 };
 
@@ -210,6 +212,7 @@ export const signupUser = async (user, dispatch, navigate) => {
     navigate('/user/signin');
   } catch (error) {
     dispatch(userSignupFailure());
+    addToast({ message: 'Something wrong occured!', type: 'error', show: true }, dispatch);
   }
 };
 

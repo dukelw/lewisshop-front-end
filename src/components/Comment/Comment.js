@@ -8,7 +8,14 @@ import { createAxios } from '~/createAxios';
 
 const cx = classNames.bind(styles);
 
-function Comment({ comment, comment_parent_id, seeMore, handleShowMore, replyComment, replyCount }) {
+function Comment({
+  comment,
+  comment_parent_id,
+  seeMore,
+  handleShowMore = () => {},
+  replyComment = [],
+  replyCount = 0,
+}) {
   const currentUser = useSelector((state) => state?.authUser.signin.currentUser);
   const accessToken = currentUser?.metadata.tokens.accessToken;
   const userID = currentUser?.metadata.user._id;

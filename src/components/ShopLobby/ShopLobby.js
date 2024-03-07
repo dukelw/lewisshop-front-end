@@ -2,7 +2,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import className from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './ShopLobby.module.scss';
-import { DongIcon, MoneyBillIcon, NotificationIcon, ShopIcon } from '../Icons';
+import { DongIcon, InfoIcon, MoneyBillIcon, NotificationIcon, ShopIcon } from '../Icons';
 import { createAxios } from '~/createAxios';
 import { useEffect, useState } from 'react';
 import Notification from '../Notification';
@@ -46,21 +46,21 @@ function ShopLobby() {
           <ul className={cx('options')}>
             <li
               onClick={() => {
-                handleChangeTab('shop');
+                handleChangeTab('main');
               }}
-              className={cx('item', mainContent === 'shop' ? 'user-option-active' : '')}
+              className={cx('item', mainContent === 'main' ? 'user-option-active' : '')}
             >
               <ShopIcon />
               <span className={cx('title')}>My shop</span>
             </li>
             <li
               onClick={() => {
-                handleChangeTab('main');
+                handleChangeTab('shop');
               }}
-              className={cx('item', mainContent === 'main' ? 'user-option-active' : '')}
+              className={cx('item', mainContent === 'shop' ? 'user-option-active' : '')}
             >
-              <MoneyBillIcon />
-              <span className={cx('title')}>Main</span>
+              <InfoIcon />
+              <span className={cx('title')}>My info</span>
             </li>
             <li
               onClick={() => {

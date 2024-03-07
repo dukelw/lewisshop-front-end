@@ -21,11 +21,11 @@ const CommentList = ({ comments, product_id }) => {
   const [replyCount, setReplyCount] = useState('');
 
   useEffect(() => {
-    comments.map(async (comment) => {
+    comments?.map(async (comment) => {
       const count = await findReplyComment(comment.comment_product_id, comment._id, 1, dispatch, axiosJWT);
       setReplyCount((prevReplyCount) => ({
         ...prevReplyCount,
-        [comment._id]: count?.metadata.length,
+        [comment._id]: count?.metadata?.length,
       }));
     });
   }, [comments]);
@@ -80,11 +80,11 @@ const CommentList = ({ comments, product_id }) => {
               <div className={cx('inner')}>
                 <Comment
                   comment={comment}
-                  comment_parent_id={comment.comment_parent_id}
-                  seeMore={seeMore[comment._id]}
+                  comment_parent_id={comment?.comment_parent_id}
+                  seeMore={seeMore[comment?._id]}
                   handleShowMore={handleShowMore}
                   replyComment={replyComment}
-                  replyCount={replyCount[comment._id]}
+                  replyCount={replyCount[comment?._id]}
                 />
               </div>
             )}

@@ -5,6 +5,10 @@ body {
   min-height: 100vh;
 }
 
+.heading {
+  user-select: none;
+}
+
 .signin-box {
   display: flex;
   justify-content: center;
