@@ -16,12 +16,12 @@ const cx = classNames.bind(styles);
 
 function Cart() {
   const currentCart = useSelector((state) => state?.authUser.getCart.cart);
-  const cartProducts = currentCart?.metadata.cart_products;
+  const cartProducts = currentCart?.metadata?.cart_products;
   const cartProductsQuantity = currentCart?.metadata?.cart_count_products || 0;
   const currentDiscount = useSelector((state) => state?.discount.discounts.foundDiscounts);
   const discountCodes = currentDiscount?.metadata;
-  const cartUserID = currentCart?.metadata.cart_user_id;
-  const cartID = currentCart?.metadata._id;
+  const cartUserID = currentCart?.metadata?.cart_user_id;
+  const cartID = currentCart?.metadata?._id;
   const currentUser = useSelector((state) => state.authUser.signin.currentUser);
   const accessToken = currentUser?.metadata.tokens.accessToken;
   const userID = currentUser?.metadata.user._id;
@@ -52,7 +52,7 @@ function Cart() {
       return;
     } else {
       const numberOfShops = [];
-      Object.keys(productGroups).forEach((shopId) => {
+      Object.keys(productGroups)?.forEach((shopId) => {
         numberOfShops.push(shopId);
       });
       let checkoutCart = JSON.parse(localStorage.getItem('checkoutCart'));
@@ -127,7 +127,7 @@ function Cart() {
       shop_order_ids: [],
     };
 
-    data.forEach((product) => {
+    data?.forEach((product) => {
       const shopIndex = convertedData.shop_order_ids.findIndex((shop) => shop.shop_id === product.shop_id);
 
       if (shopIndex !== -1) {
