@@ -120,7 +120,6 @@ const ShopCreateDiscount = ({ isEdit = false, editDiscount = {}, onCloseModal = 
     if (isEdit) {
       setFormData(editDiscount);
     } else {
-      console.log('Not edit', JSON.parse(localStorage.getItem('formData')));
       const savedFormData = JSON.parse(localStorage.getItem('formData'));
       if (savedFormData) {
         setFormData(savedFormData);

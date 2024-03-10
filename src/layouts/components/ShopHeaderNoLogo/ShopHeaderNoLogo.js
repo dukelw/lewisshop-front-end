@@ -35,6 +35,7 @@ import { logout } from '~/redux/apiRequest';
 const cx = classNames.bind(styles);
 
 const NAVIGATION_ITEMS = [
+  { title: 'Home', to: '/shop' },
   {
     title: 'Courses',
     to: '/shop/courses',

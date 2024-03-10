@@ -1,0 +1,23 @@
+.form {
+  position: absolute;
+  z-index: 20;
+  top: 36px;
+  right: 0;
+  box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
+  padding: 20px;
+  background-color: var(--white);
+  min-width: 400px;
+
+  .label {
+    font-weight: 700;
+  }
+
+  .checkbox {
+    color: var(--grey);
+  }
+
+  .actions {
+    margin-top: 8px;
+    text-align: right;
+  }
+}

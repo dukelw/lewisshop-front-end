@@ -8,9 +8,9 @@ import Col from 'react-bootstrap/Col';
 import 'tippy.js/dist/tippy.css';
 import styles from './ProductContainer.module.scss';
 import ProductCard from '../ProductCard';
+import FilterForm from './FilterForm';
 import { FilterIcon, SortIcon } from '~/components/Icons';
-import Search from '~/layouts/components/Search';
-import { getAllProductNoLimit } from '~/redux/apiRequest';
+import { getAllProductNoLimit, getFilterProducts } from '~/redux/apiRequest';
 import { useDispatch, useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
@@ -19,22 +19,52 @@ function ProductContainer({ data, part, handlePageClick, currentPage, isShopView
   const dispatch = useDispatch();
   const currentProducts = useSelector((state) => state?.products.allProducts.products);
   const numberOfProducts = !isShopView ? currentProducts?.metadata.length : data.length;
+  const [showFilterForm, setShowFilterForm] = useState(false);
+
+  const handleFilterHover = () => {
+    setShowFilterForm(true);
+  };
+
+  const handleFilterBlur = () => {
+    setShowFilterForm(false);
+  };
+
+  const handleFilter = (filter) => {
+    const filters = {
+      $or: [],
+      isPublished: true,
+    };
+    for (var type of filter['categories']) {
+      filters['$or'].push({ product_type: type });
+    }
+
+    getFilterProducts(filters, 100, dispatch);
+    handleFilterBlur();
+  };
+
+  const handleReset = () => {
+    getAllProductNoLimit(dispatch);
+  };
+
   useState(() => {
     getAllProductNoLimit(dispatch);
-  }, []);
+  }, [currentProducts]);
 
   return (
     <div className={cx('wrapper')}>
       <h1 className={cx('part')}>{part}</h1>
       <div className={cx('tools')}>
-        <p className={cx('status')}>1 of 10 pages</p>
+        <p className={cx('status')}>
+          {currentPage} of {Math.round(numberOfProducts / 30) + 1} pages
+        </p>
         <div className={cx('actions')}>
           {/* Filter */}
-          <div className={cx('filter')}>
+          <div className={cx('filter')} onMouseEnter={handleFilterHover} onMouseLeave={handleFilterBlur}>
             <p>Filter</p>
             <div className={cx('action-btn')}>
               <FilterIcon />
             </div>
+            <FilterForm onSubmit={handleFilter} products={data} handleClear={handleReset} show={showFilterForm} />
           </div>
           {/* Sort */}
           <div className={cx('sort')}>
@@ -42,9 +72,7 @@ function ProductContainer({ data, part, handlePageClick, currentPage, isShopView
             <div className={cx('action-btn')}>
               <SortIcon />
             </div>
-            <Search />
           </div>
-          {/* Search */}
         </div>
       </div>
       <Container>

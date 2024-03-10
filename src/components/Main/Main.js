@@ -22,7 +22,6 @@ function Main() {
   const accessToken = currentShop?.metadata.tokens.accessToken;
   const shopID = currentShop?.metadata.shop._id;
   const axiosJWT = createAxios(currentShop);
-  const [status, setStatus] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
 
   const loadPaginations = (page) => {
@@ -32,10 +31,6 @@ function Main() {
   useEffect(() => {
     getAllPublishOfShop(accessToken, shopID, dispatch, axiosJWT);
   }, []);
-
-  const handleTabSelect = (key) => {
-    setStatus(key);
-  };
 
   const classifiedProducts = {};
   for (const productId in products) {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import queryString from 'query-string';
 import {
   signinStart,
   signinSuccess,
@@ -282,6 +283,22 @@ export const getAllProductNoLimit = async (dispatch) => {
     dispatch(getProductsNoLimitSuccess(res.data));
   } catch (error) {
     dispatch(getProductsNoLimitFailed());
+  }
+};
+
+export const getFilterProducts = async (filter, limit, dispatch) => {
+  dispatch(getProductsNoLimitStart());
+  dispatch(getProductsStart());
+  try {
+    const res = await axios.get(`${REACT_APP_BASE_URL}product/all-product-no-limit`, {
+      params: { filter, limit },
+    });
+
+    dispatch(getProductsNoLimitSuccess(res.data));
+    dispatch(getProductsSuccess(res.data));
+  } catch (error) {
+    dispatch(getProductsNoLimitFailed());
+    dispatch(getProductsFailed());
   }
 };
 
