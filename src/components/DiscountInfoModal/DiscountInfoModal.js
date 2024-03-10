@@ -135,8 +135,11 @@ function DiscountInfoModal({ children, data, onDetailClick }) {
                 <li>All</li>
               ) : (
                 appliedProducts?.map((product, index) => (
-                  <div onClick={() => handleProductDetail(product._id, product.product_shop, product.product_type)}>
-                    <Link key={index} to={`/product/${product.product_slug}`}>
+                  <div
+                    key={index}
+                    onClick={() => handleProductDetail(product._id, product.product_shop, product.product_type)}
+                  >
+                    <Link to={`/product/${product.product_slug}`}>
                       <li>{product.product_name}</li>
                     </Link>
                   </div>

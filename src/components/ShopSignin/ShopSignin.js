@@ -63,7 +63,6 @@ function UserSignin() {
           value={email}
           setValue={setEmail}
           handleCheckEmail={isValidEmail}
-          onKeyDown={handlePasswordKeyDown}
         ></InputBox>
         <InputBox
           errorMessage={'Password is required'}
@@ -72,6 +71,7 @@ function UserSignin() {
           value={password}
           setValue={setPassword}
           show={false}
+          onKeyDown={handlePasswordKeyDown}
         ></InputBox>
         <div className={cx('forgot')}>
           <section>

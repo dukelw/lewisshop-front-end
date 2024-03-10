@@ -15,10 +15,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
-function ProductContainer({ data, part, handlePageClick, currentPage }) {
+function ProductContainer({ data, part, handlePageClick, currentPage, isShopView = false }) {
   const dispatch = useDispatch();
   const currentProducts = useSelector((state) => state?.products.allProducts.products);
-  const numberOfProducts = currentProducts?.metadata.length;
+  const numberOfProducts = !isShopView ? currentProducts?.metadata.length : data.length;
   useState(() => {
     getAllProductNoLimit(dispatch);
   }, []);
@@ -58,28 +58,30 @@ function ProductContainer({ data, part, handlePageClick, currentPage }) {
           })}
         </Row>
       </Container>
-      <div className={cx('more')}>
-        <Pagination size="lg">
-          <Pagination.First onClick={() => handlePageClick(1)} linkClassName={cx('pagination-link')} />
-          <Pagination.Prev onClick={() => handlePageClick(currentPage - 1)} linkClassName={cx('pagination-link')} />
-          {/* 30 is the limit of API when render product */}
-          {Array.from({ length: numberOfProducts / 30 + 1 }).map((_, index) => (
-            <Pagination.Item
+      {numberOfProducts / 30 + 1 > 2 && (
+        <div className={cx('more')}>
+          <Pagination size="lg">
+            <Pagination.First onClick={() => handlePageClick(1)} linkClassName={cx('pagination-link')} />
+            <Pagination.Prev onClick={() => handlePageClick(currentPage - 1)} linkClassName={cx('pagination-link')} />
+            {/* 30 is the limit of API when render product */}
+            {Array.from({ length: numberOfProducts / 30 + 1 }).map((_, index) => (
+              <Pagination.Item
+                linkClassName={cx('pagination-link')}
+                key={index}
+                active={index + 1 === currentPage}
+                onClick={() => handlePageClick(index + 1)}
+              >
+                {index + 1}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next onClick={() => handlePageClick(currentPage + 1)} linkClassName={cx('pagination-link')} />
+            <Pagination.Last
+              onClick={() => handlePageClick(Math.floor(numberOfProducts / 30) + 1)}
               linkClassName={cx('pagination-link')}
-              key={index}
-              active={index + 1 === currentPage}
-              onClick={() => handlePageClick(index + 1)}
-            >
-              {index + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next onClick={() => handlePageClick(currentPage + 1)} linkClassName={cx('pagination-link')} />
-          <Pagination.Last
-            onClick={() => handlePageClick(Math.floor(numberOfProducts / 30) + 1)}
-            linkClassName={cx('pagination-link')}
-          />
-        </Pagination>
-      </div>
+            />
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 }
