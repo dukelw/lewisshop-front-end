@@ -142,7 +142,7 @@ function Comment({
           )}
           {reply && (
             <div className={cx('reply')}>
-              <img className={cx('avatar')} src={comment.comment_user_thumb} alt="Avatar" />
+              <img className={cx('avatar')} src={currentUser?.metadata.user.thumb} alt="Avatar" />
               <Form.Group className={cx('form-group')} controlId="commentReply">
                 <Form.Control
                   as="textarea"

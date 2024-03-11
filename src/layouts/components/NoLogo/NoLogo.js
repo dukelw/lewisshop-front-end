@@ -149,6 +149,8 @@ function Header() {
     },
   ];
 
+  useEffect(() => {}, [currentUser]);
+
   return (
     <header className={cx('wrapper')}>
       <ToastMessageContainer></ToastMessageContainer>
