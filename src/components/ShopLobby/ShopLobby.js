@@ -17,7 +17,6 @@ function ShopLobby() {
   const dispatch = useDispatch();
   const currentShop = useSelector((state) => state?.authShop.signin?.currentShop);
   const shopID = currentShop?.metadata.shop._id;
-  const accessToken = currentShop?.metadata.tokens.accessToken;
   const shopInfo = useSelector((state) => state?.shop.shop?.foundShop);
   const shop = shopInfo?.metadata;
   const axiosJWT = createAxios(currentShop);

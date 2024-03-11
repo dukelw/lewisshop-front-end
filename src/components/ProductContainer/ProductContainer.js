@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
-function ProductContainer({ part, getProductsFunction }) {
+function ProductContainer({ part, getProductsFunction = () => {}, isShopView = false }) {
   const DEFAULT_PAGE = 1;
   const dispatch = useDispatch();
   const products = useSelector((state) => state?.products.products.allProducts);
@@ -78,23 +78,25 @@ function ProductContainer({ part, getProductsFunction }) {
         <p className={cx('status')}>
           {currentPage} of {Math.round(numberOfProducts / 30) + 1} pages
         </p>
-        <div className={cx('actions')}>
-          {/* Filter */}
-          <div className={cx('filter')} onMouseEnter={handleFilterHover} onMouseLeave={handleFilterBlur}>
-            <p className={cx('query')}>Filter</p>
-            <div className={cx('action-btn')}>
-              <FilterIcon className={cx('query')} />
+        {!isShopView && (
+          <div className={cx('actions')}>
+            {/* Filter */}
+            <div className={cx('filter')} onMouseEnter={handleFilterHover} onMouseLeave={handleFilterBlur}>
+              <p className={cx('query')}>Filter</p>
+              <div className={cx('action-btn')}>
+                <FilterIcon className={cx('query')} />
+              </div>
+              <FilterForm onSubmit={handleFilter} handleClear={handleReset} show={showFilterForm} />
             </div>
-            <FilterForm onSubmit={handleFilter} handleClear={handleReset} show={showFilterForm} />
-          </div>
-          {/* Sort */}
-          <div className={cx('sort')}>
-            <p className={cx('query')}>Sort by</p>
-            <div className={cx('action-btn')}>
-              <SortIcon className={cx('query')} />
+            {/* Sort */}
+            <div className={cx('sort')}>
+              <p className={cx('query')}>Sort by</p>
+              <div className={cx('action-btn')}>
+                <SortIcon className={cx('query')} />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       <Container>
         <Row>
@@ -107,7 +109,7 @@ function ProductContainer({ part, getProductsFunction }) {
           })}
         </Row>
       </Container>
-      {numberOfProducts / 30 + 1 > 2 && (
+      {!isShopView && numberOfProducts / 30 + 1 > 2 && (
         <div className={cx('more')}>
           <Pagination size="lg">
             <Pagination.First onClick={() => loadCurrentPage(1)} linkClassName={cx('pagination-link')} />
