@@ -286,19 +286,29 @@ export const getAllProductNoLimit = async (dispatch) => {
   }
 };
 
-export const getFilterProducts = async (filter, limit, dispatch) => {
-  dispatch(getProductsNoLimitStart());
+export const getFilterProducts = async (filter, limit, page, dispatch) => {
   dispatch(getProductsStart());
   try {
     const res = await axios.get(`${REACT_APP_BASE_URL}product/all-product-no-limit`, {
-      params: { filter, limit },
+      params: { filter, page, limit },
+    });
+    dispatch(getProductsSuccess(res.data));
+    getFilterProductsQuantity(filter, dispatch);
+  } catch (error) {
+    dispatch(getProductsFailed());
+  }
+};
+
+export const getFilterProductsQuantity = async (filter, dispatch) => {
+  dispatch(getProductsNoLimitStart());
+  try {
+    const res = await axios.get(`${REACT_APP_BASE_URL}product/all-product-no-limit`, {
+      params: { filter },
     });
 
     dispatch(getProductsNoLimitSuccess(res.data));
-    dispatch(getProductsSuccess(res.data));
   } catch (error) {
     dispatch(getProductsNoLimitFailed());
-    dispatch(getProductsFailed());
   }
 };
 

@@ -19,6 +19,10 @@
   display: flex;
   justify-content: space-between;
   align-content: center;
+
+  .filter {
+    padding-left: 200px;
+  }
 }
 
 .filter,
@@ -34,6 +38,25 @@
   }
 }
 
+.status {
+  font-weight: 600;
+}
+
+.filter,
+.sort {
+  cursor: pointer;
+
+  .query {
+    font-weight: 600;
+  }
+
+  &:hover {
+    .query {
+      color: var(--pink);
+    }
+  }
+}
+
 .action-btn {
   display: flex;
   align-items: center;
@@ -41,10 +64,6 @@
 
 .container {
   background-color: var(--black);
-}
-
-.more {
-  margin-top: 28px;
 }
 
 .part {

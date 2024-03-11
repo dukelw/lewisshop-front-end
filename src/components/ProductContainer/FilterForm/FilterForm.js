@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 import styles from './FilterForm.module.scss';
@@ -6,7 +7,9 @@ import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
-function FilterForm({ onSubmit, handleClear, products, show = false }) {
+function FilterForm({ onSubmit, handleClear, show = false }) {
+  const allProducts = useSelector((state) => state?.products.products.allProducts);
+  const products = allProducts?.metadata;
   const allCategories = {};
   for (const productId in products) {
     const product = products[productId];
@@ -38,12 +41,14 @@ function FilterForm({ onSubmit, handleClear, products, show = false }) {
   };
 
   const handleSubmit = (e) => {
+    const PAGE = 1;
     e.preventDefault();
     const selectedCategories = Object.keys(categories).filter((key) => categories[key]);
     const selectedLocations = Object.keys(locations).filter((key) => locations[key]);
     const selectedPrices = Object.keys(prices).filter((key) => prices[key]);
     const data = { categories: selectedCategories, locations: selectedLocations, prices: selectedPrices };
-    onSubmit(data);
+    localStorage.setItem('filter', JSON.stringify(data));
+    onSubmit(data, PAGE);
   };
 
   return (

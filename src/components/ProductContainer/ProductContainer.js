@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'tippy.js/dist/tippy.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -15,11 +15,28 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
-function ProductContainer({ data, part, handlePageClick, currentPage, isShopView = false }) {
+function ProductContainer({ part, getProductsFunction }) {
+  const DEFAULT_PAGE = 1;
   const dispatch = useDispatch();
+  const products = useSelector((state) => state?.products.products.allProducts);
+  const data = products?.metadata;
   const currentProducts = useSelector((state) => state?.products.allProducts.products);
-  const numberOfProducts = !isShopView ? currentProducts?.metadata.length : data.length;
+  const numberOfProducts = currentProducts?.metadata.length;
   const [showFilterForm, setShowFilterForm] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isFilterMode, setIsFilterMode] = useState(false);
+
+  const loadCurrentPage = (page) => {
+    setCurrentPage(page);
+    if (!isFilterMode) {
+      getProductsFunction(page);
+    } else {
+      const filter = JSON.parse(localStorage.getItem('filter'));
+      handleFilter(filter, page);
+    }
+  };
+
+  console.log(numberOfProducts);
 
   const handleFilterHover = () => {
     setShowFilterForm(true);
@@ -29,7 +46,9 @@ function ProductContainer({ data, part, handlePageClick, currentPage, isShopView
     setShowFilterForm(false);
   };
 
-  const handleFilter = (filter) => {
+  const handleFilter = (filter, page) => {
+    setIsFilterMode(true);
+    const LIMIT = 30;
     const filters = {
       $or: [],
       isPublished: true,
@@ -38,17 +57,19 @@ function ProductContainer({ data, part, handlePageClick, currentPage, isShopView
       filters['$or'].push({ product_type: type });
     }
 
-    getFilterProducts(filters, 100, dispatch);
+    getFilterProducts(filters, LIMIT, page, dispatch);
     handleFilterBlur();
   };
 
   const handleReset = () => {
-    getAllProductNoLimit(dispatch);
+    getProductsFunction(DEFAULT_PAGE);
+    setIsFilterMode(false);
   };
 
-  useState(() => {
+  useEffect(() => {
+    getProductsFunction(DEFAULT_PAGE);
     getAllProductNoLimit(dispatch);
-  }, [currentProducts]);
+  }, []);
 
   return (
     <div className={cx('wrapper')}>
@@ -60,17 +81,17 @@ function ProductContainer({ data, part, handlePageClick, currentPage, isShopView
         <div className={cx('actions')}>
           {/* Filter */}
           <div className={cx('filter')} onMouseEnter={handleFilterHover} onMouseLeave={handleFilterBlur}>
-            <p>Filter</p>
+            <p className={cx('query')}>Filter</p>
             <div className={cx('action-btn')}>
-              <FilterIcon />
+              <FilterIcon className={cx('query')} />
             </div>
-            <FilterForm onSubmit={handleFilter} products={data} handleClear={handleReset} show={showFilterForm} />
+            <FilterForm onSubmit={handleFilter} handleClear={handleReset} show={showFilterForm} />
           </div>
           {/* Sort */}
           <div className={cx('sort')}>
-            <p>Sort by</p>
+            <p className={cx('query')}>Sort by</p>
             <div className={cx('action-btn')}>
-              <SortIcon />
+              <SortIcon className={cx('query')} />
             </div>
           </div>
         </div>
@@ -89,22 +110,22 @@ function ProductContainer({ data, part, handlePageClick, currentPage, isShopView
       {numberOfProducts / 30 + 1 > 2 && (
         <div className={cx('more')}>
           <Pagination size="lg">
-            <Pagination.First onClick={() => handlePageClick(1)} linkClassName={cx('pagination-link')} />
-            <Pagination.Prev onClick={() => handlePageClick(currentPage - 1)} linkClassName={cx('pagination-link')} />
+            <Pagination.First onClick={() => loadCurrentPage(1)} linkClassName={cx('pagination-link')} />
+            <Pagination.Prev onClick={() => loadCurrentPage(currentPage - 1)} linkClassName={cx('pagination-link')} />
             {/* 30 is the limit of API when render product */}
             {Array.from({ length: numberOfProducts / 30 + 1 }).map((_, index) => (
               <Pagination.Item
                 linkClassName={cx('pagination-link')}
                 key={index}
                 active={index + 1 === currentPage}
-                onClick={() => handlePageClick(index + 1)}
+                onClick={() => loadCurrentPage(index + 1)}
               >
                 {index + 1}
               </Pagination.Item>
             ))}
-            <Pagination.Next onClick={() => handlePageClick(currentPage + 1)} linkClassName={cx('pagination-link')} />
+            <Pagination.Next onClick={() => loadCurrentPage(currentPage + 1)} linkClassName={cx('pagination-link')} />
             <Pagination.Last
-              onClick={() => handlePageClick(Math.floor(numberOfProducts / 30) + 1)}
+              onClick={() => loadCurrentPage(Math.floor(numberOfProducts / 30) + 1)}
               linkClassName={cx('pagination-link')}
             />
           </Pagination>
