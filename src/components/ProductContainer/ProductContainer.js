@@ -51,11 +51,15 @@ function ProductContainer({ part, getProductsFunction = () => {}, isShopView = f
     const LIMIT = 30;
     const filters = {
       $or: [],
+      product_price: {},
       isPublished: true,
     };
     for (var type of filter['categories']) {
       filters['$or'].push({ product_type: type });
     }
+
+    filters['product_price'] = { $lte: parseInt(filter['price']) };
+    console.log(filters);
 
     getFilterProducts(filters, LIMIT, page, dispatch);
     handleFilterBlur();

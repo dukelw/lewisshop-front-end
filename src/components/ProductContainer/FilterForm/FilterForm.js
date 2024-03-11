@@ -20,17 +20,11 @@ function FilterForm({ onSubmit, handleClear, show = false }) {
 
   const [categories, setCategories] = useState(allCategories);
 
-  const [locations, setLocations] = useState({
-    location1: false,
-    location2: false,
-    location3: false,
-  });
+  const [price, setPrice] = useState();
 
-  const [prices, setPrices] = useState({
-    price1: false,
-    price2: false,
-    price3: false,
-  });
+  const handleRadioChange = (e) => {
+    setPrice(e.target.value);
+  };
 
   const handleCheckboxChange = (e, setState) => {
     const { name, checked } = e.target;
@@ -44,9 +38,7 @@ function FilterForm({ onSubmit, handleClear, show = false }) {
     const PAGE = 1;
     e.preventDefault();
     const selectedCategories = Object.keys(categories).filter((key) => categories[key]);
-    const selectedLocations = Object.keys(locations).filter((key) => locations[key]);
-    const selectedPrices = Object.keys(prices).filter((key) => prices[key]);
-    const data = { categories: selectedCategories, locations: selectedLocations, prices: selectedPrices };
+    const data = { categories: selectedCategories, price };
     localStorage.setItem('filter', JSON.stringify(data));
     onSubmit(data, PAGE);
   };
@@ -76,66 +68,56 @@ function FilterForm({ onSubmit, handleClear, show = false }) {
                 </Form.Group>
               </Col>
             </Col>
-            <Col md={6}>
-              <Form.Group controlId="formLocations">
-                <Form.Label className={cx('label')}>Locations</Form.Label>
-                <div>
-                  <Form.Check
-                    className={cx('checkbox')}
-                    type="checkbox"
-                    label="Location 1"
-                    name="location1"
-                    checked={locations.location1}
-                    onChange={(e) => handleCheckboxChange(e, setLocations)}
-                  />
-                  <Form.Check
-                    className={cx('checkbox')}
-                    type="checkbox"
-                    label="Location 2"
-                    name="location2"
-                    checked={locations.location2}
-                    onChange={(e) => handleCheckboxChange(e, setLocations)}
-                  />
-                  <Form.Check
-                    className={cx('checkbox')}
-                    type="checkbox"
-                    label="Location 3"
-                    name="location3"
-                    checked={locations.location3}
-                    onChange={(e) => handleCheckboxChange(e, setLocations)}
-                  />
-                </div>
-              </Form.Group>
-            </Col>
           </Row>
           <Row>
             <Col md={6}>
-              <Form.Group controlId="formPrices">
-                <Form.Label className={cx('label')}>Prices</Form.Label>
+              <Form.Group controlId="formPrice">
+                <Form.Label className={cx('label')}>Price</Form.Label>
                 <div>
                   <Form.Check
                     className={cx('checkbox')}
-                    type="checkbox"
-                    label="Price 1"
-                    name="price1"
-                    checked={prices.price1}
-                    onChange={(e) => handleCheckboxChange(e, setPrices)}
+                    type="radio"
+                    label="<= 50000"
+                    name="price"
+                    value="50000"
+                    checked={price === '50000'}
+                    onChange={handleRadioChange}
                   />
                   <Form.Check
                     className={cx('checkbox')}
-                    type="checkbox"
-                    label="Price 2"
-                    name="price2"
-                    checked={prices.price2}
-                    onChange={(e) => handleCheckboxChange(e, setPrices)}
+                    type="radio"
+                    label="<= 100000"
+                    name="price"
+                    value="100000"
+                    checked={price === '100000'}
+                    onChange={handleRadioChange}
                   />
                   <Form.Check
                     className={cx('checkbox')}
-                    type="checkbox"
-                    label="Price 3"
-                    name="price3"
-                    checked={prices.price3}
-                    onChange={(e) => handleCheckboxChange(e, setPrices)}
+                    type="radio"
+                    label="<= 200000"
+                    name="price"
+                    value="200000"
+                    checked={price === '200000'}
+                    onChange={handleRadioChange}
+                  />
+                  <Form.Check
+                    className={cx('checkbox')}
+                    type="radio"
+                    label="<= 500000"
+                    name="price"
+                    value="500000"
+                    checked={price === '500000'}
+                    onChange={handleRadioChange}
+                  />
+                  <Form.Check
+                    className={cx('checkbox')}
+                    type="radio"
+                    label="Other"
+                    name="price"
+                    value="1000000000000000000"
+                    checked={price === '1000000000000000000'}
+                    onChange={handleRadioChange}
                   />
                 </div>
               </Form.Group>
