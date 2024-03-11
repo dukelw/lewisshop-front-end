@@ -1,6 +1,7 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import className from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import { UserIcon, ShopIcon, NotificationIcon, UsersIcon, StarIcon } from '../Icons';
 import { createAxios } from '~/createAxios';
 import styles from './ShopView.module.scss';
@@ -27,11 +28,11 @@ function ShopView() {
   const axiosJWT = createAxios(currentUser);
 
   const handleLoadAllProducts = (page) => {
-    getAllPublishOfShop(accessToken, shopID, dispatch, axiosJWT);
+    getAllPublishOfShop(accessToken, shopID, dispatch, axios);
   };
 
   useEffect(() => {
-    findShopByID(shopID, dispatch, axiosJWT);
+    findShopByID(shopID, dispatch, axios);
     handleLoadAllProducts(1);
   }, []);
 

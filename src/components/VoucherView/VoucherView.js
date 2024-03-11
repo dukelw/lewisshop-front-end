@@ -31,7 +31,7 @@ function Voucher() {
   };
 
   useEffect(() => {
-    getDiscountsOfShopByUser(accessToken, userID, shopID, dispatch, axiosJWT);
+    getDiscountsOfShopByUser(accessToken, userID, shopID, dispatch, axios);
   }, []);
 
   return (
