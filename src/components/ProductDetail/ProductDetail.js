@@ -45,6 +45,13 @@ function ProductDetail() {
     (value, index, self) => index === self.findIndex((t) => t.metadata._id === value.metadata._id),
   );
 
+  function stringToSlug(str) {
+    str = str.toLowerCase().trim();
+    str = str.replace(/\s+/g, '-');
+    str = str.replace(/[^\w\-]+/g, '');
+    return str;
+  }
+
   const [quantity, setQuantity] = useState(1);
 
   const handleUp = (e) => {
@@ -145,19 +152,25 @@ function ProductDetail() {
           </ul>
         </div>
       </div>
-      <Link to={shop?._id}>
-        <div className={cx('shop')}>
-          <div className={cx('invite')}>
-            <h1 className={cx('description')}>"{shop?.description}"</h1>
-            <span>Go to the shop for more products</span>
+      <div
+        onClick={() => {
+          localStorage.setItem('shopID', shop?._id);
+        }}
+      >
+        <Link to={'/shop/' + stringToSlug(shop?.name)}>
+          <div className={cx('shop')}>
+            <div className={cx('invite')}>
+              <h1 className={cx('description')}>"{shop?.description}"</h1>
+              <span>Go to the shop for more products</span>
+            </div>
+            <div className={cx('shop-avt')} style={{ backgroundImage: `url('${shop?.thumb}')` }}></div>
+            <div className={cx('shop-info')}>
+              <p className={cx('shop-name')}>{shop?.name}</p>
+              <p className={cx('shop-status')}>{shop?.status}</p>
+            </div>
           </div>
-          <div className={cx('shop-avt')} style={{ backgroundImage: `url('${shop?.thumb}')` }}></div>
-          <div className={cx('shop-info')}>
-            <p className={cx('shop-name')}>{shop?.name}</p>
-            <p className={cx('shop-status')}>{shop?.status}</p>
-          </div>
-        </div>
-      </Link>
+        </Link>
+      </div>
       <div className={cx('section')}>
         <p className={cx('detail', 'text')} onClick={(e) => setDisplay('detail')}>
           Detail

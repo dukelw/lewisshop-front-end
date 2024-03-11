@@ -245,8 +245,11 @@ export const getAllShops = async (accessToken, userID, dispatch, axiosJWT) => {
 export const getAllPublishOfShop = async (accessToken, shopID, dispatch, axiosJWT) => {
   dispatch(getProductsStart());
   try {
-    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/publish/all`, {
-      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}product/publish/all?shopID=${shopID}`, {
+      headers: {
+        authorization: accessToken,
+        user: shopID,
+      },
     });
     dispatch(getProductsSuccess(res.data));
   } catch (error) {

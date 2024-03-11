@@ -33,6 +33,7 @@ import Checkout from '~/pages/Checkout';
 import ShopOrder from '~/pages/ShopOrder';
 import UserLobby from '~/components/UserLobby';
 import Voucher from '~/pages/Voucher';
+import ShopView from '~/pages/ShopView';
 import ShopLobby from '~/components/ShopLobby';
 import ShopHeaderOnly from '~/layouts/ShopHeaderNoLogo/ShopHeaderNoLogo';
 
@@ -51,6 +52,7 @@ const publicRoutes = [
   { path: config.routes.userSignup, component: UserSignup, layout: null },
   { path: config.routes.shopHome, component: ShopHome, layout: ShopDefaultLayout },
   { path: config.routes.voucher, component: Voucher, layout: HeaderAndFooter },
+  { path: config.routes.shopView, component: ShopView, layout: HeaderAndFooter },
 ];
 
 const privateRoutes = [

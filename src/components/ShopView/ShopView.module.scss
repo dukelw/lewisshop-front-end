@@ -3,6 +3,13 @@
   color: var(--white);
 }
 
+.heading {
+  color: var(--black);
+  font-weight: 700;
+  font-size: 5rem;
+  margin-bottom: 20px;
+}
+
 .infor {
   display: flex;
   flex-direction: column;

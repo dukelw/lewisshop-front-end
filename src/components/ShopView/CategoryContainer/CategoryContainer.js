@@ -22,7 +22,7 @@ function CategoryContainer({ part, data }) {
   const numberOfProducts = currentProducts?.metadata.length;
 
   return (
-    <div className={cx('wrapper')}>
+    <div className={cx('wrapper', 'mt-only')}>
       <h1 className={cx('part')}>{part}</h1>
       <div className={cx('tools')}>
         <p className={cx('status')}>{/* {currentPage} of {Math.round(numberOfProducts / 30) + 1} pages */}</p>

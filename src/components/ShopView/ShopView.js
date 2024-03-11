@@ -3,29 +3,37 @@ import className from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserIcon, ShopIcon, NotificationIcon, UsersIcon, StarIcon } from '../Icons';
 import { createAxios } from '~/createAxios';
-import styles from './Main.module.scss';
+import styles from './ShopView.module.scss';
 import Button from '../Button';
-import { getAllPublishOfShop } from '~/redux/apiRequest';
-import Discount from '../Discount';
-import Voucher from '../Voucher';
+import { findShopByID, getAllPublishOfShop } from '~/redux/apiRequest';
+import VoucherView from '../VoucherView';
 import ProductContainer from '../ProductContainer';
 import CategoryContainer from './CategoryContainer';
+import { useEffect } from 'react';
 
 const cx = className.bind(styles);
 
-function Main() {
+function ShopView() {
   const dispatch = useDispatch();
-  const currentShop = useSelector((state) => state?.authShop.signin?.currentShop);
-  const shop = currentShop?.metadata.shop;
+  const shopID = localStorage.getItem('shopID');
+  const currentUser = useSelector((state) => state?.authUser.signin?.currentUser);
+  const productShop = useSelector((state) => state?.shop.shop.foundShop);
+  const shop = productShop?.metadata;
+  const user = currentUser?.metadata.user;
+  const userID = currentUser?.metadata.user._id;
   const allProduct = useSelector((state) => state?.products.products.allProducts);
   const products = allProduct?.metadata;
-  const accessToken = currentShop?.metadata.tokens.accessToken;
-  const shopID = currentShop?.metadata.shop._id;
-  const axiosJWT = createAxios(currentShop);
+  const accessToken = currentUser?.metadata.tokens.accessToken;
+  const axiosJWT = createAxios(currentUser);
 
   const handleLoadAllProducts = (page) => {
     getAllPublishOfShop(accessToken, shopID, dispatch, axiosJWT);
   };
+
+  useEffect(() => {
+    findShopByID(shopID, dispatch, axiosJWT);
+    handleLoadAllProducts(1);
+  }, []);
 
   const classifiedProducts = {};
   for (const productId in products) {
@@ -47,6 +55,7 @@ function Main() {
 
   return (
     <Container>
+      <h1 className={cx('heading')}>{shop?.name}</h1>
       <Row className={cx('dark')}>
         <Col className={cx('p-0')} md={4}>
           <div className={cx('background')}>
@@ -91,7 +100,9 @@ function Main() {
           </div>
         </Col>
       </Row>
-      <Row>{currentShop ? <Discount /> : <Voucher />}</Row>
+      <Row>
+        <VoucherView />
+      </Row>
       <Row>
         <ProductContainer part={'Products'} getProductsFunction={handleLoadAllProducts} isShopView={true} />
       </Row>
@@ -100,4 +111,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default ShopView;

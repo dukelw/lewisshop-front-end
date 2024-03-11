@@ -19,6 +19,7 @@ const routes = {
   shopRestoreDiscount: '/shop/restore/discount',
   shopEditProduct: '/shop/edit/:productID',
   shopHome: '/shop/',
+  shopView: '/shop/:slug',
   userCart: '/cart',
   shopDiscounts: '/discounts',
   payment: '/payment/:method',

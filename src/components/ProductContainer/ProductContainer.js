@@ -72,12 +72,14 @@ function ProductContainer({ part, getProductsFunction = () => {}, isShopView = f
   }, []);
 
   return (
-    <div className={cx('wrapper')}>
+    <div className={cx('wrapper', isShopView ? 'mt-only' : '')}>
       <h1 className={cx('part')}>{part}</h1>
       <div className={cx('tools')}>
-        <p className={cx('status')}>
-          {currentPage} of {Math.round(numberOfProducts / 30) + 1} pages
-        </p>
+        {!isShopView && (
+          <p className={cx('status')}>
+            {currentPage} of {Math.round(numberOfProducts / 30) + 1} pages
+          </p>
+        )}
         {!isShopView && (
           <div className={cx('actions')}>
             {/* Filter */}
