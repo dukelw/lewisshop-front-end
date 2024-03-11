@@ -55,6 +55,54 @@ function Comment({
     findReplyComment(comment.comment_product_id, comment._id, 1, dispatch, axiosJWT);
   };
 
+  function calculateTimeAgo(createdAt) {
+    const createdAtDate = new Date(createdAt);
+    const currentDate = new Date();
+
+    const timeDifference = currentDate.getTime() - createdAtDate.getTime();
+
+    const hoursAgo = Math.round(timeDifference / (1000 * 60 * 60));
+    const minutesAgo = Math.round(timeDifference / (1000 * 60));
+
+    // Change to minute
+    if (minutesAgo < 60) {
+      if (minutesAgo === 0) {
+        return 'Just now';
+      } else if (minutesAgo === 1) {
+        return '1 minute ago';
+      } else {
+        return `${minutesAgo} minutes ago`;
+      }
+    }
+
+    // Change to hour
+    if (hoursAgo < 24) {
+      if (hoursAgo === 0) {
+        return 'Just now';
+      } else if (hoursAgo === 1) {
+        return '1 hour ago';
+      } else {
+        return `${hoursAgo} hours ago`;
+      }
+    }
+
+    // Change to day
+    const daysAgo = Math.floor(hoursAgo / 24);
+    if (daysAgo === 1) {
+      return '1 day ago';
+    } else if (daysAgo < 30) {
+      return `${daysAgo} days ago`;
+    }
+
+    // Change to month
+    const monthsAgo = Math.floor(daysAgo / 30);
+    if (monthsAgo === 1) {
+      return '1 month ago';
+    } else {
+      return `${monthsAgo} months ago`;
+    }
+  }
+
   return (
     <div className={cx('wrapper', comment_parent_id ? 'children' : '')}>
       <div className={cx('parent')}>
@@ -65,7 +113,7 @@ function Comment({
             <Container>
               <p className={cx('comment')}>{comment.comment_content}</p>
               <Row className={cx('actions')}>
-                <Col md={2}>3 hours ago</Col>
+                <span className={cx('time')}>{calculateTimeAgo(comment.createdAt)}</span>
                 <Col
                   md={3}
                   className={cx('action')}
@@ -85,7 +133,7 @@ function Comment({
                   {replyCount} replied
                 </Col>
                 {userID === comment.comment_user_id && (
-                  <Col md={3} className={cx('action')} onClick={() => handleDeleteComment(comment)}>
+                  <Col md={2} className={cx('action')} onClick={() => handleDeleteComment(comment)}>
                     Delete
                   </Col>
                 )}
@@ -94,6 +142,7 @@ function Comment({
           )}
           {reply && (
             <div className={cx('reply')}>
+              <img className={cx('avatar')} src={comment.comment_user_thumb} alt="Avatar" />
               <Form.Group className={cx('form-group')} controlId="commentReply">
                 <Form.Control
                   as="textarea"
@@ -129,7 +178,7 @@ function Comment({
                       {reply.comment_content}
                     </p>
                     <Row className={cx('actions')}>
-                      <Col md={2}>3 hours ago</Col>
+                      <span className={cx('time')}>{calculateTimeAgo(reply.createdAt)}</span>
                       <Col
                         md={3}
                         className={cx('action')}
@@ -141,7 +190,7 @@ function Comment({
                         Reply
                       </Col>
                       {userID === reply.comment_user_id && (
-                        <Col md={3} className={cx('action')} onClick={() => handleDeleteComment(reply)}>
+                        <Col md={2} className={cx('action')} onClick={() => handleDeleteComment(reply)}>
                           Delete
                         </Col>
                       )}
@@ -151,6 +200,7 @@ function Comment({
               </div>
               {secondReply && replyCommentId === reply._id && (
                 <div className={cx('reply')}>
+                  <img className={cx('avatar')} src={currentUser?.metadata.user.thumb} alt="Avatar" />
                   <Form.Group className={cx('form-group')} controlId="commentReply">
                     <Form.Control
                       as="textarea"

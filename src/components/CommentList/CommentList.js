@@ -41,21 +41,24 @@ const CommentList = ({ comments, product_id }) => {
   const [content, setContent] = useState('');
 
   const handleCreateComment = async () => {
-    const data = {
-      product_id,
-      user_id: userID,
-      user_name: currentUser?.metadata.user.name,
-      user_thumb: currentUser?.metadata.user.thumb,
-      content,
-      parent_comment_id: null,
-    };
-    setContent('');
-    await createComment(accessToken, userID, 1, data, dispatch, axiosJWT);
+    if (content !== '') {
+      const data = {
+        product_id,
+        user_id: userID,
+        user_name: currentUser?.metadata.user.name,
+        user_thumb: currentUser?.metadata.user.thumb,
+        content,
+        parent_comment_id: null,
+      };
+      setContent('');
+      await createComment(accessToken, userID, 1, data, dispatch, axiosJWT);
+    }
   };
 
   return (
     <div>
       <div className={cx('new')}>
+        <img className={cx('avatar')} src={currentUser?.metadata.user.thumb} alt="Avatar" />
         <Form.Group className={cx('form-group')} controlId="commentReply">
           <Form.Control
             as="textarea"

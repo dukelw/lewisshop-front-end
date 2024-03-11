@@ -4,6 +4,7 @@
 }
 
 .new {
+  display: flex;
   margin-bottom: 20px;
 }
 
@@ -29,6 +30,14 @@
     border: unset;
     outline: none;
   }
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 12px;
 }
 
 .name {
