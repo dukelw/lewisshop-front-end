@@ -68,8 +68,6 @@ function FilterForm({ onSubmit, handleClear, show = false }) {
                 </Form.Group>
               </Col>
             </Col>
-          </Row>
-          <Row>
             <Col md={6}>
               <Form.Group controlId="formPrice">
                 <Form.Label className={cx('label')}>Price</Form.Label>

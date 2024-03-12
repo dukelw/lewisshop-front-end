@@ -269,10 +269,10 @@ export const getAllProductOfShop = async (accessToken, shopID, dispatch, axiosJW
   }
 };
 
-export const getAllProduct = async (pagination, dispatch) => {
+export const getAllProduct = async (pagination, sort, dispatch) => {
   dispatch(getProductsStart());
   try {
-    const res = await axios.get(`${REACT_APP_BASE_URL}product?page=${pagination}`);
+    const res = await axios.get(`${REACT_APP_BASE_URL}product?page=${pagination}&sort=${sort}`);
     dispatch(getProductsSuccess(res.data));
   } catch (error) {
     dispatch(getProductsFailed());
@@ -289,11 +289,11 @@ export const getAllProductNoLimit = async (dispatch) => {
   }
 };
 
-export const getFilterProducts = async (filter, limit, page, dispatch) => {
+export const getFilterProducts = async (filter, limit, page, sort, dispatch) => {
   dispatch(getProductsStart());
   try {
     const res = await axios.get(`${REACT_APP_BASE_URL}product/all-product-no-limit`, {
-      params: { filter, page, limit },
+      params: { filter, page, limit, sort },
     });
     dispatch(getProductsSuccess(res.data));
     getFilterProductsQuantity(filter, dispatch);

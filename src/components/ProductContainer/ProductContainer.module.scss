@@ -61,6 +61,19 @@
   }
 }
 
+.option {
+  padding: 8px;
+  margin: 0;
+  user-select: none;
+  color: var(--grey);
+
+  &:hover {
+    background-color: var(--pink);
+    color: var(--white);
+    cursor: pointer;
+  }
+}
+
 .action-btn {
   display: flex;
   align-items: center;

@@ -5,8 +5,8 @@ import ProductContainer from '~/components/ProductContainer';
 function Product() {
   const dispatch = useDispatch();
 
-  const handleLoadAllProducts = (page) => {
-    getAllProduct(page, dispatch);
+  const handleLoadAllProducts = (page, sort) => {
+    getAllProduct(page, sort, dispatch);
   };
 
   return (
