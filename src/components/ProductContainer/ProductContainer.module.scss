@@ -46,6 +46,18 @@
   font-weight: 600;
 }
 
+.sort {
+  // ::after {
+  //   position: absolute;
+  //   bottom: -20px;
+  //   right: 0;
+  //   content: '';
+  //   height: 40px;
+  //   width: 120px;
+  //   background-color: var(--black);
+  // }
+}
+
 .filter,
 .sort {
   cursor: pointer;

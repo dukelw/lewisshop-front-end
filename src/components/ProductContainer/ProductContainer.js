@@ -45,6 +45,7 @@ function ProductContainer({ part, getProductsFunction = () => {}, isShopView = f
   console.log(numberOfProducts);
 
   const handleFilterHover = () => {
+    setTippyVisible(false);
     setShowFilterForm(true);
   };
 
@@ -129,6 +130,7 @@ function ProductContainer({ part, getProductsFunction = () => {}, isShopView = f
               placement="bottom-end"
               interactive={true}
               visible={tippyVisible}
+              onClickOutside={() => setTippyVisible(false)}
               render={() => (
                 <div>
                   <PopperWrapper>
