@@ -22,6 +22,15 @@ const userSlide = createSlice({
       isFetching: false,
       error: false,
     },
+    addFavourite: {
+      isFetching: false,
+      error: false,
+    },
+    getFavourite: {
+      products: null,
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     updateInfoStart: (state) => {
@@ -71,6 +80,29 @@ const userSlide = createSlice({
       state.changePassword.isFetching = false;
       state.changePassword.error = true;
     },
+    addFavouriteStart: (state) => {
+      state.addFavourite.isFetching = true;
+    },
+    addFavouriteSuccess: (state) => {
+      state.addFavourite.isFetching = false;
+      state.addFavourite.error = false;
+    },
+    addFavouriteFailure: (state) => {
+      state.addFavourite.isFetching = false;
+      state.addFavourite.error = true;
+    },
+    getFavouriteStart: (state) => {
+      state.getFavourite.isFetching = true;
+    },
+    getFavouriteSuccess: (state, action) => {
+      state.getFavourite.isFetching = false;
+      state.getFavourite.products = action.payload;
+      state.getFavourite.error = false;
+    },
+    getFavouriteFailure: (state) => {
+      state.getFavourite.isFetching = false;
+      state.getFavourite.error = true;
+    },
   },
 });
 
@@ -87,5 +119,11 @@ export const {
   changePasswordStart,
   changePasswordSuccess,
   changePasswordFailure,
+  addFavouriteStart,
+  addFavouriteSuccess,
+  addFavouriteFailure,
+  getFavouriteStart,
+  getFavouriteSuccess,
+  getFavouriteFailure,
 } = userSlide.actions;
 export default userSlide.reducer;

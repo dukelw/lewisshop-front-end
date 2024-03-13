@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ProductCard from '../ProductCard';
 import styles from './ProductDetail.module.scss';
-import { addToast, findCommentOfProduct } from '~/redux/apiRequest';
+import { addToFavouriteList, addToast, findCommentOfProduct } from '~/redux/apiRequest';
 import Button from '../Button';
 import { SubtractIcon, AddIcon } from '../Icons';
 import { FavouriteIcon } from '../Icons';
@@ -46,9 +46,9 @@ function ProductDetail() {
   );
 
   function stringToSlug(str) {
-    str = str.toLowerCase().trim();
-    str = str.replace(/\s+/g, '-');
-    str = str.replace(/[^\w\-]+/g, '');
+    str = str?.toLowerCase()?.trim();
+    str = str?.replace(/\s+/g, '-');
+    str = str?.replace(/[^\w\-]+/g, '');
     return str;
   }
 
@@ -105,6 +105,10 @@ function ProductDetail() {
     findCommentOfProduct(productID, 1, dispatch, axios);
   }, [product_slug]);
 
+  const handleAddToFavouriteList = () => {
+    addToFavouriteList(accessToken, userID, product, dispatch, axiosJWT);
+  };
+
   return (
     <div className={cx('wrapper')}>
       {/* Product section */}
@@ -136,8 +140,8 @@ function ProductDetail() {
             >
               Add to cart
             </Button>
-            <Button className={cx('action', 'favourite')} square outline>
-              <FavouriteIcon></FavouriteIcon>
+            <Button onClick={handleAddToFavouriteList} className={cx('action', 'favourite')} square outline>
+              <FavouriteIcon />
             </Button>
           </div>
 

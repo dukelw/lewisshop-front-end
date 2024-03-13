@@ -42,8 +42,6 @@ function ProductContainer({ part, getProductsFunction = () => {}, isShopView = f
     setSortBy(option);
   };
 
-  console.log(numberOfProducts);
-
   const handleFilterHover = () => {
     setTippyVisible(false);
     setShowFilterForm(true);
@@ -64,7 +62,6 @@ function ProductContainer({ part, getProductsFunction = () => {}, isShopView = f
       handleFilter(filter, page, sort);
     } else {
       // Sort mode
-      console.log('Page sort');
       getProductsFunction(page, sort);
     }
   };

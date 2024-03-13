@@ -135,6 +135,9 @@ import {
   addAddressFailure,
   addAddressStart,
   addAddressSuccess,
+  addFavouriteFailure,
+  addFavouriteStart,
+  addFavouriteSuccess,
   changePasswordFailure,
   changePasswordStart,
   changePasswordSuccess,
@@ -266,6 +269,23 @@ export const getAllProductOfShop = async (accessToken, shopID, dispatch, axiosJW
     dispatch(getProductsSuccess(res.data));
   } catch (error) {
     dispatch(getProductsFailed());
+  }
+};
+
+export const addToFavouriteList = async (accessToken, userID, product, dispatch, axiosJWT) => {
+  dispatch(addFavouriteStart());
+  try {
+    await axiosJWT.post(
+      `${REACT_APP_BASE_URL}user/add-favourite`,
+      { product, user_id: userID },
+      {
+        headers: { authorization: `${accessToken}`, user: `${userID}` },
+      },
+    );
+    dispatch(addFavouriteSuccess());
+    addToast({ message: 'Add to favourite successfully', type: 'success', show: true }, dispatch);
+  } catch (error) {
+    dispatch(addFavouriteFailure());
   }
 };
 
