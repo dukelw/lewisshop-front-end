@@ -27,6 +27,8 @@ const routes = {
   shop: '/shop/lobby',
   checkout: '/checkout',
   voucher: '/voucher',
+  userChat: '/user/chat/:toID',
+  shopChat: '/shop/chat/:toID',
 };
 
 export default routes;

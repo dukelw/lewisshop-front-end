@@ -2,7 +2,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import className from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './ShopLobby.module.scss';
-import { DongIcon, InfoIcon, MoneyBillIcon, NotificationIcon, ShopIcon } from '../Icons';
+import { DongIcon, InfoIcon, NotificationIcon, ShopIcon } from '../Icons';
 import { createAxios } from '~/createAxios';
 import { useEffect, useState } from 'react';
 import Notification from '../Notification';

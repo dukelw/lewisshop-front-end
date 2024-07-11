@@ -35,6 +35,8 @@ import UserLobby from '~/components/UserLobby';
 import Voucher from '~/pages/Voucher';
 import ShopView from '~/pages/ShopView';
 import ShopLobby from '~/components/ShopLobby';
+import Message from '~/pages/Message';
+import ShopMessage from '~/pages/ShopMessage';
 import ShopHeaderOnly from '~/layouts/ShopHeaderNoLogo/ShopHeaderNoLogo';
 
 const publicRoutes = [
@@ -53,6 +55,8 @@ const publicRoutes = [
   { path: config.routes.shopHome, component: ShopHome, layout: ShopDefaultLayout },
   { path: config.routes.voucher, component: Voucher, layout: HeaderAndFooter },
   { path: config.routes.shopView, component: ShopView, layout: HeaderAndFooter },
+  { path: config.routes.userChat, component: Message, layout: HeaderNoLogo },
+  { path: config.routes.shopChat, component: ShopMessage, layout: ShopHeaderOnly },
 ];
 
 const privateRoutes = [

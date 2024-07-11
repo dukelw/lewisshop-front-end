@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
@@ -28,9 +28,12 @@ import {
 import Search from '../Search';
 import CartBlank from '~/components/CartBlank';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCartByUserID, getCartQuantity, userLogout } from '~/redux/apiRequest';
+import { getCartByUserID, getCartQuantity, getNonRead, userLogout } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
+import UserChatList from '~/components/UserChatList';
+import io from 'socket.io-client';
 
+const socket = io.connect('http://localhost:810');
 const cx = classNames.bind(styles);
 
 const NAVIGATION_ITEMS = [
@@ -105,6 +108,14 @@ function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosJWT = createAxios(currentUser);
+  const unReadMessage = useSelector((state) => state?.message?.nonReadMessage?.messages);
+
+  useEffect(() => {
+    socket.emit('join_room', userID);
+    socket.on('receive_message', async (data) => {
+      getNonRead(accessToken, userID, dispatch, axiosJWT);
+    });
+  }, [socket]);
 
   const handleMenuChange = (menuItem) => {
     console.log(menuItem);
@@ -149,7 +160,12 @@ function Header() {
     },
   ];
 
-  useEffect(() => {}, [currentUser]);
+  useEffect(() => {
+    socket.emit('join_room', userID);
+    socket.on('receive_message', async (data) => {
+      getNonRead(accessToken, userID, dispatch, axiosJWT);
+    });
+  }, [socket]);
 
   return (
     <header className={cx('wrapper')}>
@@ -184,11 +200,25 @@ function Header() {
                     <FavouriteIcon />
                   </button>
                 </Tippy>
-                <Tippy content="Notification" placement="bottom" trigger="click" delay={[0, 200]}>
+                <HeadlessTippy
+                  appendTo={document.body}
+                  interactive
+                  placement="bottom"
+                  render={(attrs) => (
+                    <div className={cx('chat-container')} tabIndex={-1} {...attrs}>
+                      <PopperWrapper>
+                        <UserChatList />
+                      </PopperWrapper>
+                    </div>
+                  )}
+                >
                   <button className={cx('action-btn')}>
                     <NotificationIcon />
+                    <span className={cx('nonread-number')}>
+                      {unReadMessage?.length > 0 ? unReadMessage?.length : ''}
+                    </span>
                   </button>
-                </Tippy>
+                </HeadlessTippy>
               </div>
             </Fragment>
           ) : (

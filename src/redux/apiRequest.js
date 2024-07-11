@@ -1,5 +1,4 @@
 import axios from 'axios';
-import queryString from 'query-string';
 import {
   signinStart,
   signinSuccess,
@@ -162,6 +161,22 @@ import {
   findReplyCommentStart,
   findReplyCommentSuccess,
 } from './commentSlice';
+import {
+  getHistoryMessageStart,
+  getHistoryMessageSuccess,
+  getHistoryMessageFailed,
+  getAllNonReadUserMessagesSuccess,
+  getAllNonReadUserMessagesFailed,
+  getAllNonReadUserMessagesStart,
+  markReadMessagesStart,
+  markReadMessageSuccess,
+  markReadMessageFailed,
+  getNonReadStart,
+  getNonReadSuccess,
+  getNonReadSt,
+  getNonReadStdFailed,
+  getNonReadFailed,
+} from './messageSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -613,6 +628,7 @@ export const findShopByID = async (shopID, dispatch, axiosJWT) => {
   try {
     const res = await axiosJWT.get(`${REACT_APP_BASE_URL}shop/${shopID}`);
     dispatch(findShopSuccess(res.data));
+    return res.data;
   } catch (error) {
     dispatch(findShopFailed());
   }
@@ -944,6 +960,7 @@ export const findUser = async (accessToken, shopID, userID, dispatch, axiosJWT) 
       },
     );
     dispatch(findUserSuccess(res.data));
+    return res.data;
   } catch (error) {
     dispatch(findUserFailure());
   }
@@ -1019,5 +1036,61 @@ export const payment = async (accessToken, userID, amount, dispatch, navigate, a
     window.open(res?.data?.metadata.payUrl, '_blank');
   } catch (error) {
     dispatch(paymentFailed());
+  }
+};
+
+export const getHistoryMessage = async (accessToken, userID, shopID, dispatch, axiosJWT) => {
+  dispatch(getHistoryMessageStart());
+  try {
+    const res = await axiosJWT.get(`http://localhost:810/api/v1/message/history?shopID=${shopID}&userID=${userID}`, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    dispatch(getHistoryMessageSuccess(res.data));
+  } catch (error) {
+    dispatch(getHistoryMessageFailed());
+  }
+};
+
+export const getLatest = async (accessToken, userID, dispatch, axiosJWT) => {
+  dispatch(getAllNonReadUserMessagesStart());
+  try {
+    const res = await axiosJWT.get(`http://localhost:810/api/v1/message/latest?ID=${userID}`, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    dispatch(getAllNonReadUserMessagesSuccess(res.data));
+  } catch (error) {
+    dispatch(getAllNonReadUserMessagesFailed());
+  }
+};
+
+export const markAsRead = async (accessToken, versusID, userID, dispatch, axiosJWT) => {
+  dispatch(markReadMessagesStart());
+  try {
+    const res = await axiosJWT.post(
+      'http://localhost:810/api/v1/message/mark-as-read',
+      { userID, versusID },
+      {
+        headers: { authorization: `${accessToken}`, user: userID },
+      },
+    );
+    dispatch(markReadMessageSuccess());
+    await getNonRead(accessToken, userID, dispatch, axiosJWT);
+    return res.data;
+  } catch (error) {
+    dispatch(markReadMessageFailed());
+  }
+};
+
+export const getNonRead = async (accessToken, userID, dispatch, axiosJWT) => {
+  dispatch(getNonReadStart());
+  try {
+    const res = await axiosJWT.get(`http://localhost:810/api/v1/message/non-read?ID=${userID}`, {
+      headers: { authorization: `${accessToken}`, user: userID },
+    });
+    console.log('Non-read response:: ' + JSON.stringify(res.data));
+    dispatch(getNonReadSuccess(res.data));
+    return res.data;
+  } catch (error) {
+    dispatch(getNonReadFailed());
   }
 };

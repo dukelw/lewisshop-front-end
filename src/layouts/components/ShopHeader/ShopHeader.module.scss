@@ -136,3 +136,15 @@
   font-size: 1.6rem;
   font-weight: 600;
 }
+
+.nonread-number {
+  position: absolute;
+  right: 4px;
+  top: 0px;
+  font-size: 1.2rem;
+  display: block;
+  padding: 0px 8px;
+  border-radius: 12px;
+  background-color: var(--pink);
+  color: var(--white);
+}

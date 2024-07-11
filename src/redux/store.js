@@ -11,6 +11,7 @@ import multiToastReducer from './multiToastSlice';
 import userReducer from './userSlice';
 import uploadReducer from './uploadSlice';
 import commentReducer from './commentSlice';
+import messageReducer from './messageSlice';
 
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   upload: uploadReducer,
   comment: commentReducer,
+  message: messageReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

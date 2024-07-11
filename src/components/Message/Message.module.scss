@@ -1,0 +1,80 @@
+.container {
+  position: relative;
+  top: 20px;
+  width: 100vw;
+  height: 88vh;
+  overflow: hidden;
+}
+
+.user {
+  overflow-y: auto;
+  max-height: 88vh;
+}
+
+.chatbox {
+  overflow-y: auto;
+  max-height: 72vh;
+  padding: 10px;
+  background-color: #ffe4e1;
+}
+
+.chatzone {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  width: fit-content;
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .content {
+    max-width: 70%;
+    word-wrap: break-word;
+  }
+}
+
+.right.chatzone {
+  flex-direction: row-reverse;
+  margin-left: auto;
+
+  .avatar {
+    margin-left: 8px;
+  }
+
+  .content {
+    text-align: right;
+    background-color: greenyellow;
+    padding: 8px;
+    border-radius: 8px;
+  }
+}
+
+.left.chatzone {
+  margin-right: auto;
+
+  .avatar {
+    margin-right: 8px;
+  }
+
+  .content {
+    text-align: left;
+    background-color: pink;
+    padding: 8px;
+    border-radius: 8px;
+  }
+}
+
+.inputzone {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+
+  .input {
+    font-size: 1.6rem;
+    opacity: 0.7;
+  }
+}

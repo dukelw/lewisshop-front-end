@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
@@ -31,8 +31,11 @@ import {
 import Search from '../Search';
 import CartBlank from '~/components/CartBlank';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '~/redux/apiRequest';
+import { getNonRead, logout } from '~/redux/apiRequest';
+import ShopChatList from '~/components/ShopChatList';
+import io from 'socket.io-client';
 
+const socket = io.connect('http://localhost:810');
 const cx = classNames.bind(styles);
 
 const NAVIGATION_ITEMS = [
@@ -92,6 +95,8 @@ function ShopHeader() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosJWT = createAxios(currentShop);
+  const unReadMessage = useSelector((state) => state?.message?.nonReadMessage?.messages);
+  const historyMessages = useSelector((state) => state?.message.getHistoryMessage.messages);
 
   const handleMenuChange = (menuItem) => {
     // console.log(menuItem);
@@ -127,6 +132,15 @@ function ShopHeader() {
     },
   ];
 
+  useEffect(() => {
+    // To get notifications when anyone chat to shop
+    socket.emit('join_room', shopID);
+
+    socket.on('receive_message', async (data) => {
+      await getNonRead(accessToken, shopID, dispatch, axiosJWT);
+    });
+  }, [socket]);
+
   return (
     <header className={cx('wrapper')}>
       {/* Logo */}
@@ -155,11 +169,25 @@ function ShopHeader() {
           {currentShop ? (
             <Fragment>
               <div className={cx('current-user')}>
-                <Tippy content="Notification" placement="bottom" trigger="click" delay={[0, 200]}>
+                <HeadlessTippy
+                  appendTo={document.body}
+                  interactive
+                  placement="bottom"
+                  render={(attrs) => (
+                    <div className={cx('chat-container')} tabIndex={-1} {...attrs}>
+                      <PopperWrapper>
+                        <ShopChatList />
+                      </PopperWrapper>
+                    </div>
+                  )}
+                >
                   <button className={cx('action-btn')}>
                     <NotificationIcon />
+                    <span className={cx('nonread-number')}>
+                      {unReadMessage?.length > 0 ? unReadMessage?.length : ''}
+                    </span>
                   </button>
-                </Tippy>
+                </HeadlessTippy>
               </div>
             </Fragment>
           ) : (

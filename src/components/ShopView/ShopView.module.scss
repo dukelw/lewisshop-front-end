@@ -29,6 +29,11 @@
   }
 }
 
+.user-infor {
+  display: flex;
+  justify-content: space-between;
+}
+
 .background {
   position: relative;
   display: flex;
@@ -46,6 +51,10 @@
   .actions {
     z-index: 10;
     color: var(--white);
+
+    .chat-icon {
+      color: white;
+    }
   }
 
   .overlay {

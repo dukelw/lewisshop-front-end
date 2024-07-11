@@ -2,10 +2,12 @@ import { Container, Row, Col } from 'react-bootstrap';
 import className from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { UserIcon, ShopIcon, NotificationIcon, UsersIcon, StarIcon } from '../Icons';
 import { createAxios } from '~/createAxios';
 import styles from './ShopView.module.scss';
 import Button from '../Button';
+import { MessageIcon } from '~/components/Icons';
 import { findShopByID, getAllPublishOfShop } from '~/redux/apiRequest';
 import VoucherView from '../VoucherView';
 import ProductContainer from '../ProductContainer';
@@ -36,6 +38,8 @@ function ShopView() {
     handleLoadAllProducts(1);
   }, []);
 
+  const productShopID = localStorage.getItem('productShopID');
+
   const classifiedProducts = {};
   for (const productId in products) {
     const product = products[productId];
@@ -62,10 +66,17 @@ function ShopView() {
           <div className={cx('background')}>
             <div className={cx('overlay')}></div>
             <div className={cx('user-infor')}>
-              <img className={cx('avatar')} src={shop?.thumb} alt="Shop Avatar" />
-              <div className={cx('infor')}>
-                <p className={cx('name')}>{shop?.name}</p>
-                <span className={cx('edit')}>{shop?.email}</span>
+              <div className={cx('left')}>
+                <img className={cx('avatar')} src={shop?.thumb} alt="Shop Avatar" />
+                <div className={cx('infor')}>
+                  <p className={cx('name')}>{shop?.name}</p>
+                  <span className={cx('edit')}>{shop?.email}</span>
+                </div>
+              </div>
+              <div className={cx('right')}>
+                <Link to={`/user/chat/${productShopID}`}>
+                  <MessageIcon className={cx('chat-icon')} />
+                </Link>
               </div>
             </div>
             <div className={cx('actions')}>

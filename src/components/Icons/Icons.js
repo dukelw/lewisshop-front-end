@@ -13,6 +13,7 @@ import {
   faClipboardCheck,
   faCreditCard,
   faDongSign,
+  faDotCircle,
   faEye,
   faEyeSlash,
   faFilter,
@@ -46,7 +47,16 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faMintbit, faProductHunt, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faClockFour, faStar as faStarRegular, faBookmark, faStar } from '@fortawesome/free-regular-svg-icons';
+import { faClockFour, faStar as faStarRegular, faBookmark } from '@fortawesome/free-regular-svg-icons';
+
+export const DotIcon = ({ width = '1.6rem', height = '1.6rem', className, color, padding, onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faDotCircle}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
 
 export const ErrorIcon = ({ width = '1.6rem', height = '1.6rem', className, color, padding, onClick, style }) => (
   <FontAwesomeIcon

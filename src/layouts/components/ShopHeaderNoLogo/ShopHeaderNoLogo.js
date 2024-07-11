@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
@@ -7,7 +7,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { createAxios } from '~/createAxios';
 
 import { Wrapper as PopperWrapper } from '~/components/Popper';
-import config from '~/config';
 import Image from '~/components/Image';
 import Menu from '~/components/Popper/Menu';
 import OffCanvas from '~/components/OffCanvas';
@@ -30,8 +29,11 @@ import {
 import Search from '../Search';
 import CartBlank from '~/components/CartBlank';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '~/redux/apiRequest';
+import { logout, getNonRead } from '~/redux/apiRequest';
+import ChatList from '~/components/ShopChatList';
+import io from 'socket.io-client';
 
+const socket = io.connect('http://localhost:810');
 const cx = classNames.bind(styles);
 
 const NAVIGATION_ITEMS = [
@@ -92,10 +94,25 @@ function ShopHeaderNoLogo() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosJWT = createAxios(currentShop);
+  const unReadMessage = useSelector((state) => state?.message?.nonReadMessage?.messages);
+  const historyMessages = useSelector((state) => state?.message.getHistoryMessage.messages);
+
+  useEffect(() => {
+    // To get notifications when anyone chat to shop
+    socket.emit('join_room', shopID);
+
+    socket.on('receive_message', async (data) => {
+      await getNonRead(accessToken, shopID, dispatch, axiosJWT);
+    });
+  }, [socket]);
 
   const handleMenuChange = (menuItem) => {
     // console.log(menuItem);
   };
+
+  useEffect(() => {
+    getNonRead(accessToken, shopID, dispatch, axiosJWT);
+  }, [historyMessages]);
 
   const handleLogout = () => {
     logout(accessToken, shopID, dispatch, navigate, axiosJWT);
@@ -148,13 +165,24 @@ function ShopHeaderNoLogo() {
         <div className={cx('actions')}>
           {currentShop ? (
             <Fragment>
-              <div className={cx('current-user')}>
-                <Tippy content="Notification" placement="bottom" trigger="click" delay={[0, 200]}>
-                  <button className={cx('action-btn')}>
-                    <NotificationIcon />
-                  </button>
-                </Tippy>
-              </div>
+              <div className={cx('current-user')}></div>
+              <HeadlessTippy
+                appendTo={document.body}
+                interactive
+                placement="bottom"
+                render={(attrs) => (
+                  <div className={cx('chat-container')} tabIndex={-1} {...attrs}>
+                    <PopperWrapper>
+                      <ChatList />
+                    </PopperWrapper>
+                  </div>
+                )}
+              >
+                <button className={cx('action-btn')}>
+                  <NotificationIcon />
+                  <span className={cx('nonread-number')}>{unReadMessage?.length > 0 ? unReadMessage?.length : ''}</span>
+                </button>
+              </HeadlessTippy>
             </Fragment>
           ) : (
             // When does not signin
