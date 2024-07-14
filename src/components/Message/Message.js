@@ -2,14 +2,16 @@ import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { Col, Container, Row, Form, FormControl, InputGroup } from 'react-bootstrap';
+import { Col, Container, Row, Form, FormControl, InputGroup, Spinner, Modal } from 'react-bootstrap';
 
 import io from 'socket.io-client';
 import { findShopByID, getHistoryMessage, getNonRead, markAsRead } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
 import styles from './Message.module.scss';
-import Button from '../Button';
 import UserChatList from '../UserChatList';
+import usePreviewImage from '~/hooks/usePreviewImage';
+import { ImageIcon, PaperPlanIcon } from '../Icons';
+import { convertToVietnamTime } from '~/utils/timeConverter';
 
 const cx = classNames.bind(styles);
 const socket = io.connect('http://localhost:810');
@@ -32,6 +34,10 @@ function Message() {
 
   const messageInputRef = useRef(null);
   const messageEndRef = useRef(null);
+  const imageRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+
+  const { handleImageChange, imgUrl, setImgUrl } = usePreviewImage();
 
   const sendMessage = async () => {
     const messageData = {
@@ -39,12 +45,15 @@ function Message() {
       senderId: userID,
       receiverId: toID,
       message: newMessage,
+      image: imgUrl,
     };
-    socket.emit('send_message', messageData);
-    socket.emit('send_message', { roomId: toID, messages: 'Notifications' });
+    console.log('Image from React: ' + imgUrl);
+    await socket.emit('send_message', messageData);
+    await socket.emit('send_message', { roomId: toID, message: 'Notification' });
     const result = await markAsRead(accessToken, toID, userID, dispatch, axiosJWT);
-    console.log('User ID: ' + userID, ' toID: ' + toID, ' result: ' + result);
+    console.log('Shop ID: ' + userID, ' toID: ' + toID, ' result: ' + result);
     setNewMessage('');
+    setImgUrl('');
   };
 
   useEffect(() => {
@@ -80,7 +89,7 @@ function Message() {
     return () => {
       socket.off('receive_message');
     };
-  }, [socket]);
+  }, [socket, toID]);
 
   // After receiver and send, reload
   useEffect(() => {
@@ -106,11 +115,19 @@ function Message() {
                 <img className={cx('avatar')} src={msg.senderId === userID ? userAvatar : shopAvatar} alt="" />
                 <div className={cx('content')}>
                   <div className={cx('name')}>{msg.senderId === userID ? 'You' : shopName}</div>
+                  {msg.image ? <img className={cx('attached-image')} src={msg.image} alt="Attachment" /> : ''}
                   <div className={cx('message')}>{msg.message}</div>
+                  <span className={cx('time')}>{convertToVietnamTime(msg.timestamp)}</span>
                 </div>
               </div>
             ))}
             <span>{currentTyping}</span>
+            {loading && (
+              <div className={cx('loading')}>
+                <p>Sending the image...</p>
+                <Spinner animation="border" className={cx('circling')} />
+              </div>
+            )}
             <div ref={messageEndRef} />
           </div>
           <Form
@@ -137,10 +154,55 @@ function Message() {
                   className={cx('input')}
                   ref={messageInputRef}
                 />
-                <Button primary type="submit">
+                <PaperPlanIcon
+                  onClick={() => {
+                    if (newMessage) {
+                      sendMessage();
+                    }
+                  }}
+                  padding={20}
+                  primary
+                  type="submit"
+                >
                   Send
-                </Button>
+                </PaperPlanIcon>
+                <InputGroup className={cx('image-input')}>
+                  <ImageIcon padding={20} onClick={() => imageRef.current.click()} />
+                  <input onChange={handleImageChange} width={0} type="file" hidden ref={imageRef}></input>
+                </InputGroup>
               </InputGroup>
+              <Modal show={imgUrl} onHide={() => setImgUrl('')}>
+                <Modal.Header closeButton></Modal.Header>
+                <Modal.Body>
+                  <img className={cx('preview-img')} src={imgUrl} alt="Review" />
+                </Modal.Body>
+                <Modal.Footer className={cx('img-description')}>
+                  <FormControl
+                    type="text"
+                    placeholder="Type your message"
+                    value={newMessage}
+                    ref={messageInputRef}
+                    onChange={(e) => {
+                      socket.emit('typing', { roomId: toID + userID, name: shopName, sender: userID });
+                      setNewMessage(e.target.value);
+                    }}
+                    className={cx('img-description-input')}
+                  />
+                  <PaperPlanIcon
+                    onClick={async () => {
+                      if (newMessage) {
+                        setLoading(true);
+                        await sendMessage();
+                        setImgUrl('');
+                        setLoading(false);
+                      }
+                    }}
+                    padding={20}
+                    primary
+                    type="submit"
+                  ></PaperPlanIcon>
+                </Modal.Footer>
+              </Modal>
             </Col>
           </Form>
         </Col>

@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -41,6 +41,7 @@ function ProductDetail() {
   const axiosJWT = createAxios(currentUser);
   const navigate = useNavigate();
   const [display, setDisplay] = useState('detail');
+
   const recentProducts = originalRecentProducts.filter(
     (value, index, self) => index === self.findIndex((t) => t.metadata._id === value.metadata._id),
   );
@@ -100,10 +101,18 @@ function ProductDetail() {
   useEffect(() => {
     // Use axios because this function can be used even if user has not signed in
     findProductByID(productID, dispatch, axios);
-    findShopByID(shopID, dispatch, axios);
     findRelateProduct(productType, dispatch, axios);
     findCommentOfProduct(productID, 1, dispatch, axios);
   }, [product_slug]);
+
+  useEffect(() => {
+    // Scroll to top of the page
+    window.scrollTo(0, 0);
+  }, [product_slug]);
+
+  useEffect(() => {
+    findShopByID(shopID, dispatch, axios);
+  }, [shop]);
 
   const handleAddToFavouriteList = () => {
     addToFavouriteList(accessToken, userID, product, dispatch, axiosJWT);

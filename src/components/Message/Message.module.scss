@@ -14,6 +14,7 @@
 .chatbox {
   overflow-y: auto;
   max-height: 72vh;
+  height: 72vh;
   padding: 10px;
   background-color: #ffe4e1;
 }
@@ -32,7 +33,6 @@
   }
 
   .content {
-    max-width: 70%;
     word-wrap: break-word;
   }
 }
@@ -71,10 +71,58 @@
 .inputzone {
   position: absolute;
   bottom: 40px;
-  width: 100%;
+  width: 90%;
 
   .input {
     font-size: 1.6rem;
     opacity: 0.7;
   }
+}
+
+.typing {
+  display: flex;
+}
+
+.preview-img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.image-input {
+  width: 0;
+}
+
+.img-description {
+  display: flex;
+
+  .img-description-input {
+    width: 84%;
+    font-size: 1.6rem;
+    padding: 12px;
+  }
+}
+
+.attached-image {
+  width: 300px;
+  object-fit: cover;
+}
+
+.loading {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  font-size: 1.6rem;
+  color: var(--pink);
+  padding-right: 68px;
+
+  p {
+    margin-bottom: 0;
+    margin-right: 20px;
+  }
+}
+
+.time {
+  font-size: 1.2rem;
+  opacity: 0.6;
 }

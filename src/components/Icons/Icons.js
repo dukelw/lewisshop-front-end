@@ -21,11 +21,13 @@ import {
   faHourglassEnd,
   faHourglassStart,
   faHouseFlag,
+  faImage,
   faLandMineOn,
   faLayerGroup,
   faList,
   faMessage,
   faMoneyBill1Wave,
+  faPaperPlane,
   faPercent,
   faPlus,
   faRightFromBracket,
@@ -48,6 +50,24 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faMintbit, faProductHunt, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClockFour, faStar as faStarRegular, faBookmark } from '@fortawesome/free-regular-svg-icons';
+
+export const ImageIcon = ({ width = '1.6rem', height = '1.6rem', className, color, padding, onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faImage}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
+
+export const PaperPlanIcon = ({ width = '1.6rem', height = '1.6rem', className, color, padding, onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faPaperPlane}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
 
 export const DotIcon = ({ width = '1.6rem', height = '1.6rem', className, color, padding, onClick, style }) => (
   <FontAwesomeIcon

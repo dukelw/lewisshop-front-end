@@ -3,13 +3,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames/bind';
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
-import { Col, Container, Row, Form, FormControl, InputGroup } from 'react-bootstrap';
+import { Col, Container, Row, Form, FormControl, InputGroup, Modal, Spinner } from 'react-bootstrap';
 
 import { findUser, getHistoryMessage, getNonRead, markAsRead } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
 import styles from './ShopMessage.module.scss';
 import ChatList from '../ShopChatList';
-import Button from '../Button';
+import { ImageIcon, PaperPlanIcon } from '../Icons';
+import usePreviewImage from '~/hooks/usePreviewImage';
+import { convertToVietnamTime } from '~/utils/timeConverter';
 
 const cx = classNames.bind(styles);
 const socket = io.connect('http://localhost:810');
@@ -32,19 +34,28 @@ function ShopMessage() {
 
   const messageInputRef = useRef(null);
   const messageEndRef = useRef(null);
+  const imageRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+
+  const { handleImageChange, imgUrl, setImgUrl } = usePreviewImage();
 
   const sendMessage = async () => {
+    // setLoading(true);
     const messageData = {
       roomId: shopID + toID,
       senderId: shopID,
       receiverId: toID,
       message: newMessage,
+      image: imgUrl,
     };
-    socket.emit('send_message', messageData);
-    socket.emit('send_message', { roomId: toID, message: 'Notification' });
+    console.log('Image from React: ' + imgUrl);
+    await socket.emit('send_message', messageData);
+    await socket.emit('send_message', { roomId: toID, message: 'Notification' });
     const result = await markAsRead(accessToken, toID, shopID, dispatch, axiosJWT);
     console.log('Shop ID: ' + shopID, ' toID: ' + toID, ' result: ' + result);
     setNewMessage('');
+    setImgUrl('');
+    // setLoading(false);
   };
 
   useEffect(() => {
@@ -60,8 +71,6 @@ function ShopMessage() {
       setUserAvatar(userData?.metadata?.user?.thumb);
     };
     fetchUserName();
-
-    messageInputRef.current.focus();
 
     socket.emit('join_room', shopID + toID);
 
@@ -92,7 +101,6 @@ function ShopMessage() {
 
   useEffect(() => {
     getHistoryMessage(accessToken, shopID, toID, dispatch, axiosJWT);
-    messageInputRef.current.focus();
   }, [messages]);
 
   useEffect(() => {
@@ -114,11 +122,19 @@ function ShopMessage() {
                 <img className={cx('avatar')} src={msg.senderId === shopID ? shopAvatar : userAvatar} alt="" />
                 <div className={cx('content')}>
                   <div className={cx('name')}>{msg.senderId === shopID ? 'You' : userName}</div>
+                  {msg.image ? <img className={cx('attached-image')} src={msg.image} alt="Attachment" /> : ''}
                   <div className={cx('message')}>{msg.message}</div>
+                  <span className={cx('time')}>{convertToVietnamTime(msg.timestamp)}</span>
                 </div>
               </div>
             ))}
             <span>{currentTyping}</span>
+            {loading && (
+              <div className={cx('loading')}>
+                <p>Sending the image...</p>
+                <Spinner animation="border" className={cx('circling')} />
+              </div>
+            )}
             <div ref={messageEndRef} />
           </div>
           <Form
@@ -127,13 +143,11 @@ function ShopMessage() {
               e.preventDefault();
               if (newMessage) {
                 sendMessage();
-              } else {
-                messageInputRef.current.focus();
               }
             }}
           >
             <Col md={8}>
-              <InputGroup>
+              <InputGroup className={cx('typing')}>
                 <FormControl
                   type="text"
                   placeholder="Type your message"
@@ -142,13 +156,60 @@ function ShopMessage() {
                     socket.emit('typing', { roomId: shopID + toID, name: shopName, sender: shopID });
                     setNewMessage(e.target.value);
                   }}
-                  className={cx('input')}
                   ref={messageInputRef}
+                  className={cx('input')}
                 />
-                <Button primary type="submit">
+                <PaperPlanIcon
+                  onClick={() => {
+                    if (newMessage) {
+                      sendMessage();
+                    }
+                  }}
+                  padding={20}
+                  primary
+                  type="submit"
+                >
                   Send
-                </Button>
+                </PaperPlanIcon>
+                <InputGroup className={cx('image-input')}>
+                  <ImageIcon padding={20} onClick={() => imageRef.current.click()} />
+                  <input onChange={handleImageChange} width={0} type="file" hidden ref={imageRef}></input>
+                </InputGroup>
               </InputGroup>
+              <Modal show={imgUrl} onHide={() => setImgUrl('')}>
+                <Modal.Header closeButton></Modal.Header>
+                <Modal.Body>
+                  <img className={cx('preview-img')} src={imgUrl} alt="Review" />
+                </Modal.Body>
+                <Modal.Footer className={cx('img-description')}>
+                  <InputGroup>
+                    <FormControl
+                      type="text"
+                      placeholder="Type your message"
+                      value={newMessage}
+                      ref={messageInputRef}
+                      onChange={(e) => {
+                        socket.emit('typing', { roomId: shopID + toID, name: shopName, sender: shopID });
+                        setNewMessage(e.target.value);
+                      }}
+                      className={cx('img-description-input')}
+                    />
+                    <PaperPlanIcon
+                      onClick={async () => {
+                        if (newMessage) {
+                          setLoading(true);
+                          await sendMessage();
+                          setImgUrl('');
+                          setLoading(false);
+                        }
+                      }}
+                      padding={20}
+                      primary
+                      type="submit"
+                    ></PaperPlanIcon>
+                  </InputGroup>
+                </Modal.Footer>
+              </Modal>
             </Col>
           </Form>
         </Col>
