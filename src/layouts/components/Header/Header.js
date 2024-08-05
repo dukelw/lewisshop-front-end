@@ -13,7 +13,6 @@ import styles from './Header.module.scss';
 import {
   AuthenIcon,
   ShopIcon,
-  LogoIcon,
   UserIcon,
   ListIcon,
   FavouriteIcon,
@@ -26,6 +25,7 @@ import {
   LanguageIcon,
   CoinIcon,
   NotificationIcon,
+  LogoIconDark,
 } from '~/components/Icons';
 import Search from '../Search';
 import CartBlank from '~/components/CartBlank';
@@ -165,7 +165,7 @@ function Header() {
       {/* Logo */}
       <Link to={config.routes.home} className={cx('logo-link')}>
         <div className={cx('logo')}>
-          <LogoIcon />
+          <LogoIconDark />
         </div>
       </Link>
       {/* Navigation */}

@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import styles from './Footer.module.scss';
-import { FacebookIcon, LogoIcon, TwitterIcon, InstagramIcon } from '~/components/Icons';
+import { FacebookIcon, TwitterIcon, InstagramIcon, LogoIconLight } from '~/components/Icons';
 import FooterList from '~/components/FooterList';
 
 const cx = classNames.bind(styles);
@@ -108,7 +108,7 @@ function Footer() {
         <Row>
           <Col sm={3} xl={3} lg={3} xxl={3}>
             <div className={cx('actions')}>
-              <LogoIcon />
+              <LogoIconLight />
               <div className={cx('socials')}>
                 <Link to={''}>
                   <FacebookIcon color="ffffff" />

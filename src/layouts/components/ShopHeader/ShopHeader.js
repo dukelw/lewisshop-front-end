@@ -15,7 +15,7 @@ import styles from './ShopHeader.module.scss';
 import {
   AuthenIcon,
   ShopIcon,
-  LogoIcon,
+  LogoIconDark,
   UserIcon,
   ListIcon,
   ProfileIcon,
@@ -146,7 +146,7 @@ function ShopHeader() {
       {/* Logo */}
       <Link to={config.routes.shopHome} className={cx('logo-link')}>
         <div className={cx('logo')}>
-          <LogoIcon />
+          <LogoIconDark />
         </div>
       </Link>
       {/* Navigation */}
