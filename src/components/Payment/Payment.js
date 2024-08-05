@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import QRCode from '~/components/QRCode';
 import styles from './Payment.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
+import { updateOrderStatus } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
@@ -16,7 +17,7 @@ function Payment() {
 
   const checkPaidByBanking = async (amount, content) => {
     if (isSuccess) {
-      return;
+      // updateOrderStatus()
     } else {
       try {
         const response = await fetch(

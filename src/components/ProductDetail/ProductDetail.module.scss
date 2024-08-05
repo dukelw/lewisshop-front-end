@@ -240,3 +240,44 @@
     }
   }
 }
+
+.variant_wrapper {
+  margin-top: 20px;
+}
+
+.variant_label {
+  color: var(--black);
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 12px;
+}
+
+.variant_select {
+  border: var(--black);
+  border-radius: 0 !important;
+  outline: none;
+}
+
+.variance_display {
+  display: flex;
+  align-items: center;
+}
+
+.variant_image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-top: 12px;
+  margin-right: 12px;
+  border-radius: 2px;
+}
+
+.triple-dot {
+  font-size: 5rem;
+  font-weight: 600;
+  transform: translateY(-5%);
+  flex: 1;
+  text-align: center;
+}

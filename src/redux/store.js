@@ -12,6 +12,7 @@ import userReducer from './userSlice';
 import uploadReducer from './uploadSlice';
 import commentReducer from './commentSlice';
 import messageReducer from './messageSlice';
+import variantReducer from './variantSlice';
 
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   upload: uploadReducer,
   comment: commentReducer,
   message: messageReducer,
+  variant: variantReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

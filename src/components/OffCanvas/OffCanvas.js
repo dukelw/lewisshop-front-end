@@ -39,6 +39,10 @@ function OffCanvas({ Icon = ListIcon, content = 'All', className }) {
       to: '/shop/create/product',
     },
     {
+      title: 'Add new product variants',
+      to: '/shop/create/product-variants',
+    },
+    {
       title: 'All draft products',
       to: '/shop/draft',
     },

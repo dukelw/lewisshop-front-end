@@ -4,6 +4,7 @@ import config from '~/config';
 import { HeaderOnly } from '~/layouts';
 import HeaderAndFooter from '~/layouts/HeaderAndFooter';
 import ShopDefaultLayout from '~/layouts/ShopDefaultLayout';
+import ShopHeaderOnly from '~/layouts/ShopHeaderNoLogo/ShopHeaderNoLogo';
 
 // Pages
 import Home from '~/pages/Home';
@@ -37,7 +38,9 @@ import ShopView from '~/pages/ShopView';
 import ShopLobby from '~/components/ShopLobby';
 import Message from '~/pages/Message';
 import ShopMessage from '~/pages/ShopMessage';
-import ShopHeaderOnly from '~/layouts/ShopHeaderNoLogo/ShopHeaderNoLogo';
+import ShopCreateProductVariance from '~/pages/ShopCreateProductVariance';
+import ShopEditProductVariance from '~/pages/ShopEditProductVariance';
+import ShopVariance from '~/pages/ShopVariance';
 
 const publicRoutes = [
   { path: config.routes.home, component: Home },
@@ -67,6 +70,19 @@ const privateRoutes = [
   { type: 'shop', path: config.routes.shopOrders, component: ShopOrder, layout: ShopDefaultLayout },
   { type: 'shop', path: config.routes.shopEditProduct, component: ShopEditProduct, layout: ShopDefaultLayout },
   { type: 'shop', path: config.routes.shopCreateDiscount, component: ShopCreateDiscount, layout: ShopDefaultLayout },
+  { type: 'shop', path: config.routes.shopEditVariant, component: ShopEditProductVariance, layout: ShopDefaultLayout },
+  {
+    type: 'shop',
+    path: config.routes.shopCreateProductVariants,
+    component: ShopCreateProductVariance,
+    layout: ShopDefaultLayout,
+  },
+  {
+    type: 'shop',
+    path: config.routes.shopProductVariants,
+    component: ShopVariance,
+    layout: ShopDefaultLayout,
+  },
   { type: 'shop', path: config.routes.shopRestoreDiscount, component: ShopRestoreDiscount, layout: ShopDefaultLayout },
   { type: 'user', path: config.routes.userCart, component: Cart, layout: HeaderAndFooter },
   { type: 'user', path: config.routes.payment, component: Payment, layout: HeaderNoLogo },

@@ -13,7 +13,7 @@ function ProductItem({ data }) {
     localStorage.setItem('productType', productType);
   };
   return (
-    <div onClick={() => handleProductDetail(data._id, data.product_shop, data.product_type)}>
+    <div onClick={() => handleProductDetail(data?._id, data.product_shop, data.product_type)}>
       <Link to={`/product/${data.product_slug}`} className={cx('wrapper')}>
         <Image src={data.product_thumb} alt={`${data.product_name}`} className={cx('avatar')} />
         <div className={cx('info')}>

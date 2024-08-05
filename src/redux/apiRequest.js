@@ -83,6 +83,9 @@ import {
   updateShopInfoStart,
   updateShopInfoSuccess,
   updateShopInfoFailure,
+  searchShopStart,
+  searchShopSuccess,
+  searchShopFailed,
 } from './shopSlice';
 import {
   cancelOrderFailed,
@@ -173,10 +176,22 @@ import {
   markReadMessageFailed,
   getNonReadStart,
   getNonReadSuccess,
-  getNonReadSt,
-  getNonReadStdFailed,
   getNonReadFailed,
 } from './messageSlice';
+import {
+  createVariantFailed,
+  createVariantStart,
+  createVariantSuccess,
+  findVariantsFailed,
+  findVariantsStart,
+  findVariantsSuccess,
+  getVariantsFailed,
+  getVariantsStart,
+  getVariantsSuccess,
+  updateVariantFailed,
+  updateVariantStart,
+  updateVariantSuccess,
+} from './variantSlice';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -314,6 +329,26 @@ export const getAllProduct = async (pagination, sort, dispatch) => {
   }
 };
 
+export const getAllVariantsOfProduct = async (productID, dispatch) => {
+  dispatch(getVariantsStart());
+  try {
+    const res = await axios.get(`${REACT_APP_BASE_URL}variant?product_id=${productID}`);
+    dispatch(getVariantsSuccess(res.data));
+  } catch (error) {
+    dispatch(getVariantsFailed());
+  }
+};
+
+export const findVariantByID = async (variantID, dispatch) => {
+  dispatch(findVariantsStart());
+  try {
+    const res = await axios.get(`${REACT_APP_BASE_URL}variant/${variantID}`);
+    dispatch(findVariantsSuccess(res.data));
+  } catch (error) {
+    dispatch(findVariantsFailed());
+  }
+};
+
 export const getAllProductNoLimit = async (dispatch) => {
   dispatch(getProductsNoLimitStart());
   try {
@@ -360,6 +395,19 @@ export const createNewProduct = async (accessToken, shopID, product, dispatch, n
     navigate('/shop/draft');
   } catch (error) {
     dispatch(createProductFailed());
+  }
+};
+
+export const createNewVariant = async (accessToken, shopID, variant, dispatch, navigate, axiosJWT) => {
+  dispatch(createVariantStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}variant`, variant, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(createVariantSuccess(res.data));
+    // navigate here
+  } catch (error) {
+    dispatch(createVariantFailed());
   }
 };
 
@@ -427,6 +475,18 @@ export const updateUserAddress = async (accessToken, userID, data, dispatch, axi
     findUser(accessToken, userID, userID, dispatch, axiosJWT);
   } catch (error) {
     dispatch(updateAddressFailure());
+  }
+};
+
+export const updateVariant = async (accessToken, shopID, variantID, data, dispatch, axiosJWT) => {
+  dispatch(updateVariantStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_BASE_URL}variant/${variantID}`, data, {
+      headers: { authorization: `${accessToken}`, user: `${shopID}` },
+    });
+    dispatch(updateVariantSuccess(res.data));
+  } catch (error) {
+    dispatch(updateVariantFailed());
   }
 };
 
@@ -729,6 +789,17 @@ export const searchProducts = async (keySearch, dispatch, axiosJWT) => {
     dispatch(searchProductSuccess(res.data));
   } catch (error) {
     dispatch(searchProductFailed());
+  }
+};
+
+export const searchShops = async (keySearch, dispatch, axiosJWT) => {
+  dispatch(searchShopStart());
+  try {
+    if (keySearch === '') return;
+    const res = await axiosJWT.get(`${REACT_APP_BASE_URL}shop/search/${keySearch}`);
+    dispatch(searchShopSuccess(res.data));
+  } catch (error) {
+    dispatch(searchShopFailed());
   }
 };
 

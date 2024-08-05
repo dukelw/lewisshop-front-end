@@ -108,7 +108,6 @@ function Header() {
   const unReadMessage = useSelector((state) => state?.message?.nonReadMessage?.messages);
   const historyMessages = useSelector((state) => state?.message?.getHistoryMessage?.messages);
 
-  console.log(historyMessages);
   useEffect(() => {
     socket.emit('join_room', userID);
     socket.on('receive_message', async (data) => {

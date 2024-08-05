@@ -3,17 +3,17 @@ import { useEffect, useRef, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Select from 'react-select';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ProductCard from '../ProductCard';
 import styles from './ProductDetail.module.scss';
-import { addToFavouriteList, addToast, findCommentOfProduct } from '~/redux/apiRequest';
+import { addToFavouriteList, addToast, findCommentOfProduct, getAllVariantsOfProduct } from '~/redux/apiRequest';
 import Button from '../Button';
 import { SubtractIcon, AddIcon } from '../Icons';
 import { FavouriteIcon } from '../Icons';
 import { addProductToCart } from '~/redux/apiRequest';
 import { createAxios } from '~/createAxios';
 import axios from 'axios';
-import DropdownSelect from '../DropdownSelect';
 import CommentList from '../CommentList';
 import { findProductByID, findRelateProduct, findShopByID, getUpdatedCart } from '~/redux/apiRequest';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,8 +23,9 @@ const cx = classNames.bind(styles);
 function ProductDetail() {
   const currentUser = useSelector((state) => state.authUser.signin.currentUser);
   const addToCart = useSelector((state) => state.authUser.addToCart.addedProduct);
+  const variants = useSelector((state) => state?.variant.get?.allVariants)?.metadata;
   const accessToken = currentUser?.metadata.tokens.accessToken;
-  const userID = currentUser?.metadata.user._id;
+  const userID = currentUser?.metadata.user?._id;
   const productID = localStorage.getItem('productDetailID');
   const shopID = localStorage.getItem('productShopID');
   const productType = localStorage.getItem('productType');
@@ -41,9 +42,13 @@ function ProductDetail() {
   const axiosJWT = createAxios(currentUser);
   const navigate = useNavigate();
   const [display, setDisplay] = useState('detail');
+  const [size, setSize] = useState('');
+  const [colors, setColors] = useState([]);
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedVariance, setSelectedVariance] = useState('');
 
   const recentProducts = originalRecentProducts.filter(
-    (value, index, self) => index === self.findIndex((t) => t.metadata._id === value.metadata._id),
+    (value, index, self) => index === self.findIndex((t) => t.metadata?._id === value.metadata?._id),
   );
 
   function stringToSlug(str) {
@@ -103,6 +108,7 @@ function ProductDetail() {
     findProductByID(productID, dispatch, axios);
     findRelateProduct(productType, dispatch, axios);
     findCommentOfProduct(productID, 1, dispatch, axios);
+    getAllVariantsOfProduct(productID, dispatch);
   }, [product_slug]);
 
   useEffect(() => {
@@ -112,18 +118,67 @@ function ProductDetail() {
 
   useEffect(() => {
     findShopByID(shopID, dispatch, axios);
-  }, [shop]);
+  }, []);
 
   const handleAddToFavouriteList = () => {
     addToFavouriteList(accessToken, userID, product, dispatch, axiosJWT);
   };
+
+  useEffect(() => {
+    if (size) {
+      const availableColors = variants
+        .filter((variant) => variant.variant_size === size)
+        ?.map((variant) => ({ value: variant.variant_color, label: variant.variant_color }));
+      setColors(availableColors);
+    } else {
+      setColors([]);
+    }
+  }, [size]);
+
+  const handleSizeChange = (selectedOption) => {
+    setSize(selectedOption?.value || '');
+    setSelectedColor('');
+    updateVariantImage(selectedOption?.value, selectedColor);
+  };
+
+  const handleColorChange = (selectedOption) => {
+    setSelectedColor(selectedOption?.value || '');
+    updateVariantImage(size, selectedOption?.value);
+  };
+
+  const updateVariantImage = (s, c) => {
+    variants?.map((variant) => {
+      if (variant.variant_color === c && variant.variant_size === s) {
+        setSelectedVariance(variant.variant_image);
+        return true;
+      }
+      return false;
+    });
+  };
+
+  const sizeOptions = [...new Set(variants?.map((variant) => variant.variant_size))]?.map((size) => ({
+    value: size,
+    label: size,
+  }));
 
   return (
     <div className={cx('wrapper')}>
       {/* Product section */}
       <div className={cx('product')}>
         <div className={cx('left')}>
-          <div className={cx('img')} style={{ backgroundImage: `url(${product?.product_thumb})` }}></div>
+          <div
+            className={cx('img')}
+            style={{ backgroundImage: `url(${selectedVariance === '' ? product?.product_thumb : selectedVariance})` }}
+          ></div>
+          <div className={cx('variance_display')}>
+            {variants?.map((variant, index) => {
+              if (index < 5) {
+                return <img className={cx('variant_image')} src={variant?.variant_image} alt="Variant" key={index} />;
+              } else {
+                return <p className={cx('triple-dot')}>...</p>;
+              }
+            })}
+          </div>
         </div>
         <div className={cx('right')}>
           <h2 className={cx('name')}>{product?.product_name}</h2>
@@ -131,8 +186,25 @@ function ProductDetail() {
           <p className={cx('description')}>{product?.product_description}</p>
 
           <div className={cx('variance')}>
-            <DropdownSelect choices={['S', 'M', 'L', 'XL', 'XXL']} name={'sizes'}></DropdownSelect>
-            <DropdownSelect choices={['Black', 'White', 'Grey', 'Green', 'Blue']} name={'colors'}></DropdownSelect>
+            <div className={cx('variant_wrapper')}>
+              <label className={cx('variant_label')}>Size</label>
+              <Select
+                options={sizeOptions}
+                onChange={handleSizeChange}
+                value={sizeOptions.find((option) => option.value === size)}
+                placeholder="Select Size"
+              />
+            </div>
+            <div className={cx('variant_wrapper')}>
+              <label className={cx('variant_label')}>Color</label>
+              <Select
+                options={colors}
+                onChange={handleColorChange}
+                value={colors.find((option) => option.value === selectedColor)}
+                placeholder="Select Color"
+                isDisabled={!size}
+              />
+            </div>
           </div>
 
           <div className={cx('actions')}>
@@ -156,7 +228,7 @@ function ProductDetail() {
 
           <ul className={cx('assurance')}>
             {product?.product_attributes &&
-              Object.entries(product?.product_attributes).map(([key, value]) => (
+              Object.entries(product?.product_attributes)?.map(([key, value]) => (
                 <li className={cx('square')} key={key}>
                   <span>{key.toUpperCase()}: </span>
                   <span>{value}</span>
@@ -200,7 +272,7 @@ function ProductDetail() {
         <Container>
           <Row>
             {relatedProducts &&
-              relatedProducts.map((item, index) => {
+              relatedProducts?.map((item, index) => {
                 return (
                   <Col key={index} sm={6} xl={2} lg={2}>
                     <ProductCard data={item}></ProductCard>
@@ -215,7 +287,7 @@ function ProductDetail() {
         <Container>
           <Row>
             {recentProducts &&
-              recentProducts.map((item, index) => {
+              recentProducts?.map((item, index) => {
                 return (
                   <Col key={index} sm={6} xl={2} lg={2}>
                     <ProductCard data={item?.metadata}></ProductCard>

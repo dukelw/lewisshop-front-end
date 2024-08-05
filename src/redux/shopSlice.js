@@ -27,6 +27,11 @@ const shopSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    search: {
+      matchedShops: [],
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     createProductStart: (state) => {
@@ -115,6 +120,18 @@ const shopSlice = createSlice({
       state.changePassword.isFetching = false;
       state.changePassword.error = true;
     },
+    searchShopStart: (state) => {
+      state.search.isFetching = true;
+    },
+    searchShopSuccess: (state, action) => {
+      state.search.isFetching = false;
+      state.search.matchedShops = action.payload;
+    },
+    searchShopFailed: (state) => {
+      state.search.isFetching = false;
+      state.search.matchedShops = null;
+      state.search.error = true;
+    },
   },
 });
 
@@ -143,6 +160,9 @@ export const {
   changeShopPasswordStart,
   changeShopPasswordSuccess,
   changeShopPasswordFailure,
+  searchShopStart,
+  searchShopSuccess,
+  searchShopFailed,
 } = shopSlice.actions;
 
 export default shopSlice.reducer;

@@ -64,7 +64,7 @@ function ShopChatList() {
   }, [socket, historyMessages, messagesWithUserDetails]);
 
   const isNews = (message) => {
-    return unReadMessage.some(
+    return unReadMessage?.some(
       (msg) => msg.senderId === message.senderId && msg.receiverId === message.receiverId && message.isRead === false,
     );
   };

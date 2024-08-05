@@ -10,15 +10,18 @@ import PropTypes from 'prop-types';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import { SearchIcon } from '~/components/Icons';
 import styles from './Search.module.scss';
-import { searchProducts } from '~/redux/apiRequest';
+import { searchProducts, searchShops } from '~/redux/apiRequest';
 import ProductItem from '~/components/ProductItem';
+import ShopItem from '~/components/ShopItem';
 
 const cx = classNames.bind(styles);
 
 function Search() {
-  const currentSearchResult = useSelector((state) => state?.products.search.matchedProducts);
+  const currentProductSearchResult = useSelector((state) => state?.products.search.matchedProducts);
+  const currentShopSearchResult = useSelector((state) => state?.shop.search.matchedShops);
   const dispatch = useDispatch();
-  const searchResult = currentSearchResult?.metadata || [];
+  const productSearchResult = currentProductSearchResult?.metadata || [];
+  const shopSearchResult = currentShopSearchResult?.metadata || [];
   const [searchValue, setSearchValue] = useState('');
   const [searchDisplay, setSearchDisplay] = useState(false);
   const [showResult, setShowResult] = useState(false);
@@ -36,6 +39,7 @@ function Search() {
 
   useEffect(() => {
     searchProducts(searchValue, dispatch, axios);
+    searchShops(searchValue, dispatch, axios);
   }, [searchValue]);
 
   const handleChange = (e) => {
@@ -58,14 +62,18 @@ function Search() {
       {searchDisplay && (
         <HeadlessTippy
           interactive
-          visible={showResult && searchResult?.length > 0}
+          visible={showResult && productSearchResult?.length > 0}
           placement="bottom-end"
           render={(attrs) => (
             <div className={cx('search-result')} tabIndex={-1} {...attrs}>
               <PopperWrapper>
                 <h4 className={cx('search-title')}>Product</h4>
-                {searchResult?.map((result) => {
+                {productSearchResult?.map((result) => {
                   return <ProductItem key={result._id} data={result}></ProductItem>;
+                })}
+                <h4 className={cx('search-title')}>Shop</h4>
+                {shopSearchResult?.map((result) => {
+                  return <ShopItem key={result._id} data={result}></ShopItem>;
                 })}
               </PopperWrapper>
             </div>

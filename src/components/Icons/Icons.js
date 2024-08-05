@@ -4,6 +4,7 @@ import {
   faAdd,
   faAddressBook,
   faArrowLeft,
+  faBackward,
   faBarcode,
   faCancel,
   faCheck,
@@ -50,6 +51,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faMintbit, faProductHunt, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClockFour, faStar as faStarRegular, faBookmark } from '@fortawesome/free-regular-svg-icons';
+
+export const BackwardIcon = ({ width = '1.6rem', height = '1.6rem', className, color, padding, onClick, style }) => (
+  <FontAwesomeIcon
+    onClick={onClick}
+    icon={faBackward}
+    className={className}
+    style={{ width, height, color: color, padding: padding, ...style }}
+  />
+);
 
 export const ImageIcon = ({ width = '1.6rem', height = '1.6rem', className, color, padding, onClick, style }) => (
   <FontAwesomeIcon

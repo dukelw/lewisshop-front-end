@@ -1,0 +1,99 @@
+.wrapper {
+  margin-top: 40px;
+}
+
+.form-group {
+  min-width: 400px;
+  margin-bottom: 12px;
+}
+
+.form-label {
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.form-control {
+  min-height: 40px;
+  font-size: 1.4rem;
+}
+
+.title {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.thumb-preview {
+  width: 100%;
+
+  .avatar {
+    margin: 28px 0;
+    max-width: 100%;
+    object-fit: cover;
+  }
+}
+
+.btn-container {
+  text-align: center;
+}
+
+.btn {
+  margin-top: 12px;
+  margin: 0 auto;
+}
+
+.submit-btn {
+  margin-top: 30px;
+  min-height: 80px;
+  width: 100%;
+  font-size: 2rem;
+}
+
+.variance_container {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--black);
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 12px;
+
+  .variance_image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+  }
+
+  .variance_detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .variance_text {
+      font-size: 1.4rem;
+      color: var(--white);
+    }
+  }
+}
+
+.mt-20 {
+  margin-top: 20px !important;
+}
+
+.current_image {
+  width: 80%;
+  object-fit: cover;
+}
+
+.current {
+  background-color: var(--pink) !important;
+}
+
+.backward {
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  font-size: 700;
+  text-transform: uppercase;
+}
